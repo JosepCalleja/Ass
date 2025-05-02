@@ -75,8 +75,71 @@ canvas.width = row;
 
 let showgrid = true;
 
-const track1 = new Audio(`WAVESultimate2.mp3`);
-const clicksfx = new Audio(`button-29.mp3`);
+const clicksfx = new Audio(`button-29.mp3`)
+
+const songs = [
+    `WAVESultimate2.mp3`,
+    `Remote-Control.mp3`,
+    `30 Hours.mp3`,
+    `CITS.mp3`,
+    `Moon.mp3`,
+    `TCIAA.mp3`,
+    `Like Him.mp3`
+];
+
+
+
+
+// Fisher-Yates Shuffle to ensure no repeats until all songs are played
+function shuffle(array) {
+    let shuffled = array.slice(); // Copy the array to avoid modifying the original
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap
+    }
+    return shuffled;
+}
+
+let shuffledSongs = shuffle(songs); // Shuffle at the start
+let mymusicindex = 0;
+let bgmusic = new Audio();
+let isPlaying = false; // Track if music is already playing
+let musicvolume = 1;
+
+
+function playmusic() {
+    if (mymusicindex < shuffledSongs.length) {
+        bgmusic.src = shuffledSongs[mymusicindex];
+        bgmusic.play();
+        isPlaying = true; // Mark as playing
+
+
+
+        bgmusic.onended = function () {
+            mymusicindex++;
+            if (mymusicindex < shuffledSongs.length) {
+                playmusic(); // Play next song
+            } else {
+                console.log("Playlist finished. Reshuffling...");
+                shuffledSongs = shuffle(songs); // Reshuffle after all songs played
+                mymusicindex = 0;
+                playmusic(); // Restart playlist
+            }
+        };
+
+        bgmusic.onpause = function () {
+            isPlaying = false; // Allow clicking to restart if manually paused
+        };
+
+        bgmusic.onplay = function () {
+            isPlaying = true; // Prevent restarting while playing
+        };
+    }
+
+
+
+
+}
 
 
 //buttons;
@@ -140,7 +203,7 @@ const money = {
     money: 0.05,
     x: (grid * 27),
     y: (grid * 1.5),
-    color: `green`
+    color: `lime`
 }
 
 const lslider = {
@@ -275,9 +338,28 @@ const customers = [
         sex: `Male`
     },
     {
+        name: `Ginormous Demon`,
+        age: 38,
+        kupal: false,
+        sex: `Male`
+    },
+    {
         name: `Michael B. Jordamn`,
         age: 62,
         kupal: true,
+        sex: `Male`
+    },
+    {
+        name: `Dill dough`,
+        age: 23,
+        kupal: false,
+        sex: `Male`
+
+    },
+    {
+        name: `Officer Droid`,
+        age: 39,
+        kupal: false,
         sex: `Male`
     }
 
@@ -385,73 +467,85 @@ const gameitems = [
         name: 'Plastic Toy',
         price: 0.05,
         description: `A small plastic toy that impoverished Childrens play`,
-        img: plasticToy
+        img: plasticToy,
+        rarity: `Common`
     },
     {
         name: 'Ballpen',
         price: 0.20,
         description: `A Brand New Ballpen, that's it.`,
-        img: Ballpen
+        img: Ballpen,
+        rarity: `Common`
     },
     {
         name: 'Wooden Sword',
         price: 1,
         description: `A small wooden sword for training`,
-        img: woodenSword
+        img: woodenSword,
+        rarity: `Common`
     },
     {
         name: 'Backpack',
         price: 1.15,
         description: `A local backpack`,
-        img: Backpack
+        img: Backpack,
+        rarity: `Common`
     },
     {
         name: `ATM Machine`,
         price: 19.45,
         description: `Gives player a penny every month, might be useful if you stock`,
-        img: ATM
+        img: ATM,
+        rarity: `Uncommon`
     },
     {
         name: `Pet Dog`,
         price: 10,
         description: `A companion to your journey`,
-        img: Dog
+        img: Dog,
+        rarity: `Common`
     },
     {
         name: `Basketball`,
         price: 8.24,
         description: `A Spalding basketball`,
-        img: ball
+        img: ball,
+        rarity: `Common`
     },
     {
         name: `Jamal`,
         price: 186.5,
         description: `A Basketball person`,
-        img: Jamal
+        img: Jamal,
+        rarity: `Rare`
     },
     {
         name: `Bicycle`,
         price: 100,
         description: `Second hand bicycle`,
-        img: Bicycle
+        img: Bicycle,
+        rarity: `Rare`
     },
     {
         name: `Bahay Kubo`,
         price: 710,
         description: `PHILIPENIS!!!`,
-        img: bahayKubo
+        img: bahayKubo,
+        rarity: `Rare`
     },
     {
         name: `White Aura`,
         price: 1000,
         description: `+1000 Aura`,
-        img: whiteAura
+        img: whiteAura,
+        rarity: `Ultra Rare`
     },
     {
         name: `Dark Aura`,
         price: 1500,
         description: `+1500 Aura`,
-        img: darkAura
+        img: darkAura,
+        rarity: `Ultra Rare`
     },
 ];
 
@@ -470,7 +564,9 @@ const player = {
     month: monthOne,
     maximum: 8,
     week: weekOfMonth,
-    currentseason: undefined
+    currentseason: undefined,
+    level: 1,
+    experience: 0
 }
 
 let times = [
@@ -1193,6 +1289,23 @@ function scene3(){
         money.x,
         money.y
         );
+// Level line
+ctx.fillStyle = 'white';
+ctx.fillText('Level: ', canvas.width / 2, grid * 7.5);
+const levelLabelWidth = ctx.measureText('Level:').width;
+
+ctx.fillStyle = 'yellow';
+ctx.fillText(`${player.level}`, canvas.width / 2 + levelLabelWidth, grid * 7.5);
+
+// XP line
+ctx.fillStyle = 'white';
+ctx.fillText('XP: ', canvas.width / 2, grid * 8.5);
+const xpLabelWidth = ctx.measureText('XP:     ').width;
+
+ctx.fillStyle = 'yellow';
+ctx.fillText(`${player.experience} / ${player.level * 10}`, canvas.width / 2 + xpLabelWidth, grid * 8.5);
+
+        
 
         seasonMech();
     
@@ -1230,7 +1343,10 @@ function scene3(){
     }
 
     
-
+if(player.experience >= player.level * 10){
+    player.experience -= player.level * 10;
+    player.level++;
+}
 
 
 
@@ -3714,7 +3830,7 @@ function wrapText(ctx, text, x, yCenter, maxWidth, lineHeight) {
     ctx.fillStyle = 'white';
     ctx.font      = '24px serif';
     ctx.fillText(
-      `Page: ${currentpage + 1} / ${totalPages}`,
+      `Page: ${currentpage + 1} / ${player.maximum / 8}`,
       ctx.canvas.width / 2,
       grid * 3
     );
@@ -3733,13 +3849,48 @@ function wrapText(ctx, text, x, yCenter, maxWidth, lineHeight) {
 
 
 
-ctx.fillStyle = lslider.color;
+  function drawLSlider(lslider) {
+    // Draw the left slider rectangle
+    ctx.fillStyle = lslider.color;
+    ctx.fillRect(lslider.x, lslider.y, lslider.width, lslider.height);
 
-ctx.fillRect(lslider.x, lslider.y, lslider.width, lslider.height);
+    // Draw the left arrow
+    const arrowSize = Math.min(lslider.width, lslider.height) * 0.4;
+    const centerX = lslider.x + lslider.width / 2;
+    const centerY = lslider.y + lslider.height / 2;
 
-ctx.fillStyle = rslider.color;
+    ctx.fillStyle = 'white';
+    ctx.beginPath();
+    ctx.moveTo(centerX + arrowSize / 2, centerY - arrowSize);
+    ctx.lineTo(centerX + arrowSize / 2, centerY + arrowSize);
+    ctx.lineTo(centerX - arrowSize / 2, centerY);
+    ctx.closePath();
+    ctx.fill();
+}
 
-ctx.fillRect(rslider.x, rslider.y, rslider.width, rslider.height);
+function drawRSlider(rslider) {
+    // Draw the right slider rectangle
+    ctx.fillStyle = rslider.color;
+    ctx.fillRect(rslider.x, rslider.y, rslider.width, rslider.height);
+
+    // Draw the right arrow
+    const arrowSize = Math.min(rslider.width, rslider.height) * 0.4;
+    const centerX = rslider.x + rslider.width / 2;
+    const centerY = rslider.y + rslider.height / 2;
+
+    ctx.fillStyle = 'white';
+    ctx.beginPath();
+    ctx.moveTo(centerX - arrowSize / 2, centerY - arrowSize);
+    ctx.lineTo(centerX - arrowSize / 2, centerY + arrowSize);
+    ctx.lineTo(centerX + arrowSize / 2, centerY);
+    ctx.closePath();
+    ctx.fill();
+}
+
+// Call them with your slider objects
+drawLSlider(lslider);
+drawRSlider(rslider);
+
 
 
 
@@ -3921,14 +4072,49 @@ for (let i = 0; i < inventorybtn.length; i++) {
         )
           
 
-        ctx.fillStyle = lslider.color;
-
-        ctx.fillRect(lslider.x, lslider.y, lslider.width, lslider.height);
+        function drawLSlider(lslider) {
+            // Draw the left slider rectangle
+            ctx.fillStyle = lslider.color;
+            ctx.fillRect(lslider.x, lslider.y, lslider.width, lslider.height);
         
-        ctx.fillStyle = rslider.color;
+            // Draw the left arrow
+            const arrowSize = Math.min(lslider.width, lslider.height) * 0.4;
+            const centerX = lslider.x + lslider.width / 2;
+            const centerY = lslider.y + lslider.height / 2;
         
-        ctx.fillRect(rslider.x, rslider.y, rslider.width, rslider.height);
-    
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.moveTo(centerX + arrowSize / 2, centerY - arrowSize);
+            ctx.lineTo(centerX + arrowSize / 2, centerY + arrowSize);
+            ctx.lineTo(centerX - arrowSize / 2, centerY);
+            ctx.closePath();
+            ctx.fill();
+        }
+        
+        function drawRSlider(rslider) {
+            // Draw the right slider rectangle
+            ctx.fillStyle = rslider.color;
+            ctx.fillRect(rslider.x, rslider.y, rslider.width, rslider.height);
+        
+            // Draw the right arrow
+            const arrowSize = Math.min(rslider.width, rslider.height) * 0.4;
+            const centerX = rslider.x + rslider.width / 2;
+            const centerY = rslider.y + rslider.height / 2;
+        
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.moveTo(centerX - arrowSize / 2, centerY - arrowSize);
+            ctx.lineTo(centerX - arrowSize / 2, centerY + arrowSize);
+            ctx.lineTo(centerX + arrowSize / 2, centerY);
+            ctx.closePath();
+            ctx.fill();
+        }
+        
+        // Call them with your slider objects
+        drawLSlider(lslider);
+        drawRSlider(rslider);        
+            
+            
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.font = "50px Arial";
@@ -3972,6 +4158,37 @@ for (let i = 0; i < inventorybtn.length; i++) {
         grid * 2
     );
 
+    ctx.font = "40px Arial";
+
+
+    if(showgrid){
+        ctx.fillStyle = `green`;
+        ctx.fillText(
+            `Show Grid Set To True`,
+            grid * 7,
+            grid * 5
+        );
+    }
+    else{
+        ctx.fillStyle = `red`;
+        ctx.fillText(
+            `Show Grid Set To False`,
+            grid * 7,
+            grid * 5
+        );
+    }
+
+
+    ctx.fillStyle = `green`;
+    ctx.fillText(
+        `Music: ${bgmusic.volume}`,
+        grid * 4.5,
+        grid * 7
+    );
+    
+
+
+    ctx.fillStyle = `white`;
     ctx.font = "50px serif";
 
     ctx.fillText(
@@ -3983,16 +4200,16 @@ for (let i = 0; i < inventorybtn.length; i++) {
 
   
 
-  function schoolitems(){
+  function economicsystem(){
     if(player.currentseason === seasons[1]){
         gameitems[1].price += Math.random() * (gameitems[1].price * 0.30);
-        gameitems[3].price += Math.random() * (gameitems[1].price * 0.40);
+        gameitems[3].price += Math.random() * (gameitems[3].price * 0.40);
         gameitems[4].price -= Math.random() * (gameitems[4].price * 0.30);
     }
     else{
         gameitems[1].price = 0.20;
         gameitems[3].price = 1.15;
-        gameitems[3].price = 19.45;
+        gameitems[4].price = 19.45;
     }
 
 
@@ -4010,20 +4227,87 @@ for (let i = 0; i < inventorybtn.length; i++) {
   }
 
 
+function itemsbn(){
+    player.inventory.forEach(item => {
+        if (item.name === gameitems[4].name) {
+            console.log(item);
+            player.money = addMoney(player.money, 0.01);
+        }
+    });
+    player.inventory.forEach(item => {
+        if (item.name === gameitems[7].name) {
+            console.log(item);
+            player.experience = addMoney(player.experience, 0.23);
+        }
+    });
+    player.inventory.forEach(item => {
+        if (item.name === gameitems[8].name) {
+            console.log(item);
+            player.experience = addMoney(player.experience, 0.21);
+        }
+    });
+    player.inventory.forEach(item => {
+        if (item.name === gameitems[9].name) {
+            console.log(item);
+            player.money = addMoney(player.money, 0.02);
+            player.experience = addMoney(player.experience, 0.51);
+        }
+    });
+    player.inventory.forEach(item => {
+        if (item.name === gameitems[10].name) {
+            console.log(item);
+            player.experience = addMoney(player.experience, 0.89);
+        }
+    });
+    player.inventory.forEach(item => {
+        if (item.name === gameitems[11].name) {
+            console.log(item);
+            player.experience = addMoney(player.experience, 1);
+        }
+    });
+
+
+}
+
+// Initialize once, if not already
+player.levelMilestone = player.levelMilestone || 0;
+
+function levelmech() {
+    const milestonesReached = Math.floor(player.level / 5);
+    const newMilestones = milestonesReached - player.levelMilestone;
+
+    if (newMilestones > 0) {
+        player.maximum += newMilestones * 8; // +8 for each 5-level milestone
+        player.levelMilestone = milestonesReached;
+        showNotification(`Player Inventory++!`, 2500);
+    }
+}
+
+
 
 let maxpage;
 
 canvas.addEventListener("contextmenu", e => e.preventDefault());
 
-// Update totalPages (only once when gameitems are ready)
+
 totalPages = Math.ceil(gameitems.length / itemsPerPage);
 
-// ✅ Now you can safely use addEventListener outside:
+
 document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') {
-        if (currentpage < totalPages - 1) {
-            currentpage++;
+        if(currentscene === 4){
+
+                if(currentpage + 1 < player.maximum / 8){
+                    currentpage++;
+                }
         }
+        else if(currentscene === 5){
+            if (currentpage < totalPages - 1) {
+                currentpage++;
+            }
+
+        }
+
     }
     if (e.key === 'ArrowLeft') {
         if (currentpage > 0) {
@@ -4050,9 +4334,7 @@ canvas.addEventListener(`mousedown`, (e) => {
                 if(player.playedbefore){
                     currentscene = 2;
                     mainscreen = false;
-                    track1.pause();
-                    track1.currentTime = 0;
-                    track1.play();
+                    playmusic();
 
                     clicksfx.pause();
                     clicksfx.currentTime = 0;
@@ -4362,14 +4644,11 @@ canvas.addEventListener(`mousedown`, (e) => {
                             secondDialogueTime = Date.now();
                         }
 
-                        player.inventory.forEach(item => {
-                            if (item.name === gameitems[4].name) {
-                                console.log(item);
-                                player.money = addMoney(player.money, 0.01);
-                            }
-                        });
+                        itemsbn();
 
-                        schoolitems();
+
+                        levelmech()
+                        economicsystem();
                                                         
 
                         player.week = 0;
@@ -4937,7 +5216,6 @@ canvas.addEventListener(`mousedown`, (e) => {
             ) {
               clicksfx.pause(); clicksfx.currentTime = 0; clicksfx.play();
               currentscene = 2;
-              secondDialogueTime = Date.now();
               return;
             }
           
@@ -5005,7 +5283,8 @@ canvas.addEventListener(`mousedown`, (e) => {
                 clicksfx.pause();
                 clicksfx.currentTime = 0;
                 clicksfx.play();
-                if (currentpage < totalPages - 1) {
+
+                if(currentpage + 1 < player.maximum / 8){
                     currentpage++;
                 }
             }
@@ -5122,6 +5401,37 @@ if(roundedx >= rslider.x && roundedx < rslider.x + rslider.width && roundedy >= 
                 alert( `LocalStorage Cleared.`)
             }
 
+            if(
+                roundedx >= grid * 3 &&
+                roundedx <=  grid * 11 &&
+                roundedy >= grid * 4 &&
+                roundedy <= grid * 5
+            ){
+                if(showgrid){
+                    showgrid = false;
+                }
+                else{
+                    showgrid = true;
+                }
+            }
+            if(
+                roundedx >= grid * 2 &&
+                roundedx <=  grid * 4 &&
+                roundedy >= grid * 6 &&
+                roundedy <= grid * 7
+            ){
+                console.log(`42`);
+                bgmusic.volume -= 0.25;
+            }
+            if(
+                roundedx >= grid * 5 &&
+                roundedx <=  grid * 7 &&
+                roundedy >= grid * 6 &&
+                roundedy <= grid * 7
+            ){
+                console.log(`42`);
+                bgmusic.volume += 0.25;
+            }
 
         }
 
