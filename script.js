@@ -658,6 +658,7 @@ const scene4dialogues = [
 ]
 
 let atdialogue = 0;
+let nebulaTime = 0;
 
 
 
@@ -707,6 +708,138 @@ seasonMech();
 
 function scene1(){
     canvas.style.backgroundColor = `black`;
+    const stars = [];
+    for (let i = 0; i < 150; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        baseRadius: Math.random() * 1.2 + 0.3,
+        pulse: Math.random() * Math.PI * 2
+      });
+      
+    }
+
+    
+
+    function drawBackground() {
+      const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      grad.addColorStop(0, '#00001a');  // very dark indigo
+      grad.addColorStop(1, '#000000');  // pure black at bottom
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    
+
+    function drawStars(time) {
+      stars.forEach(star => {
+        const twinkle = 0.5 + 0.5 * Math.sin(star.pulse + time * 0.002);
+        const radius = star.baseRadius * twinkle;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${0.1 + 0.3 * twinkle})`;
+        ctx.fill();
+      });
+    }
+    
+
+    function drawNebula(time) {
+        ctx.save();
+        ctx.globalAlpha = 0.04;
+        ctx.fillStyle = '#0c0d32';
+        const x = Math.sin(time * 0.002) * canvas.width * 0.3 + canvas.width * 0.5;
+        const y = Math.cos(time * 0.002) * canvas.height * 0.3 + canvas.height * 0.4;
+        ctx.beginPath();
+        ctx.ellipse(x, y, canvas.width * 0.6, canvas.height * 0.4, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    
+
+    function drawMoon() {
+      const moonX = canvas.width * 0.2;
+      const moonY = canvas.height * 0.2;
+      const moonRadius = 60;
+      
+
+      ctx.save();
+      ctx.shadowColor = 'rgba(200,200,255,0.3)';
+      ctx.shadowBlur = 30;
+      ctx.beginPath();
+      ctx.arc(moonX, moonY, moonRadius + 10, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(220,220,255,0.1)';
+      ctx.fill();
+      ctx.restore();
+      
+
+      ctx.beginPath();
+      ctx.arc(moonX, moonY, moonRadius, 0, Math.PI * 2);
+      ctx.fillStyle = '#e0e0f5';
+      ctx.fill();
+      
+
+      ctx.fillStyle = 'rgba(160,160,180,0.3)';
+      [[moonX + 20, moonY - 10, 10], [moonX - 15, moonY + 15, 8], [moonX + 5, moonY + 25, 6]].forEach(([x, y, r]) => {
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+    
+
+    function drawSilhouettes() {
+      ctx.save();
+      ctx.fillStyle = '#08080b';
+      for (let i = 0; i < 10; i++) {
+        const treeX = i * (canvas.width / 9) + Math.random() * 20 - 10;
+        const baseY = canvas.height - 10;
+        ctx.beginPath();
+        ctx.moveTo(treeX, baseY);
+        ctx.lineTo(treeX - 5, baseY);
+        ctx.lineTo(treeX, baseY - (30 + Math.random() * 20));
+        ctx.lineTo(treeX + 5, baseY);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+    drawBackground();
+    drawNebula(timestamp);
+    drawStars(timestamp);
+    drawMoon();
+    drawSilhouettes();
+    
+
+    function drawMoonlitGrass(x, y) {
+        const bladeHeight = 40 + Math.random() * 30;
+        const angle = (Math.random() - 0.5) * 0.3;
+      
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+      
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, -bladeHeight);
+      
+        ctx.strokeStyle = 'rgba(120, 170, 140, 0.22)';
+        ctx.shadowColor = 'rgba(190, 230, 210, 0.3)';
+        ctx.shadowBlur = 8;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      
+        ctx.restore();
+      }
+      
+
+      for (let i = 0; i < 120; i++) {
+        const x = Math.random() * canvas.width;
+        const y = canvas.height * 0.9 + 50 + Math.random() * 20;
+        drawMoonlitGrass(x, y);
+      }
+
+      setInterval(() => {
+        nebulaTime += 0.2; // adjust this to control speed
+        drawNebula(nebulaTime);
+      }, 300); // run every 300ms or so
 
     //Game title here
     ctx.textAlign = "center";
@@ -4694,6 +4827,7 @@ canvas.addEventListener(`mousedown`, (e) => {
                           loadedImages++;
                         }
                       }
+                      currentpage = 0;
                     currentscene = 4;
                     return;
                 }
@@ -4714,6 +4848,7 @@ canvas.addEventListener(`mousedown`, (e) => {
                             }
                         }
                     });
+                    currentpage = 0;
                     currentscene = 5;
                     return;
                 }
