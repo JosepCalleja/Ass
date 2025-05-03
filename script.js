@@ -62,8 +62,10 @@ const whiteAura = new Image();
 whiteAura.src = 'White Aura.jpg';
 const darkAura = new Image();
 darkAura.src = 'Dark Aura.jpg';
-
-
+const ATM1 = new Image();
+ATM1.src = 'ATM.png';
+const EvilJamal = new Image();
+EvilJamal.src = 'Evil Jamal.png';
 
 //game const
 const grid = 50;
@@ -73,7 +75,7 @@ const row = grid * 30;
 canvas.height = column;
 canvas.width = row;
 
-let showgrid = true;
+
 
 const clicksfx = new Audio(`button-29.mp3`)
 
@@ -84,7 +86,8 @@ const songs = [
     `CITS.mp3`,
     `Moon.mp3`,
     `TCIAA.mp3`,
-    `Like Him.mp3`
+    `Like Him.mp3`,
+    `530.mp3`
 ];
 
 
@@ -643,6 +646,7 @@ let bookedtime = 0;
 
 // let
 let mainscreen = true;
+let showgrid = false;
 let showSecondDialogue = false;
 let secondDialogueTime = null;
 let showThirdDialogue = false;
@@ -653,16 +657,20 @@ let sell;
 let offer;
 let customerselloffer;
 let scenerandomizer;
+let nebulaTime = 0;
+let news = false;
+
+
+
 const scene4dialogues = [
     `dialogue1`, `dialogue2`, `dialogue3`, `dialogue4`
 ]
 
 let atdialogue = 0;
-let nebulaTime = 0;
 
 
 
-const allscenes = [scene1, scene2, scene3, scene4, scene5, scene6, scene7];
+const allscenes = [scene1, scene2, scene3, scene4, scene5, scene6, scene7, scene8];
 let currentscene = 0;
 
 let page = 1;
@@ -801,12 +809,38 @@ function scene1(){
       }
       ctx.restore();
     }
+
+    function drawHills() {
+        ctx.save();
+        const hillColors = ['#050509', '#07070c', '#0a0a10']; // very dark layers
+      
+        hillColors.forEach((color, i) => {
+          const baseY = canvas.height - 100 - i * 30;
+          const amplitude = 40 + i * 10;
+          const frequency = 0.005 + i * 0.002;
+      
+          ctx.beginPath();
+          ctx.moveTo(0, canvas.height);
+          for (let x = 0; x <= canvas.width; x++) {
+            const y = baseY + Math.sin(x * frequency) * amplitude;
+            ctx.lineTo(x, y);
+          }
+          ctx.lineTo(canvas.width, canvas.height);
+          ctx.closePath();
+          ctx.fillStyle = color;
+          ctx.fill();
+        });
+      
+        ctx.restore();
+      }
+
+
     drawBackground();
     drawNebula(timestamp);
     drawStars(timestamp);
     drawMoon();
     drawSilhouettes();
-    
+    drawHills();
 
     function drawMoonlitGrass(x, y) {
         const bladeHeight = 40 + Math.random() * 30;
@@ -1245,8 +1279,98 @@ function scene3(){
 
     
     if (Date.now() - secondDialogueTime >= 500 && rendered) {
-        canvas.style.backgroundColor = `gray`;
+        function drawMidnightGradientBackground() {
+            const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grad.addColorStop(0, '#1a132f'); // Midnight Indigo
+            grad.addColorStop(1, '#0d0a1a'); // Deeper base
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+          
+        const stars = [];
+        for (let i = 0; i < 120; i++) {
+            stars.push({
+              x: Math.random() * canvas.width,
+              y: Math.random() * canvas.height * 0.7,
+              radius: Math.random() * 1.2 + 0.2,
+              opacity: Math.random() * 0.5 + 0.3
+            });
+        }
+          
+        function drawSoftStars() {
+            stars.forEach(star => {
+              ctx.beginPath();
+              ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+              ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+              ctx.shadowColor = 'rgba(255, 255, 255, 0.3)';
+              ctx.shadowBlur = 5;
+              ctx.fill();
+            });
+        }
+          
+        function drawSubtleFog() {
+            const fogGrad = ctx.createRadialGradient(
+              canvas.width / 2,
+              canvas.height * 0.8,
+              0,
+              canvas.width / 2,
+              canvas.height * 0.8,
+              canvas.width * 0.7
+            );
+            fogGrad.addColorStop(0, 'rgba(255, 255, 255, 0.04)');
+            fogGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+          
+            ctx.fillStyle = fogGrad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
 
+        function drawGentleMoonlight() {
+            const moonX = canvas.width * 0.75;
+            const moonY = canvas.height * 0.25;
+            const radius = 80;
+          
+            const glow = ctx.createRadialGradient(moonX, moonY, 0, moonX, moonY, radius);
+            glow.addColorStop(0, 'rgba(200, 220, 255, 0.15)');
+            glow.addColorStop(1, 'rgba(200, 220, 255, 0)');
+          
+            ctx.fillStyle = glow;
+            ctx.beginPath();
+            ctx.arc(moonX, moonY, radius, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        const sparkles = [];
+        for (let i = 0; i < 60; i++) {
+          sparkles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height * 0.7,
+            baseSize: Math.random() * 1 + 0.3,
+            phase: Math.random() * Math.PI * 2
+          });
+        }
+
+        function drawMagicalSparkles(time) {
+            sparkles.forEach(s => {
+              const twinkle = 0.5 + 0.5 * Math.sin(time * 0.003 + s.phase);
+              const size = s.baseSize * twinkle;
+              const alpha = 0.2 + 0.3 * twinkle;
+          
+              ctx.beginPath();
+              ctx.arc(s.x, s.y, size, 0, Math.PI * 2);
+              ctx.fillStyle = `rgba(255, 200, 255, ${alpha})`;
+              ctx.shadowColor = 'rgba(255, 200, 255, 0.5)';
+              ctx.shadowBlur = 4;
+              ctx.fill();
+            });
+          }
+        
+
+
+        drawMidnightGradientBackground();
+        drawSoftStars();
+        drawGentleMoonlight();
+        drawMagicalSparkles();
+        drawSubtleFog();
 
 
         ctx.fillStyle = times[0].color;
@@ -4272,6 +4396,134 @@ for (let i = 0; i < inventorybtn.length; i++) {
 
   function scene7(){
 
+    const stars = [];
+for (let i = 0; i < 150; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    baseRadius: Math.random() * 1.2 + 0.3,
+    pulse: Math.random() * Math.PI * 2
+  });
+}
+
+function drawBackground() {
+  const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  grad.addColorStop(0, '#1a1a3c');  // softened indigo
+  grad.addColorStop(1, '#000000');  // black at bottom
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function drawStars() {
+  stars.forEach(star => {
+    const twinkle = 0.6;  // fixed twinkle for static
+    const radius = star.baseRadius * twinkle;
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255, 255, 255, ${0.1 + 0.3 * twinkle})`;
+    ctx.fill();
+  });
+}
+
+function drawNebula() {
+  ctx.save();
+  ctx.globalAlpha = 0.04;
+  ctx.fillStyle = '#1a1a3c';  // darker blue hue
+  const x = canvas.width * 0.45;
+  const y = canvas.height * 0.5;
+  ctx.beginPath();
+  ctx.ellipse(x, y, canvas.width * 0.6, canvas.height * 0.4, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawMoon() {
+  const moonX = canvas.width * 0.2;
+  const moonY = canvas.height * 0.25;
+  const moonRadius = 55;
+
+  ctx.save();
+  ctx.shadowColor = 'rgba(200,200,255,0.2)';
+  ctx.shadowBlur = 20;
+  ctx.beginPath();
+  ctx.arc(moonX, moonY, moonRadius + 10, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(220,220,255,0.07)';
+  ctx.fill();
+  ctx.restore();
+
+  ctx.beginPath();
+  ctx.arc(moonX, moonY, moonRadius, 0, Math.PI * 2);
+  ctx.fillStyle = '#dcdcf0';
+  ctx.fill();
+
+  ctx.fillStyle = 'rgba(160,160,180,0.25)';
+  [[moonX + 20, moonY - 10, 10], [moonX - 15, moonY + 15, 8], [moonX + 5, moonY + 25, 6]].forEach(([x, y, r]) => {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+}
+
+function drawSilhouettes() {
+  ctx.save();
+  ctx.fillStyle = '#08080b';
+  for (let i = 0; i < 10; i++) {
+    const treeX = i * (canvas.width / 9) + Math.random() * 20 - 10;
+    const baseY = canvas.height - 10;
+    ctx.beginPath();
+    ctx.moveTo(treeX, baseY);
+    ctx.lineTo(treeX - 5, baseY);
+    ctx.lineTo(treeX, baseY - (30 + Math.random() * 20));
+    ctx.lineTo(treeX + 5, baseY);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawHills() {
+    ctx.save();
+    const hillColors = ['#070710', '#0b0b14', '#0e0e18']; // darker tones
+    const moonlightOverlays = ['rgba(200, 200, 255, 0.025)', 'rgba(200, 200, 255, 0.02)', 'rgba(200, 200, 255, 0.015)'];
+  
+    hillColors.forEach((color, i) => {
+      const baseY = canvas.height - 100 - i * 30;
+      const amplitude = 40 + i * 10;
+      const frequency = 0.005 + i * 0.002;
+  
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height);
+      for (let x = 0; x <= canvas.width; x++) {
+        const y = baseY + Math.sin(x * frequency) * amplitude;
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(canvas.width, canvas.height);
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+  
+      // Soft moonlight highlight
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height);
+      for (let x = 0; x <= canvas.width; x++) {
+        const y = baseY + Math.sin(x * frequency) * amplitude;
+        ctx.lineTo(x, y - 2); // subtle offset
+      }
+      ctx.lineTo(canvas.width, canvas.height);
+      ctx.closePath();
+      ctx.fillStyle = moonlightOverlays[i];
+      ctx.fill();
+    });
+  
+    ctx.restore();
+  }
+
+drawBackground();
+drawNebula();
+drawStars();
+drawMoon();
+drawHills();
+drawSilhouettes();
+
     ctx.fillStyle = `gray`;
     ctx.fillRect(button5.x - grid - 20, button5.y - (grid + 20), button5.width + grid * 2 + 40, button5.height + grid + 40);
 
@@ -4325,13 +4577,615 @@ for (let i = 0; i < inventorybtn.length; i++) {
     ctx.font = "50px serif";
 
     ctx.fillText(
-        `Clear Player Data`,
+        `Clear Local Data`,
         canvas.width / 2,
         grid * 13
     );
+}
+
+
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    const words = text.split(' ');
+    let line = '';
+    for (let i = 0; i < words.length; i++) {
+      const testLine = line + words[i] + ' ';
+      const testWidth = ctx.measureText(testLine).width;
+      if (testWidth > maxWidth && i > 0) {
+        ctx.fillText(line, x, y);
+        line = words[i] + ' ';
+        y += lineHeight;
+      } else {
+        line = testLine;
+      }
+    }
+    ctx.fillText(line, x, y);
+    return y;
   }
 
+  let scene8CachedArticles = null;
+
+  function prepareScene8Articles() {
+    // Economic
+    let economicText;
+    if (player.month === 5 && player.week === 4) {
+        economicText = "Economic news: The prices of school items are expected to rise due to growing demand and persistent inflation. Analysts predict a continued surge as parents prepare for the new academic year. Local vendors are reporting a shortage of essential supplies, further driving prices upward.";
+    }
+     else if (player.month === 6 && player.week === 1) {
+        economicText = "Economic news: The prices of ATMs appear to be dropping significantly this month as more owners are offloading their units. Experts attribute the trend to a saturated market and waning interest from buyers. Many small businesses that previously invested in personal machines are now opting for mobile payment solutions instead. Analysts suggest that unless demand picks up, ATM values may continue to fall over the coming weeks.";
+    }
+    else if(player.month === 8 && player.week === 3) {
+        economicText = "Economic News: The prices of ATMs are expected to return to normal as demand stabilizes and market conditions improve. Experts suggest that with increased interest from businesses seeking to upgrade their payment systems, ATM values are beginning to recover. Local vendors are reporting stronger sales, and analysts predict that prices may continue to rise gradually over the coming weeks.";
+
+    }
+    else if(player.month === 8 && player.week === 4) {
+        economicText = "Economic News: The prices of school items are expected to return to normal as demand stabilizes and inflationary pressures ease. Analysts predict a steady decrease in prices as stores restock and vendors catch up with supply. Many local retailers are reporting a surplus of essential supplies, leading to more competitive pricing in the coming weeks.";
+
+    }
+    else if(player.month === 9 && player.week === 0) {
+        economicText = "Economic News: The prices of pet dogs are expected to rise in the upcoming weeks as more owners are selling their pets. Experts attribute this trend to increasing financial pressures, with many households looking to offload their dogs to alleviate costs. As a result, the market for certain dog breeds is becoming more competitive. Analysts suggest that unless demand slows, dog prices may continue to climb in the coming weeks.";
+
+    }
+
+    else if(player.month === 9 && player.week === 1) {
+        economicText = "Economic News: The prices of bahay kubo units have begun to slightly decrease this month as demand softens. Experts attribute this trend to a shift in consumer preferences, with more families opting for modern, larger homes. Vendors are reporting an oversupply of bahay kubo units, leading to a slight drop in prices. Analysts suggest that unless demand increases, this downward trend may continue over the coming weeks.";
+
+    }
+
+    else if(player.month === 12 && player.week === 0) {
+        economicText = "Economic News: The prices of ballpens are expected to rise this winter due to growing demand and ongoing inflation. Analysts predict a continued surge as schools and offices stock up for the new season. Local vendors are reporting a shortage of essential supplies, further driving prices upward.";
+
+    }
+    else if(player.month === 12 && player.week === 2) {
+        economicText = "Economic News: The prices of helpers are expected to slightly decrease this month as demand begins to stabilize. Experts attribute this trend to a growing supply of workers and changes in labor market dynamics. Many families are now opting for part-time helpers, which has eased the pressure on full-time positions. Analysts suggest that unless demand picks up, helper wages may remain steady or continue to dip in the coming weeks.";
+
+    }
+    else if(player.month === 2 && player.week === 4) {
+        economicText = "Economic News: Bicycle prices are trending upward this spring as enthusiasm for outdoor activity surges with the arrival of warmer weather. Across cities and small towns alike, more people are choosing bikes for fitness, fun, and eco-friendly commuting. Retailers are reporting strong sales, especially for road and hybrid models, with some even struggling to keep popular units in stock.";
+
+    }
+
+    else if(player.month === 3 && player.week === 0) {
+        economicText = "Economic News: The prices of basketballs are expected to rise slightly this spring as demand increases with the start of the outdoor sports season. Experts attribute this surge to more people engaging in recreational basketball games as the weather improves. Local retailers are reporting higher sales as schools and sports clubs prepare for the upcoming season, which is expected to keep prices elevated over the next few weeks.";
+
+    }
+    
+
+
+     else {
+        let randomizer = Math.random();
+        if(randomizer < 0.1){
+            economicText = "Economic update: The job market added a modest 177,000 positions last month—just under expectations and not enough to stir much excitement. Inflation ticked down slightly, so your burrito still costs the same punishing three bucks. Stock indices barely moved, reflecting an economy stuck in neutral. For most people, it's business as usual: bills, rent, and waiting for something—anything—interesting to happen.";
+
+        }
+        else if(randomizer < 0.2){
+            economicText = "Economic update: Employers added a steady 160,000 jobs last month—enough to keep the lights on but far from headline-grabbing. Consumer prices barely budged, so your morning pastry still costs that same awkward five bucks. Markets yawned through the week, ending almost exactly where they began. In short: same old routine—work, pay, repeat.";
+
+        }
+        else if(randomizer < 0.3){
+            economicText = "Economic update: Factory orders rose by a modest 1.2%, driven mostly by routine restocking rather than booming demand. Inflation held flat, meaning your grocery bill stays as predictable (and thrilling) as ever. Stock traders shrugged and moved on to the weekend.";
+        
+        }
+        else if(randomizer < 0.4){
+            economicText = "Economic update: Employers quietly added 152,000 jobs last month—enough to keep your boss happy but not enough to make you quit and chase that llama-grooming career. Inflation took a leisurely nap, so your latte still costs the same eye-watering price. Markets barely twitched, like a cat dozing in the sun. Meanwhile, we all keep punching clocks and dreaming of something—anything—more exciting.";
+
+        }
+        else if(randomizer < 0.5){
+            economicText = "Economic update: Factory activity inched up 0.9%, mostly because warehouses needed to restock seasonal paperclips. Prices snoozed along, so your grocery tab remains the trusty old friend you can’t quite escape. Stock traders spent the week playing Sudoku. In short: the economy’s mood is ‘meh,’ and so is ours—same song, different day.";
+
+        }
+        else if(randomizer < 0.6){
+        economicText = "Economic update: The job market creaked open like an old crypt door, adding a ghostly 140,000 positions—just enough for spirits of the unemployed to rest uneasy. Prices floated along unchanged, so your coffee still demands its exorcism-level three bucks.";
+
+        }
+        else if(randomizer < 0.7){
+            economicText = "Economic update: Factory orders rose by a haunting 1%, spurred on by phantom restocking of rubber chickens and novelty coffins. Inflation remained eerily flat, and bond traders tiptoed around their spreadsheets as if checking for cobwebs.";
+
+        }
+        else if(randomizer < 0.8){
+            economicText = "Economic update: Consumer confidence drifted up like a playful poltergeist, inching 0.5% higher, yet wallets stayed tightly sealed. Markets moved with the hush of a moonlit graveyard—silent, still, and just a tad unsettling.";;
+
+        }
+        else if(randomizer < 0.9){
+        economicText = "Economic update: The job market just added a sunny 180,000 positions—enough to make weekend brunch budgets look promising again. Inflation took a little vacation, so your favorite snack stays affordably awesome. Stock indices even cracked a smile, edging up just enough to remind us that tomorrow might just surprise us—in a good way.";
+
+        }
+        else{
+            economicText = "Economic update: Factory activity sprang to life with a hopeful 2% bump, fueled by fresh orders for quirky gadgets and neighborly inventions. Prices stayed friendly, keeping your grocery list within reach. Traders are whispering about optimism in the air—proof that sometimes the best investment is simply believing the good times could be just around the corner.";
+
+        }
+
+
+
+    }
   
+    // Local
+    const column2Articles = [
+        "Community update: The city’s central market has announced extended hours for the weekend, now open until 10 PM. This change comes in response to increased foot traffic and rising tourist activity. Expect more vendor participation, live performances, street food vendors, and a pop-up art exhibit showcasing local talent.",
+    
+        "Local hero: A neighborhood shopkeeper thwarted a robbery attempt by chasing off two masked intruders with nothing but a broom and a commanding voice. Witnesses say the confrontation lasted under a minute. No injuries were reported, and police praised the quick thinking. Locals are calling the shopkeeper a legend in the making.",
+    
+        "Public advisory: A water main break near 4th and Alder has caused temporary road closures and minor flooding. City officials have deployed crews to repair the damage, estimating a 48-hour turnaround. Commuters are advised to use alternate routes and expect delays in surrounding areas.",
+    
+        "Festival alert: The Spring Lights Festival kicks off this Friday evening in the city square. Expect food stalls, music performances, dance troupes, and a grand lantern parade that winds through downtown. Local businesses will stay open late, and special discounts are rumored at several stalls.",
+    
+        "Public health: A mild flu strain is circulating among schoolchildren, with several cases reported in districts 3 and 5. Health officials urge parents to monitor symptoms, encourage frequent handwashing, and limit exposure to large crowds. Schools remain open but are increasing sanitation efforts.",
+    
+        "Transportation news: The tram line will undergo scheduled maintenance through Sunday. Replacement buses are running every 20 minutes on the same route, though minor delays are expected during peak hours. City Transit encourages passengers to plan accordingly and check the live update map online.",
+    
+        "Housing report: Rent prices across suburban areas have climbed 3% this month. Analysts link the rise to growing demand from young families looking for more space, lower crime rates, and access to better schools. Some developers are considering new housing projects to ease the pressure.",
+    
+        "Education watch: Ms. Carla Carriage, a science teacher at Westwood High, has won the regional award for excellence in STEM education. She was recognized for her hands-on teaching style and for guiding her students to multiple science fair victories. A school-wide celebration is planned next Monday with media coverage expected.",
+    
+        "Pet adoption: The city shelter announced a record number of pet adoptions this month—over 80 animals found new homes. Volunteers organized a 'Fur-ever Friends' adoption event with waived fees, free pet starter kits, and live demonstrations on responsible pet ownership. The shelter expressed gratitude for community support.",
+    
+        "Nature note: A rare cerulean warbler was spotted in the park wetlands, drawing birdwatchers from across the region. Experts believe this is part of an early migration pattern influenced by the warmer spring. Visitors are encouraged to stay quiet, avoid flash photography, and stick to marked paths to preserve the fragile habitat.",
+
+        "Music Album: Indie artist Tyler Rivers is set to drop his highly anticipated album, Echoes of Tomorrow, next Friday. The album, which blends electronic and acoustic elements, has already gained significant buzz for its unique sound and heartfelt lyrics. A special virtual listening party is planned for the release, with media coverage expected to highlight the event.",
+
+        "Music Album: Renowned pop artist Mia Phoebe is gearing up to release her new album, Starlight Dreams, this Thursday. Known for her captivating vocals and innovative production, Mia's latest project has generated excitement among fans and critics alike. A live-streamed concert celebrating the release is scheduled, with extensive media coverage anticipated.",
+
+        "Brave Escape: A young man from the outskirts of town narrowly escaped captivity after breaking free from his enslavers. Armed with nothing but his wits and determination, he fled through the woods under the cover of night. Witnesses say the escape was swift, lasting less than an hour. Authorities praised his bravery, and locals are hailing him as a symbol of courage and hope in the fight for freedom."
+    ];
+    
+  
+    let localText;
+    if (player.month === 1 && player.week === 0) {
+      const r = Math.random();
+      if (r < 0.33) {
+        localText = "Local News: Libraries are seeing a rise in visitors this week as many residents set resolutions to read more books. Popular picks include self-help titles, fantasy novels, and productivity guides, prompting librarians to restock shelves more frequently.";
+
+      } else if (r < 0.66) {
+        localText = "Local News: A spike in volunteer sign-ups has been reported by local shelters and community kitchens, as citizens commit to giving back as part of their New Year’s resolutions. Organizers are hopeful the momentum will last beyond January.";
+
+      } else {
+        localText = "Local News: The 'New Year, New Me' mindset is alive and well, with fitness centers reporting a noticeable increase in memberships. Trainers say it's one of the busiest times of the year, especially for those hoping to start fresh with healthier habits.";
+
+      }
+    } else {
+      localText = column2Articles[Math.floor(Math.random() * column2Articles.length)];
+    }
+  
+    // Weather
+    const column3Articles = [
+        "Weather update: A cold front moves in by midweek, dropping overnight lows into the low 30s and ushering in the season’s first frost risk on outlying farms. Gardeners should cover tender crops before dusk, and early commuters may spot icy patches on unshaded roads.",
+      
+        "Storm watch: A vigorous low-pressure system brewing offshore is set to hit late Friday with heavy rain, gusts up to 50 mph, and coastal surf whipping to 15 feet. Fishermen and beachgoers should steer clear; secure patio furniture now and have flashlights on hand in case of brief power blips.",
+      
+        "Sunshine ahead: After days of grey skies, the next 72 hours will see highs around 65 °F under brilliant blue—ideal for hiking, picnics, and outdoor markets. UV levels will peak at midday, so pack sunscreen and sunglasses if you plan to stay out past lunchtime.",
+      
+        "Rainfall report: Yesterday’s steady half-inch downpour boosted reservoir levels by 8 percent, lifting them to 72 percent capacity and quelling mild drought alarms. Farmers report softer fields for planting, but should delay heavy machinery until soils firm up later this week.",
+      
+        "Fog advisory: Dense pockets of fog settled along the river valley before dawn, cutting visibility to under 200 feet in spots. Drivers are urged to slow down, use low-beam headlights, and keep ample following distance until the mist burns off around mid-morning.",
+      
+        "Wind alert: A tight pressure gradient will whip winds to 40–45 mph Thursday evening, rattling loose branches and rattling windows. Those in high-rise apartments may feel a gentle sway; secure potted plants and check tarps or scaffolding on nearby construction sites.",
+      
+        "Unseasonal warmth: Afternoon highs are flirting with 75 °F—well above the 60 °F norm—prompting early blooms in parks and a flurry of shorts-and-tee weather. Nights will still dip into the mid-40s, so keep a light jacket handy if you’re out after sunset.",
+      
+        "Frost warning: Clear skies and calm winds tonight will send temperatures climbing down to 29 °F in outer districts. Orchard owners should deploy frost fans or overhead sprinklers, and bring greenhouse seedlings indoors to avoid freeze damage.",
+      
+        "Heatwave prep: The heat advisory goes into effect tomorrow as highs blast past 95 °F for at least three days. Cooling centers open at all community centers, and local news warns to check on pets, elderly neighbors, and never leave children or animals in parked cars.",
+      
+        "Lightning strikes: A rare late-season thunderstorm lit up the sky after midnight, delivering over 120 strikes in just one hour. Though no injuries were reported, several large oak limbs snapped under the electrical charge—urban crews are clearing debris today.",
+      
+        "Weather report: Today will be mostly sunny with gentle breezes around 5 mph out of the southwest. Expect afternoon temperatures near 68 °F—perfect for a lunchtime stroll—while farmers can schedule irrigation for late afternoon when evapotranspiration rates peak."
+    ];
+      
+      
+    const weatherText = column3Articles[Math.floor(Math.random() * column3Articles.length)];
+  
+    scene8CachedArticles = [economicText, localText, weatherText];
+  }
+  
+  function scene8() {
+    const monthName  = monthNames[player.month - 1];
+
+    function drawBrightHills(ctx, canvas) {
+        // 1) Sky gradient
+        const sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        sky.addColorStop(0, '#87CEFA');  // light sky blue
+        sky.addColorStop(1, '#E0FFFF');  // pale turquoise at horizon
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+        // 2) Sun
+        const sunX = canvas.width * 0.1;
+        const sunY = canvas.height * 0.15;
+        const sunRadius = 50;
+        ctx.save();
+        ctx.shadowColor = 'rgba(255, 255, 200, 0.6)';
+        ctx.shadowBlur = 30;
+        ctx.beginPath();
+        ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
+        ctx.fillStyle = '#FFFACD';  // lemon chiffon
+        ctx.fill();
+        ctx.restore();
+      
+        // 3) Distant hills
+        ctx.fillStyle = '#98FB98';  // pale green
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height * 0.6);
+        ctx.quadraticCurveTo(canvas.width * 0.25, canvas.height * 0.5, canvas.width * 0.5, canvas.height * 0.6);
+        ctx.quadraticCurveTo(canvas.width * 0.75, canvas.height * 0.7, canvas.width, canvas.height * 0.6);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.fill();
+      
+        // 4) Foreground hills
+        ctx.fillStyle = '#32CD32';  // lime green
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height * 0.8);
+        ctx.quadraticCurveTo(canvas.width * 0.3, canvas.height * 0.7, canvas.width * 0.6, canvas.height * 0.8);
+        ctx.quadraticCurveTo(canvas.width * 0.85, canvas.height * 0.9, canvas.width, canvas.height * 0.8);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.fill();
+    
+      }
+
+      function drawSnowyHills(ctx, canvas) {
+        // 1) Sky gradient — winter blue to white
+        const sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        sky.addColorStop(0, '#B0E0E6'); // powder blue
+        sky.addColorStop(1, '#FFFFFF'); // snowy white
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+        // 2) Pale sun with icy glow
+        const sunX = canvas.width * 0.1;
+        const sunY = canvas.height * 0.15;
+        const sunRadius = 45;
+        ctx.save();
+        ctx.shadowColor = 'rgba(220, 240, 255, 0.5)';
+        ctx.shadowBlur = 40;
+        ctx.beginPath();
+        ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
+        ctx.fillStyle = '#FFF8DC'; // cornsilk
+        ctx.fill();
+        ctx.restore();
+      
+        // 3) Snow-covered distant hills
+        ctx.fillStyle = '#F0F8FF'; // AliceBlue
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height * 0.6);
+        ctx.quadraticCurveTo(canvas.width * 0.25, canvas.height * 0.5, canvas.width * 0.5, canvas.height * 0.6);
+        ctx.quadraticCurveTo(canvas.width * 0.75, canvas.height * 0.7, canvas.width, canvas.height * 0.6);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.fill();
+      
+        // 4) Foreground snowy hills
+        ctx.fillStyle = '#E6F2FF'; // soft snowy blue
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height * 0.8);
+        ctx.quadraticCurveTo(canvas.width * 0.3, canvas.height * 0.7, canvas.width * 0.6, canvas.height * 0.8);
+        ctx.quadraticCurveTo(canvas.width * 0.85, canvas.height * 0.9, canvas.width, canvas.height * 0.8);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.fill();
+      }
+
+      function drawSpringHills(ctx, canvas) {
+        // 1) Sky gradient — soft morning sky
+        const sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        sky.addColorStop(0, '#C6E2FF'); // light sky blue
+        sky.addColorStop(1, '#FFF5EE'); // seashell (warm white)
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+        // 2) Soft sun with morning glow
+        const sunX = canvas.width * 0.12;
+        const sunY = canvas.height * 0.18;
+        const sunRadius = 45;
+        ctx.save();
+        ctx.shadowColor = 'rgba(255, 230, 180, 0.4)';
+        ctx.shadowBlur = 40;
+        ctx.beginPath();
+        ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
+        ctx.fillStyle = '#FFE4B5'; // moccasin
+        ctx.fill();
+        ctx.restore();
+      
+        // 3) Distant rolling green hills
+        ctx.fillStyle = '#BDFCC9'; // minty green
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height * 0.6);
+        ctx.quadraticCurveTo(canvas.width * 0.25, canvas.height * 0.5, canvas.width * 0.5, canvas.height * 0.6);
+        ctx.quadraticCurveTo(canvas.width * 0.75, canvas.height * 0.7, canvas.width, canvas.height * 0.6);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.fill();
+      
+        // 4) Foreground hills with blooming wildflowers
+        ctx.fillStyle = '#90EE90'; // light green
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height * 0.8);
+        ctx.quadraticCurveTo(canvas.width * 0.3, canvas.height * 0.7, canvas.width * 0.6, canvas.height * 0.8);
+        ctx.quadraticCurveTo(canvas.width * 0.85, canvas.height * 0.9, canvas.width, canvas.height * 0.8);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.fill();
+      
+        // 5) Optional: sprinkle simple flower dots
+        for (let i = 0; i < 60; i++) {
+          const x = Math.random() * canvas.width;
+          const y = canvas.height * 0.8 + Math.random() * (canvas.height * 0.2);
+          ctx.beginPath();
+          ctx.arc(x, y, 2 + Math.random() * 1.5, 0, Math.PI * 2);
+          ctx.fillStyle = ['#FFC0CB', '#FFD700', '#FF69B4', '#ADFF2F'][Math.floor(Math.random() * 4)];
+          ctx.fill();
+        }
+      }
+      function drawAutumnHills(ctx, canvas) {
+        // 1) Sky gradient — golden autumn light
+        const sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        sky.addColorStop(0, '#FFDAB9'); // peach puff
+        sky.addColorStop(1, '#FFEFD5'); // papaya whip
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+        // 2) Soft amber sun
+        const sunX = canvas.width * 0.85;
+        const sunY = canvas.height * 0.2;
+        const sunRadius = 40;
+        ctx.save();
+        ctx.shadowColor = 'rgba(255, 180, 100, 0.4)';
+        ctx.shadowBlur = 35;
+        ctx.beginPath();
+        ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
+        ctx.fillStyle = '#FFB347'; // warm orange
+        ctx.fill();
+        ctx.restore();
+      
+        // 3) Distant hills — golden brown
+        ctx.fillStyle = '#C19A6B'; // light brown
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height * 0.6);
+        ctx.quadraticCurveTo(canvas.width * 0.25, canvas.height * 0.55, canvas.width * 0.5, canvas.height * 0.6);
+        ctx.quadraticCurveTo(canvas.width * 0.75, canvas.height * 0.65, canvas.width, canvas.height * 0.6);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.fill();
+      
+        // 4) Foreground hills — deep russet
+        ctx.fillStyle = '#8B4513'; // saddle brown
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height * 0.8);
+        ctx.quadraticCurveTo(canvas.width * 0.3, canvas.height * 0.7, canvas.width * 0.6, canvas.height * 0.8);
+        ctx.quadraticCurveTo(canvas.width * 0.85, canvas.height * 0.9, canvas.width, canvas.height * 0.8);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.fill();
+      
+        // 5) Scatter falling leaves
+        for (let i = 0; i < 40; i++) {
+          const x = Math.random() * canvas.width;
+          const y = canvas.height * 0.75 + Math.random() * (canvas.height * 0.25);
+          ctx.beginPath();
+          ctx.arc(x, y, 2 + Math.random() * 2, 0, Math.PI * 2);
+          ctx.fillStyle = ['#FF8C00', '#D2691E', '#FF4500', '#DAA520'][Math.floor(Math.random() * 4)];
+          ctx.fill();
+        }
+      }
+      function drawSilentHills(ctx, canvas) {
+        // 1) Foggy grey sky
+        const sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        sky.addColorStop(0, '#a9a9a9'); // dark gray
+        sky.addColorStop(1, '#dcdcdc'); // gainsboro
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+        // 2) Pale, veiled sun
+        const sunX = canvas.width * 0.85;
+        const sunY = canvas.height * 0.15;
+        const sunRadius = 40;
+        ctx.save();
+        ctx.shadowColor = 'rgba(200, 200, 200, 0.3)';
+        ctx.shadowBlur = 20;
+        ctx.beginPath();
+        ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
+        ctx.fillStyle = '#f5f5f5'; // white smoke
+        ctx.fill();
+        ctx.restore();
+      
+        // 3) Distant hills — smoky blue-gray
+        ctx.fillStyle = '#778899'; // light slate gray
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height * 0.6);
+        ctx.quadraticCurveTo(canvas.width * 0.25, canvas.height * 0.55, canvas.width * 0.5, canvas.height * 0.6);
+        ctx.quadraticCurveTo(canvas.width * 0.75, canvas.height * 0.65, canvas.width, canvas.height * 0.6);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.fill();
+      
+        // 4) Foreground hills — darker gray
+        ctx.fillStyle = '#2f4f4f'; // dark slate gray
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height * 0.8);
+        ctx.quadraticCurveTo(canvas.width * 0.3, canvas.height * 0.7, canvas.width * 0.6, canvas.height * 0.8);
+        ctx.quadraticCurveTo(canvas.width * 0.85, canvas.height * 0.9, canvas.width, canvas.height * 0.8);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.fill();
+      
+        // 5) Fog overlay
+        ctx.fillStyle = 'rgba(220, 220, 220, 0.2)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+        // 6) Silhouettes of dead trees
+        ctx.strokeStyle = '#444';
+        ctx.lineWidth = 1.5;
+        for (let i = 0; i < 8; i++) {
+          const x = i * (canvas.width / 7) + Math.random() * 20 - 10;
+          const baseY = canvas.height - 20;
+          const height = 40 + Math.random() * 20;
+          ctx.beginPath();
+          ctx.moveTo(x, baseY);
+          ctx.lineTo(x, baseY - height);
+          for (let j = 0; j < 3; j++) {
+            ctx.moveTo(x, baseY - height + j * 10);
+            ctx.lineTo(x + (Math.random() > 0.5 ? -8 : 8), baseY - height + j * 10 - 5);
+          }
+          ctx.stroke();
+        }
+      }
+      function drawShadowBuildings(ctx, canvas) {
+        ctx.fillStyle = 'rgba(50, 50, 50, 0.2)';
+        const buildingCount = 6;
+        for (let i = 0; i < buildingCount; i++) {
+          const x = i * (canvas.width / buildingCount) + Math.random() * 20 - 10;
+          const width = 40 + Math.random() * 20;
+          const height = 60 + Math.random() * 50;
+          ctx.fillRect(x, canvas.height * 0.6 - height, width, height);
+        }
+      }
+      function drawDimLampPosts(ctx, canvas) {
+        const postCount = 4;
+        ctx.lineWidth = 2;
+        for (let i = 0; i < postCount; i++) {
+          const x = i * (canvas.width / postCount) + 40;
+          const baseY = canvas.height * 0.8;
+          const height = 60;
+      
+          // Pole
+          ctx.strokeStyle = '#333';
+          ctx.beginPath();
+          ctx.moveTo(x, baseY);
+          ctx.lineTo(x, baseY - height);
+          ctx.stroke();
+      
+          // Light head
+          ctx.beginPath();
+          ctx.arc(x, baseY - height, 4, 0, Math.PI * 2);
+          ctx.fillStyle = '#ccc';
+          ctx.fill();
+      
+          // Faint glow
+          ctx.save();
+          ctx.shadowColor = 'rgba(255, 255, 180, 0.1)';
+          ctx.shadowBlur = 20;
+          ctx.beginPath();
+          ctx.arc(x, baseY - height, 10, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255, 255, 220, 0.05)';
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+      
+      
+      
+      if(player.month == 11 && player.week == 0){
+        drawSilentHills(ctx, canvas);
+        drawShadowBuildings(ctx, canvas);
+        drawDimLampPosts(ctx, canvas);
+      }
+      else if(player.currentseason == seasons[0]){
+        drawSpringHills(ctx, canvas);
+      }
+      else if(player.currentseason == seasons[1]){
+        drawBrightHills(ctx, canvas);
+      }
+      else if(player.currentseason == seasons[2]){
+        drawAutumnHills(ctx, canvas);
+      }
+      else{
+        drawSnowyHills(ctx, canvas);
+      }
+
+
+
+
+
+
+      
+    // Background
+    ctx.fillStyle = '#fdf6e3';
+    ctx.fillRect(grid, grid, canvas.width - grid * 2, canvas.height - grid * 2);
+  
+    // Border
+    ctx.strokeStyle = '#aaa';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(grid, grid, canvas.width - grid * 2, canvas.height - grid * 2);
+  
+    // Header bar
+    ctx.fillStyle = '#e0e0e0';
+    ctx.fillRect(grid * 1.2, grid * 1.2, canvas.width - grid * 2.4, grid);
+  
+    // Headline image box
+    ctx.fillStyle = '#dcdcdc';
+    ctx.fillRect(grid * 1.2, grid * 2.5, canvas.width - grid * 2.4, grid * 4);
+  
+    const columns = 3;
+    const spacing = grid * 0.4;
+    const columnPadding = 10;
+    const columnWidth = (canvas.width - grid * 2.4 - spacing * (columns - 1)) / columns;
+    const articleY = grid * 7;
+    const lineHeight = grid * 0.5;
+    const lineSpacing = lineHeight * 1.4;
+  
+    ctx.fillStyle = 'black';
+    ctx.font = '18px serif';
+    ctx.textAlign = 'left';
+  
+    for (let i = 0; i < columns; i++) {
+      const x = grid * 1.2 + i * (columnWidth + spacing);
+      const y = articleY;
+  
+      // Headline bar
+      ctx.fillStyle = '#ccc';
+      ctx.fillRect(x + columnPadding, y + columnPadding, columnWidth - columnPadding * 2, lineHeight);
+  
+      // Article text
+      ctx.fillStyle = 'black';
+      const textX = x + columnPadding;
+      const textY = y + columnPadding + lineSpacing * 2;
+      const text = scene8CachedArticles[i];
+  
+      wrapText(ctx, text, textX, textY, columnWidth - columnPadding * 2, lineSpacing);
+    }
+  
+    // Header
+    ctx.fillStyle = 'black';
+    ctx.textAlign = 'center';
+    ctx.font = '60px serif';
+    ctx.fillText(`News from week ${player.week}, ${monthName}, ${player.year}.`, canvas.width / 2, grid * 1.7);
+  
+    // Optional image
+    if(player.week == 1 && player.month == 6){
+        ctx.drawImage(ATM1, grid * 1.2, grid * 2.5, 1380, 200);
+    }
+    else if(player.week == 1 && player.month == 9){
+        ctx.drawImage(gameitems[9].img, grid * 1.2, grid * 2.5, 1380, 200);
+    }
+    else if(player.week == 0 && player.month == 12){
+        ctx.drawImage(gameitems[1].img, grid * 1.2, grid * 2.5, 1380, 200);
+    }
+    else if(player.week == 4 && player.month == 12){
+        ctx.drawImage(EvilJamal, grid * 1.2, grid * 2.5, 1380, 200);
+    }
+    else if(player.week == 4 && player.month == 2){
+        ctx.drawImage(gameitems[8].img, grid * 1.2, grid * 2.5, 1380, 200);
+    }
+    else if (player.currentseason === seasons[1]) {
+      ctx.drawImage(gameitems[3].img, grid * 1.2, grid * 2.5, 1380, 200);
+    }
+    else if(player.currentseason === seasons[2]){
+        ctx.drawImage(gameitems[5].img, grid * 1.2, grid * 2.5, 1380, 200);
+    }
+    else if(player.currentseason === seasons[3]){
+        ctx.drawImage(gameitems[7].img, grid * 1.2, grid * 2.5, 1380, 200);
+    }
+    else{
+        ctx.drawImage(gameitems[6].img, grid * 1.2, grid * 2.5, 1380, 200);  
+    }
+  }
+  
+  
+  
+
+  function goToScene8() {
+    prepareScene8Articles();
+    currentscene = 7;
+  }
 
   function economicsystem(){
     if(player.currentseason === seasons[1]){
@@ -4344,7 +5198,36 @@ for (let i = 0; i < inventorybtn.length; i++) {
         gameitems[3].price = 1.15;
         gameitems[4].price = 19.45;
     }
-
+    if(player.currentseason === seasons[2]){
+        gameitems[2].price += Math.random() * (gameitems[1].price * 0.30);
+        gameitems[5].price += Math.random() * (gameitems[3].price * 0.80);
+        gameitems[9].price -= Math.random() * (gameitems[4].price * 0.20);
+    }
+    else{
+        gameitems[2].price = 1;
+        gameitems[5].price = 10;
+        gameitems[9].price = 710;
+    }
+    if(player.currentseason === seasons[3]){
+        gameitems[1].price += Math.random() * (gameitems[1].price * 0.30);
+        gameitems[4].price += Math.random() * (gameitems[3].price * 0.40);
+        gameitems[7].price -= Math.random() * (gameitems[4].price * 0.30);
+    }
+    else{
+        gameitems[1].price = 0.20;
+        gameitems[4].price = 19.45;
+        gameitems[7].price = 186.5;
+    }
+    if(player.currentseason === seasons[0]){
+        gameitems[6].price += Math.random() * (gameitems[1].price * 0.30);
+        gameitems[2].price += Math.random() * (gameitems[3].price * 0.40);
+        gameitems[8].price -= Math.random() * (gameitems[4].price * 0.30);
+    }
+    else{
+        gameitems[2].price = 1;
+        gameitems[6].price = 8.24;
+        gameitems[8].price = 100;
+    }
 
 
     for (let i = 0; i < player.inventory.length; i++) {
@@ -4749,11 +5632,16 @@ canvas.addEventListener(`mousedown`, (e) => {
                         refused = false;
                         secondDialogueTime = Date.now();
                         player.week++;
+                        goToScene8();
+
                         if(rendered === false){
                             rendered = true;
 
                             secondDialogueTime = Date.now();
                         
+                        }
+                        if(player.week <= 4){
+                            return;
                         }
                     }
                     if(player.week > 4){
@@ -4777,6 +5665,7 @@ canvas.addEventListener(`mousedown`, (e) => {
                             secondDialogueTime = Date.now();
                         }
 
+
                         itemsbn();
 
 
@@ -4788,6 +5677,8 @@ canvas.addEventListener(`mousedown`, (e) => {
                         console.table(times, ["week","reserved","sell"]);
 
                         localStorage.setItem('playerData', JSON.stringify(player));
+                        goToScene8();
+                        return;
                     }
 
                 }
@@ -4878,7 +5769,7 @@ canvas.addEventListener(`mousedown`, (e) => {
                             return;
                         }
                         else{
-                            currentscene = 2;
+                            goToScene8();
                             times[player.week].reserved = false;
                             times[player.week].sell = false;
                             if(rendered === false){
@@ -4887,6 +5778,7 @@ canvas.addEventListener(`mousedown`, (e) => {
                                 secondDialogueTime = Date.now();
                             
                             }
+                            return;
                         }
 
                     
@@ -5060,7 +5952,8 @@ canvas.addEventListener(`mousedown`, (e) => {
 
                         }
                         else{
-                            currentscene = 2;
+                            goToScene8();
+                            return;
                         }
 
                     
@@ -5295,7 +6188,8 @@ canvas.addEventListener(`mousedown`, (e) => {
                         times[player.week].sell = false;
                         player.selling = {};
                         player.week++;
-                        currentscene = 2;
+                        goToScene8();
+
                           // Save
                         localStorage.setItem('playerData', JSON.stringify(player));
                         if(rendered === false){
@@ -5305,7 +6199,7 @@ canvas.addEventListener(`mousedown`, (e) => {
                         
                         }
 
-
+                            return;
                     }
                 }
                 else{
@@ -5326,13 +6220,14 @@ canvas.addEventListener(`mousedown`, (e) => {
                         localStorage.setItem('playerData', JSON.stringify(player));
                         sell = undefined;
                         player.week++;
-                        currentscene = 2;
+                        goToScene8();
                         if(rendered === false){
                             rendered = true;
 
                             secondDialogueTime = Date.now();
                         
                         }
+                        return;
                     }
                 }
 
@@ -5570,6 +6465,20 @@ if(roundedx >= rslider.x && roundedx < rslider.x + rslider.width && roundedy >= 
 
         }
 
+        if(currentscene === 7){
+            if(
+                roundedx >= 0 &&
+                roundedx <=  canvas.width &&
+                roundedy >= 0 &&
+                roundedy <= canvas.height
+            ){
+                currentscene = 2;
+                clicksfx.pause();
+                clicksfx.currentTime = 0;
+                clicksfx.play();
+            }
+        }
+
     }
 
     
@@ -5655,6 +6564,9 @@ if(roundedx >= rslider.x && roundedx < rslider.x + rslider.width && roundedy >= 
 /**//**/function animate() {
 /**//**/    ctx.clearRect(0, 0, canvas.width, canvas.height);
 /**//**/
+/**//**/
+/**//**/    allscenes[currentscene]();
+/**//**/
 /**//**/    if (showgrid === true) {
 /**//**/        ctx.setLineDash([4, 4]);
 /**//**/
@@ -5666,9 +6578,6 @@ if(roundedx >= rslider.x && roundedx < rslider.x + rslider.width && roundedy >= 
 /**//**/            }
 /**//**/        }
 /**//**/    }
-/**//**/    allscenes[currentscene]();
-/**//**/
-/**//**/
 /**//**/    requestAnimationFrame(animate);
 /**//**/}
 /**//**/
