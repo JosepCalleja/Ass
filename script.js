@@ -1,3 +1,12 @@
+//“alchemy of assets”
+
+
+
+
+
+
+
+
 /**/let currentpage = 0; // move it OUTSIDE the function
 const itemsPerPage = 8;
 let totalPages = 1; // (you can update this later)
@@ -6,6 +15,12 @@ let totalPages = 1; // (you can update this later)
 
 const canvas = document.getElementById(`canvas`);
 const ctx = canvas.getContext(`2d`);
+const grid = 50;
+const column = grid * 15;
+const row = grid * 30;
+
+canvas.height = column;
+canvas.width = row;
 const timestamp = Date.now();                // milliseconds since epoch
 const year = new Date(timestamp).getFullYear();
 // 1. Create Date object (current time)
@@ -64,16 +79,30 @@ const darkAura = new Image();
 darkAura.src = 'Dark Aura.jpg';
 const ATM1 = new Image();
 ATM1.src = 'ATM.png';
+const Blanket = new Image();
+Blanket.src = 'Blanket.jpg';
+const CCompass = new Image();
+CCompass.src = 'CrackedCompass.jpg';
+const KeyChain = new Image();
+KeyChain.src = 'Keychain.jpg';
+const PlasticMedal = new Image();
+PlasticMedal.src = 'PlasticMedal.jpg';
+const VendingMachine = new Image();
+VendingMachine.src = 'VendingMachine.jpg';
+const Mercatrix5000 = new Image();
+Mercatrix5000.src = 'Mercatrix5000.jpg';
+
+
+
+
+
+
+
 const EvilJamal = new Image();
 EvilJamal.src = 'Evil Jamal.png';
 
 //game const
-const grid = 50;
-const column = grid * 15;
-const row = grid * 30;
 
-canvas.height = column;
-canvas.width = row;
 
 
 
@@ -107,7 +136,8 @@ let shuffledSongs = shuffle(songs); // Shuffle at the start
 let mymusicindex = 0;
 let bgmusic = new Audio();
 let isPlaying = false; // Track if music is already playing
-let musicvolume = 1;
+
+bgmusic.volume = 0.5;
 
 
 function playmusic() {
@@ -467,91 +497,202 @@ currentcustomer = 0;
 
 const gameitems = [
     {
-        name: 'Plastic Toy',
+        name: 'Budget Buddy',
         price: 0.05,
         description: `A small plastic toy that impoverished Childrens play`,
         img: plasticToy,
-        rarity: `Common`
+        rarity: `Common`,
+        category: `Toy`,
+        ogprice: 0.05
     },
     {
-        name: 'Ballpen',
+        name: 'IPen I',
         price: 0.20,
         description: `A Brand New Ballpen, that's it.`,
         img: Ballpen,
-        rarity: `Common`
+        rarity: `Common`,
+        category: `School`,
+        ogprice: 0.20
     },
     {
         name: 'Wooden Sword',
         price: 1,
         description: `A small wooden sword for training`,
         img: woodenSword,
-        rarity: `Common`
+        rarity: `Common`,
+        category: `Toy`,
+        ogprice: 1
     },
     {
-        name: 'Backpack',
+        name: 'Bagzilla',
         price: 1.15,
         description: `A local backpack`,
         img: Backpack,
-        rarity: `Common`
+        rarity: `Common`,
+        category: `School`,
+        ogprice: 1.15
     },
     {
-        name: `ATM Machine`,
+        name: `ATM`,
         price: 19.45,
         description: `Gives player a penny every month, might be useful if you stock`,
         img: ATM,
-        rarity: `Uncommon`
+        rarity: `Uncommon`,
+        category: `Business`,
+        ogprice: 19.45
     },
     {
-        name: `Pet Dog`,
+        name: `Anod`,
         price: 10,
         description: `A companion to your journey`,
         img: Dog,
-        rarity: `Common`
+        rarity: `Common`,
+        category: `Companion`,
+        ogprice: 10
     },
     {
         name: `Basketball`,
         price: 8.24,
         description: `A Spalding basketball`,
         img: ball,
-        rarity: `Common`
+        rarity: `Common`,
+        category: `Toy`,
+        ogprice: 8.24
     },
     {
         name: `Jamal`,
         price: 186.5,
         description: `A Basketball person`,
         img: Jamal,
-        rarity: `Rare`
+        rarity: `Rare`,
+        category: `Companion`,
+        ogprice: 186.5
     },
     {
         name: `Bicycle`,
         price: 100,
         description: `Second hand bicycle`,
         img: Bicycle,
-        rarity: `Rare`
+        rarity: `Rare`,
+        category: `Toy`,
+        ogprice: 100
     },
     {
         name: `Bahay Kubo`,
         price: 710,
         description: `PHILIPENIS!!!`,
         img: bahayKubo,
-        rarity: `Rare`
+        rarity: `Rare`,
+        category: `Property`,
+        ogprice: 710
     },
     {
         name: `White Aura`,
         price: 1000,
         description: `+1000 Aura`,
         img: whiteAura,
-        rarity: `Ultra Rare`
+        rarity: `Ultra Rare`,
+        category: `Toy`,
+        ogprice: 1000
     },
     {
         name: `Dark Aura`,
         price: 1500,
         description: `+1500 Aura`,
         img: darkAura,
-        rarity: `Ultra Rare`
+        rarity: `Ultra Rare`,
+        category: `Toy`,
+        ogprice: 1500
     },
+    {
+        name: `Blue Blanket`,
+        price: 3.35,
+        description: `Keeps you cozy at night`,
+        img: Blanket,
+        rarity: `Common`,
+        category: `School`,
+        ogprice: 3.35
+    },
+    {
+        name: `Cracked Compass`,
+        price: 6.45,
+        description: `Points somewhere... just not always north.`,
+        img: CCompass,
+        rarity: `Common`,
+        category: `Toy`,
+        ogprice: 6.45
+    },
+    {
+        name: `Key Chain`,
+        price: 2.22,
+        description: "A simple plastic keychain, small and lightweight, perfect for holding your keys or as a souvenir.",
+        img: KeyChain,
+        rarity: `Common`,
+        category: `School`,
+        ogprice: 2.22
+    },
+    {
+        name: `Plastic Medal`,
+        price: 5.40,
+        description: `“Participant” is scratched off. You’re a winner now.`,
+        img: PlasticMedal,
+        rarity: `Common`,
+        category: `Toy`,
+        ogprice: 5.40
+    },
+    {
+        name: `Vending Machine`,
+        price: 1700,
+        description: `Automatically sells one Common item from your inventory every month(~10% profit from original price).`,
+        img: VendingMachine,
+        rarity: `Ultra Rare`,
+        category: `Business`,
+        ogprice: 1700
+    },
+    {
+        name: `Mercatrix 5000`,
+        price: 5800,
+        description: `Automatically sells one Common or Uncommon item from your inventory every month.`,
+        img: Mercatrix5000,
+        rarity: `Legendary`,
+        category: `Business`,
+        ogprice: 5800
+    }
 ];
 
+const companies = [
+    {
+        name: "CALLEJA CA$H",
+        stockPrice: 18.00,        // Starting stock price
+        sharesAvailable: 10000,   // How many shares are available to buy
+        category: "Finance & Logistics",
+        owner: customers[2],  
+        annualProfit: 30000,      // Example value for annual profit
+        state: "stable",
+        trademarkname: `C$H`
+    },
+    {
+        name: "Soupreme Co.",
+        stockPrice: 14.00,
+        sharesAvailable: 5000,
+        category: "Food & Customer Goods",
+        owner: customers[13],
+        annualProfit: 12000,
+        state: "stable",
+        trademarkname: `S¢0`
+    },
+    {
+        name: "Virtual Bytes",
+        stockPrice: 12.00,
+        sharesAvailable: 2000,
+        category: "Tech & Entertainment",
+        owner: customers[22],
+        annualProfit: 28000,
+        state: "stable",
+        trademarkname: `VB¢`
+    }
+  ];
+//PƒNG for fpennig, maybe imma use it in the future idk
 
 
 const player = {
@@ -569,7 +710,13 @@ const player = {
     week: weekOfMonth,
     currentseason: undefined,
     level: 1,
-    experience: 0
+    experience: 0,
+    stocks: {
+        [companies[0].name]: 0,
+        [companies[1].name]: 0,
+        [companies[2].name]: 0
+    }
+    
 }
 
 let times = [
@@ -627,8 +774,7 @@ let times = [
         sell: false,
         color: `black`,
         week: 4
-    }
-    ,
+    },
 
     {
         name: `filler`,
@@ -670,7 +816,7 @@ let atdialogue = 0;
 
 
 
-const allscenes = [scene1, scene2, scene3, scene4, scene5, scene6, scene7, scene8];
+const allscenes = [scene1, scene2, scene3, scene4, scene5, scene6, scene7, scene8, scene9];
 let currentscene = 0;
 
 let page = 1;
@@ -713,6 +859,58 @@ function seasonMech() {
 } //although im not so sure about this because in philipenis, there is only two seasons.
 
 seasonMech();
+
+let gamestate = {
+    recessionActive: false
+}
+
+let recessionrecovery = 0;
+
+function updateStockPrice(company) {
+	let fluctuation;
+    let random = Math.random();
+
+    if(random < 0.003){
+        recessionactivate();
+    }
+  
+	// 60% chance to rise: +0.5% to +0.7%
+	if (Math.random() < 0.5) {
+	  fluctuation = Math.random() * 0.004 + 0.005; // 0.005 to 0.007
+	} else {
+	  // 40% chance to drop: -0.7% to -0.5%
+	  fluctuation = -(Math.random() * 0.003 + 0.005); // -0.007 to -0.005
+	}
+
+    if (gamestate.recessionActive) {
+        fluctuation = -((Math.random() * 0.01) + 0.01); // -0.01 to -0.02
+      }
+  
+	let oldPrice = company.stockPrice;
+  
+	// Apply fluctuation
+	company.stockPrice = Math.round((company.stockPrice * (1 + fluctuation)) * 100) / 100;
+  
+	// Set state
+	if (company.stockPrice > oldPrice) {
+	  company.state = "rising";
+      updateText(`${company.name} is currently rising`)
+	} else if (company.stockPrice < oldPrice) {
+	  company.state = "dropping";
+      updateText(`${company.name} lost ${fluctuation}% in value!`, true);
+	} else {
+	  company.state = "stable";
+      updateText(`Stock prices of ${company.name} is frozen due to system error.`, true);
+	}
+  }
+  
+  let reactedToArticle = null;
+
+
+
+let stockgraph = [
+	15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15
+]
 
 function scene1(){
     canvas.style.backgroundColor = `black`;
@@ -1556,7 +1754,7 @@ ctx.fillText(`${player.level}`, canvas.width / 2 + levelLabelWidth, grid * 7.5);
 
 // XP line
 ctx.fillStyle = 'white';
-ctx.fillText('XP: ', canvas.width / 2, grid * 8.5);
+ctx.fillText('XP:     ', canvas.width / 2, grid * 8.5);
 const xpLabelWidth = ctx.measureText('XP:     ').width;
 
 ctx.fillStyle = 'yellow';
@@ -4369,7 +4567,9 @@ for (let i = 0; i < inventorybtn.length; i++) {
         
         // Call them with your slider objects
         drawLSlider(lslider);
-        drawRSlider(rslider);        
+        drawRSlider(rslider);   
+
+     
             
             
     ctx.textAlign = "center";
@@ -4389,6 +4589,10 @@ for (let i = 0; i < inventorybtn.length; i++) {
     money.x - grid * 24,
     money.y
     );
+
+        ctx.font = "30px Arial";
+        ctx.fillStyle = `#800080`;
+    ctx.fillText(`MarketPlace`, money.x - grid, money.y);
 
   }
 
@@ -5139,6 +5343,120 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
       const textX = x + columnPadding;
       const textY = y + columnPadding + lineSpacing * 2;
       const text = scene8CachedArticles[i];
+      const lastArticle = scene8CachedArticles[scene8CachedArticles.length - 1];
+
+      if (lastArticle === "Weather update: A cold front moves in by midweek, dropping overnight lows into the low 30s and ushering in the season’s first frost risk on outlying farms. Gardeners should cover tender crops before dusk, and early commuters may spot icy patches on unshaded roads." && reactedToArticle !== lastArticle) {
+        // Cold front affects produce
+        let random = Math.random();
+        companies[1].stockPrice -= random;
+        updateText("Cold snap shrinks harvest yields —", true);
+        updateText(`${companies[1].name} drops ${random.toFixed(2)}%.`, true);
+        reactedToArticle = lastArticle;
+      }
+      
+      if (lastArticle === "Storm watch: A vigorous low-pressure system brewing offshore is set to hit late Friday with heavy rain, gusts up to 50 mph, and coastal surf whipping to 15 feet. Fishermen and beachgoers should steer clear; secure patio furniture now and have flashlights on hand in case of brief power blips." && reactedToArticle !== lastArticle) {
+        // Storm affects logistics
+        let random = Math.random();
+        companies[0].stockPrice -= random;
+        updateText("Storm disrupts delivery networks —", true);
+        updateText(`${companies[0].name} drops ${random.toFixed(2)}%.`, true);
+        reactedToArticle = lastArticle;
+      }
+      
+      if (lastArticle === "Sunshine ahead: After days of grey skies, the next 72 hours will see highs around 65 °F under brilliant blue—ideal for hiking, picnics, and outdoor markets. UV levels will peak at midday, so pack sunscreen and sunglasses if you plan to stay out past lunchtime." && reactedToArticle !== lastArticle) {
+        // Sunny weather boosts outdoor food sales
+        let random = Math.random();
+        companies[0].stockPrice += random;
+        companies[2].stockPrice += random;
+        updateText("The sunny weather is ideal for networing —", false);
+        updateText(`${companies[0].name} rises ${random.toFixed(2)}%.`, false);
+        updateText("Sunshine boosts snack & leisure sales —", false);
+        updateText(`${companies[2].name} rises ${random.toFixed(2)}%.`, false);
+        reactedToArticle = lastArticle;
+      }
+      
+      if (lastArticle === "Rainfall report: Yesterday’s steady half-inch downpour boosted reservoir levels by 8 percent, lifting them to 72 percent capacity and quelling mild drought alarms. Farmers report softer fields for planting, but should delay heavy machinery until soils firm up later this week." && reactedToArticle !== lastArticle) {
+        // Rain boosts water supply
+        let random = Math.random();
+        companies[1].stockPrice += random;
+        updateText("Rain restores reservoir levels —", false);
+        updateText(`${companies[1].name} rises ${random.toFixed(2)}%.`, false);
+        reactedToArticle = lastArticle;
+      }
+      
+      if (lastArticle === "Fog advisory: Dense pockets of fog settled along the river valley before dawn, cutting visibility to under 200 feet in spots. Drivers are urged to slow down, use low-beam headlights, and keep ample following distance until the mist burns off around mid-morning." && reactedToArticle !== lastArticle) {
+        // Fog affects transportation
+        let random = Math.random();
+        companies[0].stockPrice -= random;
+        updateText("Fog delays morning shipments —", true);
+        updateText(`${companies[0].name} drops ${random.toFixed(2)}%.`, true);
+        reactedToArticle = lastArticle;
+      }
+      
+      if (lastArticle === "Wind alert: A tight pressure gradient will whip winds to 40–45 mph Thursday evening, rattling loose branches and rattling windows. Those in high-rise apartments may feel a gentle sway; secure potted plants and check tarps or scaffolding on nearby construction sites." && reactedToArticle !== lastArticle) {
+        // Wind damages storefronts
+        let random = Math.random();
+        companies[0].stockPrice -= random;
+        companies[2].stockPrice -= random;
+        updateText("High winds damage urban property —", true);
+        updateText(`${companies[0].name} drops ${random.toFixed(2)}%.`, true);
+        reactedToArticle = lastArticle;
+      }
+      
+      if (lastArticle === "Unseasonal warmth: Afternoon highs are flirting with 75 °F—well above the 60 °F norm—prompting early blooms in parks and a flurry of shorts-and-tee weather. Nights will still dip into the mid-40s, so keep a light jacket handy if you’re out after sunset." && reactedToArticle !== lastArticle) {
+        // Warm weather = more food bought
+        let random = Math.random();
+        companies[2].stockPrice += random;
+        updateText("Unseasonal warmth lifts cafe sales —", false);
+        updateText(`${companies[2].name} rises ${random.toFixed(2)}%.`, false);
+        reactedToArticle = lastArticle;
+      }
+      
+      if (lastArticle === "Frost warning: Clear skies and calm winds tonight will send temperatures climbing down to 29 °F in outer districts. Orchard owners should deploy frost fans or overhead sprinklers, and bring greenhouse seedlings indoors to avoid freeze damage." && reactedToArticle !== lastArticle) {
+        // Frost = crop damage
+        let random = Math.random();
+        companies[1].stockPrice -= random;
+        updateText("Frost damages produce farms —", true);
+        updateText(`${companies[1].name} drops ${random.toFixed(2)}%.`, true);
+        reactedToArticle = lastArticle;
+      }
+      
+      if (lastArticle === "Heatwave prep: The heat advisory goes into effect tomorrow as highs blast past 95 °F for at least three days. Cooling centers open at all community centers, and local news warns to check on pets, elderly neighbors, and never leave children or animals in parked cars." && reactedToArticle !== lastArticle) {
+        // Heat = people buy cold drinks/snacks
+        let random = Math.random();
+        companies[2].stockPrice += random;
+        updateText("Heatwave boosts cold snack sales —", false);
+        updateText(`${companies[2].name} rises ${random.toFixed(2)}%.`, false);
+        reactedToArticle = lastArticle;
+      }
+      
+      if (lastArticle === "Lightning strikes: A rare late-season thunderstorm lit up the sky after midnight, delivering over 120 strikes in just one hour. Though no injuries were reported, several large oak limbs snapped under the electrical charge—urban crews are clearing debris today." && reactedToArticle !== lastArticle) {
+        // Lightning causes power outages, city damage
+        let random = Math.random();
+        companies[0].stockPrice -= random;
+        companies[2].stockPrice -= random;
+        updateText("Lightning damages city blocks —", true);
+        updateText(`${companies[0].name} drops ${random.toFixed(2)}%.`, true);
+        updateText("Power outage hits digital orders —", true);
+        updateText(`${companies[0].name} drops ${random.toFixed(2)}%.`, true);
+        reactedToArticle = lastArticle;
+      }
+      
+      if (lastArticle === "Weather report: Today will be mostly sunny with gentle breezes around 5 mph out of the southwest. Expect afternoon temperatures near 68 °F—perfect for a lunchtime stroll—while farmers can schedule irrigation for late afternoon when evapotranspiration rates peak." && reactedToArticle !== lastArticle) {
+        // Calm day = shopping / leisure
+        let random = Math.random();
+        companies[0].stockPrice += random;
+        companies[2].stockPrice += random;
+
+        updateText("The Calm day improves shipping efficiency —", false);
+        updateText(`${companies[0].name} rises ${random.toFixed(2)}%.`, false);
+        updateText("Perfect weather boosts mall foot traffic —", false);
+        updateText(`${companies[2].name} rises ${random.toFixed(2)}%.`, false);
+
+        reactedToArticle = lastArticle;
+      }
+      
+      
   
       wrapText(ctx, text, textX, textY, columnWidth - columnPadding * 2, lineSpacing);
     }
@@ -5187,49 +5505,848 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
     currentscene = 7;
   }
 
-  function economicsystem(){
-    if(player.currentseason === seasons[1]){
-        gameitems[1].price += Math.random() * (gameitems[1].price * 0.30);
-        gameitems[3].price += Math.random() * (gameitems[3].price * 0.40);
-        gameitems[4].price -= Math.random() * (gameitems[4].price * 0.30);
+
+  let c1page = false;
+  let c2page = false;
+  let c3page = false;
+
+  function scene9(){
+
+    ctx.fillStyle = `#1A1A1A`;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
+
+    if(c1page == false && c2page == false && c3page == false){
+
+        // Create a gradient
+        let gradient = ctx.createLinearGradient(0, grid, 0, grid - 70); // Adjust the gradient start and end points
+
+        // Add color stops to the gradient
+        gradient.addColorStop(0, '#B9F2FF');  // Bottom color (diamond-like)
+        gradient.addColorStop(1, '#808080');  // Top color (darker gray/silver) for stronger contrast
+
+        // Set the fill style to the gradient
+        ctx.fillStyle = gradient;
+
+        // Draw the text with the gradient
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "70px Arial";
+
+        ctx.fillText('MarketPlace', canvas.width / 2, grid);
+
+
+        const boxes = [
+      {
+        name: companies[0].name,
+        x: grid,
+        y: grid,
+        width: grid * 10,
+        height: grid * 4,
+        color: `#222831`,
+		category: companies[0].category,
+		state: companies[0].state
+      },
+      {
+        name: companies[1].name,
+        x: grid,
+        y: grid * 6,
+        width: grid * 10,
+        height: grid * 4,
+        color: `#222831`,
+		category: companies[1].category,
+		state: companies[1].state
+      },
+      {
+        name: companies[2].name,
+        x: grid,
+        y: grid * 11,
+        width: grid * 10,
+        height: grid * 4,
+        color: `#222831`,
+		category: companies[2].category,
+		state: companies[2].state
+      }
+    ]
+
+
+    boxes.forEach(box => {
+
+      ctx.fillStyle = box.color;
+      ctx.fillRect(box.x, box.y, box.width, box.height);
+
+	  ctx.fillStyle = `green`;
+	  ctx.font = "20px Arial";
+      ctx.fillText(`State: ${box.state}`, box.x + box.width / 2, box.y + grid * 1);
+      ctx.font = "40px Arial";
+      ctx.fillText(box.name, box.x + box.width / 2, box.y + grid * 2);
+	  ctx.font = "35px Arial";
+      ctx.fillText(box.category, box.x + box.width / 2, box.y + grid * 3);
+
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 3;
+    
+
+      ctx.strokeRect(box.x, box.y, box.width, box.height);
+    });
+
+	ctx.fillStyle = `#121212`;
+	ctx.fillRect(boxes[0].x + grid * 18, boxes[0].y, boxes[0].width, boxes[0].height);
+	ctx.fillStyle = `#1e1e2f`
+	ctx.fillRect(boxes[0].x + grid * 14, boxes[0].y * 7, boxes[0].width + grid * 4, boxes[0].height * 1.76);
+    ctx.fillStyle = '#2d2d4a';
+    let startX = boxes[0].x + grid * 14;
+    let startY = boxes[0].y * 7;
+    let width = boxes[0].width + grid * 4;
+    let height = boxes[0].height * 1.76;
+    let spacing = grid / 2;
+
+    for (let y = startY + spacing / 2; y < startY + height; y += spacing) {
+        for (let x = startX + spacing / 2; x < startX + width; x += spacing) {
+            ctx.beginPath();
+            ctx.arc(x, y, 1.2, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }
-    else{
-        gameitems[1].price = 0.20;
-        gameitems[3].price = 1.15;
-        gameitems[4].price = 19.45;
+	const graphX = boxes[0].x + grid * 14;
+    const graphY = boxes[0].y * 7;
+    const graphWidth = boxes[0].width + grid * 4;
+    const graphHeight = boxes[0].height * 1.76;
+
+    const midY = graphY + graphHeight / 2; // Middle of the box
+
+
+	ctx.strokeStyle = 'white';
+	ctx.lineWidth = 3;
+
+	ctx.font = "40px Arial";
+	ctx.fillStyle = '#B9F2FF';
+	ctx.fillText(`${player.name}'s Shares`, boxes[0].x + grid * 18 + boxes[0].width / 2, boxes[0].y + grid * 1);
+
+	ctx.strokeRect(boxes[0].x + grid * 18, boxes[0].y, boxes[0].width, boxes[0].height);
+	ctx.strokeRect(boxes[0].x + grid * 14, boxes[0].y * 7, boxes[0].width + grid * 4, boxes[0].height * 1.76);
+
+
+	const baseY = boxes[0].y * 7 + boxes[0].height * 1.75;
+	const scaledHeight = (stockgraph[0] * grid / 4.2857142857142857142857142857143);
+	const scaledHeight2 = (stockgraph[1] * grid / 4.2857142857142857142857142857143);
+	const scaledHeight3 = (stockgraph[2] * grid / 4.2857142857142857142857142857143);
+	const scaledHeight4 = (stockgraph[3] * grid / 4.2857142857142857142857142857143);
+	const scaledHeight5 = (stockgraph[4] * grid / 4.2857142857142857142857142857143);
+	const scaledHeight6 = (stockgraph[5] * grid / 4.2857142857142857142857142857143);
+	const scaledHeight7 = (stockgraph[6] * grid / 4.2857142857142857142857142857143);
+	const scaledHeight8 = (stockgraph[7] * grid / 4.2857142857142857142857142857143);
+	const scaledHeight9 = (stockgraph[8] * grid / 4.2857142857142857142857142857143);
+	const scaledHeight10 = (stockgraph[9] * grid / 4.2857142857142857142857142857143);
+	const scaledHeight11 = (stockgraph[10] * grid / 4.2857142857142857142857142857143);
+	const scaledHeight12 = (stockgraph[11] * grid / 4.2857142857142857142857142857143);
+
+
+	const bars = [
+		{
+			x: boxes[0].x + grid * 14 + grid - 25,
+			y: baseY - scaledHeight,       // Start drawing from the bottom, going up
+			width: grid,
+			height: scaledHeight,          // Grow upwards
+			color: `green`
+		},
+		{
+			x: boxes[0].x + grid * 14 + grid * 1.6,
+			y: baseY - scaledHeight2,       // Start drawing from the bottom, going up
+			width: grid,
+			height: scaledHeight2,          // Grow upwards
+			color: `green`
+		},
+		{
+			x: boxes[0].x + grid * 14 + grid * 2.7,
+			y: baseY - scaledHeight3,       // Start drawing from the bottom, going up
+			width: grid,
+			height: scaledHeight3,          // Grow upwards
+			color: `green`
+		},
+		{
+			x: boxes[0].x + grid * 14 + grid * 3.8,
+			y: baseY - scaledHeight4,       // Start drawing from the bottom, going up
+			width: grid,
+			height: scaledHeight4,          // Grow upwards
+			color: `green`
+		},
+		{
+			x: boxes[0].x + grid * 14 + grid * 4.9,
+			y: baseY - scaledHeight5,       // Start drawing from the bottom, going up
+			width: grid,
+			height: scaledHeight5,          // Grow upwards
+			color: `green`
+		},
+		{
+			x: boxes[0].x + grid * 14 + grid * 6,
+			y: baseY - scaledHeight6,       // Start drawing from the bottom, going up
+			width: grid,
+			height: scaledHeight6,          // Grow upwards
+			color: `green`
+		},
+		{
+			x: boxes[0].x + grid * 14 + grid * 7.1,
+			y: baseY - scaledHeight7,       // Start drawing from the bottom, going up
+			width: grid,
+			height: scaledHeight7,          // Grow upwards
+			color: `green`
+		}
+		,
+		{
+			x: boxes[0].x + grid * 14 + grid * 8.2,
+			y: baseY - scaledHeight8,       // Start drawing from the bottom, going up
+			width: grid,
+			height: scaledHeight8,          // Grow upwards
+			color: `green`
+		},
+		{
+			x: boxes[0].x + grid * 14 + grid * 9.3,
+			y: baseY - scaledHeight9,       // Start drawing from the bottom, going up
+			width: grid,
+			height: scaledHeight9,          // Grow upwards
+			color: `green`
+		},
+		{
+			x: boxes[0].x + grid * 14 + grid * 10.4,
+			y: baseY - scaledHeight10,       // Start drawing from the bottom, going up
+			width: grid,
+			height: scaledHeight10,          // Grow upwards
+			color: `green`
+		},
+		{
+			x: boxes[0].x + grid * 14 + grid * 11.5,
+			y: baseY - scaledHeight11,       // Start drawing from the bottom, going up
+			width: grid,
+			height: scaledHeight11,          // Grow upwards
+			color: `green`
+		},
+		{
+			x: boxes[0].x + grid * 14 + grid * 12.6,
+			y: baseY - scaledHeight12,       // Start drawing from the bottom, going up
+			width: grid,
+			height: scaledHeight12,          // Grow upwards
+			color: `green`
+		}
+	]
+
+	bars.forEach((bar, i) => {
+		if (stockgraph[i] - stockgraph[i - 1] < 0) {
+			ctx.fillStyle = `red`;
+		} else {
+			ctx.fillStyle = bar.color;
+		}
+	
+		ctx.strokeStyle = 'white';
+		ctx.lineWidth = 3;
+	
+		ctx.fillRect(bar.x, bar.y, bar.width, bar.height);
+		ctx.strokeRect(bar.x, bar.y, bar.width, bar.height);
+		ctx.fillStyle = `white`;
+		ctx.font = `20px Arial`
+		ctx.fillText(stockgraph[i].toFixed(2), bar.x + 25, bar.y - 10)
+	});
+
+
+
+	ctx.beginPath();
+	ctx.moveTo(graphX, midY);             // Start from left side
+	ctx.lineTo(graphX + graphWidth, midY); // Draw to right side
+	ctx.strokeStyle = 'blue';            // Or any color you like
+	ctx.lineWidth = 3;
+	ctx.stroke();
+
+
+
+    //3 separate buttons for the umm... i forgot
+
+
+    ctx.fillStyle = `grey`;
+    ctx.fillRect(boxes[0].x + grid * 19, boxes[0].y + grid * 2, grid * 2, grid);
+    ctx.fillRect(boxes[0].x + grid * 22, boxes[0].y + grid * 2, grid * 2, grid);
+    ctx.fillRect(boxes[0].x + grid * 25, boxes[0].y + grid * 2, grid * 2, grid);
+    ctx.fillStyle = `white`;
+    ctx.font = `15px Tahoma `
+    ctx.fillText(`${companies[0].trademarkname}: ${player.stocks[companies[0].name]}`, boxes[0].x + grid * 20, boxes[0].y + grid * 2.5);
+    ctx.fillText(`${companies[1].trademarkname}: ${player.stocks[companies[1].name]}`, boxes[0].x + grid * 23, boxes[0].y + grid * 2.5);
+    ctx.fillText(`${companies[2].trademarkname}: ${player.stocks[companies[2].name]}`, boxes[0].x + grid * 26, boxes[0].y + grid * 2.5);
+
+
+
     }
-    if(player.currentseason === seasons[2]){
-        gameitems[2].price += Math.random() * (gameitems[1].price * 0.30);
-        gameitems[5].price += Math.random() * (gameitems[3].price * 0.80);
-        gameitems[9].price -= Math.random() * (gameitems[4].price * 0.20);
+    else if(c1page){
+        // Create a gradient
+        let gradient = ctx.createLinearGradient(0, grid, 0, grid - 70); // Adjust the gradient start and end points
+
+        // Add color stops to the gradient
+        gradient.addColorStop(0, '#B9F2FF');  // Bottom color (diamond-like)
+        gradient.addColorStop(1, '#808080');  // Top color (darker gray/silver) for stronger contrast
+
+        // Set the fill style to the gradient
+        ctx.fillStyle = gradient;
+
+        // Draw the text with the gradient
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "70px Arial";
+
+        ctx.fillText(companies[0].name, canvas.width / 2, grid);
+
+        ctx.font = "40px Arial";
+        ctx.fillText(companies[0].category, canvas.width / 2, grid * 2);
+        ctx.fillText(companies[0].owner, canvas.width / 2, grid * 2.7);
+        ctx.font = "20px Arial";
+
+
+
+        ctx.textAlign = "start";
+        ctx.textBaseline = "top";
+        ctx.fillStyle = `white`;
+
+        ctx.fillText(`State:`, grid * 2, grid);
+                ctx.fillStyle = companies[0].state == `dropping`? `red` :  `green`
+        ctx.fillText(companies[0].state, grid * 3.2, grid);
+
+
+        ctx.fillStyle = `white`;
+
+        ctx.fillText(`AnnualProfit: ${companies[0].annualProfit}`, grid, grid * 3);
+        ctx.fillText(`Available Shares: ${companies[0].sharesAvailable}`, grid, grid * 3.5);
+        ctx.fillText(`Stock Value: ${companies[0].stockPrice}`, grid, grid * 4);
+        ctx.fillText(`Your Shares: ${player.stocks[companies[0].name]}`, grid, grid * 4.5);
+
+        ctx.fillStyle = `#1e1e2f`;
+        ctx.fillRect(grid, grid * 5, grid * 28, grid * 10);
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 3;
+      
+  
+        ctx.strokeRect(grid, grid * 5, grid * 28, grid * 10);
+
+        ctx.fillStyle = '#2d2d4a';
+        let startX = grid;
+        let startY = grid * 5;
+        let width = grid * 28;
+        let height = grid * 9;
+        let spacing = grid / 2;
+
+        for (let y = startY + spacing / 2; y < startY + height; y += spacing) {
+            for (let x = startX + spacing / 2; x < startX + width; x += spacing) {
+                ctx.beginPath();
+                ctx.arc(x, y, 1.2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+
+        const boxes = [
+            {
+                x: grid * 2,
+                y: grid * 6,
+                width: grid * 13,
+                height: grid * 2,
+                color: `#121212`,
+                text: `Buy 1 Stock`,
+                text2: `for $${companies[0].stockPrice}`
+            },
+            {
+                x: grid * 2,
+                y: grid * 9,
+                width: grid * 13,
+                height: grid * 2,
+                color: `#121212`,
+                text: `Buy 10 Stocks`,
+                text2: `for $${companies[0].stockPrice * 10}`
+            },
+            {
+                x: grid * 2,
+                y: grid * 12,
+                width: grid * 13,
+                height: grid * 2,
+                color: `#121212`,
+                text: `Buy 50 Stocks`,
+                text2: `for $${companies[0].stockPrice * 50}`
+            },
+            {
+                x: grid * 16,
+                y: grid * 5.5,
+                width: grid * 12.5,
+                height: grid * 8,
+                color: `#121212`
+            }
+
+        ]
+
+        boxes.forEach((box, i) => {
+            ctx.fillStyle = box.color;
+            ctx.fillRect(box.x, box.y, box.width, box.height);
+        
+            if (i === boxes.length - 1) {
+                // Apply neon glow to the last box only
+                ctx.shadowColor = '#00f6ff';
+                ctx.shadowBlur = 10;
+                ctx.strokeStyle = '#00f6ff';
+            } else {
+                // Reset shadow and stroke style for other boxes
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.strokeStyle = '#ffffff'; // Or whatever default
+                ctx.fillStyle = `white`;
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(box.text, box.x + box.width / 2, box.y + grid / 2)
+                ctx.fillText(box.text2, box.x + box.width / 2, box.y + grid)
+            }
+        
+            ctx.strokeRect(box.x, box.y, box.width, box.height);
+        });
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = '#ffffff'; // Or whatever default
+
+        ctx.fillStyle = '#444444';
+        let startX2 = boxes[3].x;
+        let startY2 = boxes[3].y;
+        let width2 = boxes[3].width;
+        let height2 = boxes[3].x - grid * 8;
+        let spacing2 = grid / 2;
+
+        for (let y = 0; y < height2; y += spacing2) {
+            for (let x = 0; x < width2; x += spacing2) {
+                let offset = (y / spacing2) % 2 === 0 ? spacing2 / 2 : 0;
+                ctx.beginPath();
+                ctx.arc(startX2 + x + offset, startY2 + y + spacing2 / 2, 1.2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+
+
+        drawText();  // Draw the box with the updated text
     }
-    else{
-        gameitems[2].price = 1;
-        gameitems[5].price = 10;
-        gameitems[9].price = 710;
+    else if(c2page){
+        // Create a gradient
+        let gradient = ctx.createLinearGradient(0, grid, 0, grid - 70); // Adjust the gradient start and end points
+
+        // Add color stops to the gradient
+        gradient.addColorStop(0, '#B9F2FF');  // Bottom color (diamond-like)
+        gradient.addColorStop(1, '#808080');  // Top color (darker gray/silver) for stronger contrast
+
+        // Set the fill style to the gradient
+        ctx.fillStyle = gradient;
+
+        // Draw the text with the gradient
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "70px Arial";
+
+        ctx.fillText(companies[1].name, canvas.width / 2, grid);
+
+        ctx.font = "40px Arial";
+        ctx.fillText(companies[1].category, canvas.width / 2, grid * 2);
+        ctx.fillText(companies[1].owner, canvas.width / 2, grid * 2.7);
+        ctx.font = "20px Arial";
+
+
+
+        ctx.textAlign = "start";
+        ctx.textBaseline = "top";
+        ctx.fillStyle = `white`;
+
+        ctx.fillText(`State:`, grid * 2, grid);
+                ctx.fillStyle = companies[1].state == `dropping`? `red` :  `green`
+        ctx.fillText(companies[1].state, grid * 3.2, grid);
+
+
+        ctx.fillStyle = `white`;
+
+        ctx.fillText(`AnnualProfit: ${companies[1].annualProfit}`, grid, grid * 3);
+        ctx.fillText(`Available Shares: ${companies[1].sharesAvailable}`, grid, grid * 3.5);
+        ctx.fillText(`Stock Value: ${companies[1].stockPrice}`, grid, grid * 4);
+        ctx.fillText(`Your Shares: ${player.stocks[companies[1].name]}`, grid, grid * 4.5);
+
+        ctx.fillStyle = `#1e1e2f`;
+        ctx.fillRect(grid, grid * 5, grid * 28, grid * 10);
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 3;
+      
+  
+        ctx.strokeRect(grid, grid * 5, grid * 28, grid * 10);
+
+        ctx.fillStyle = '#2d2d4a';
+        let startX = grid;
+        let startY = grid * 5;
+        let width = grid * 28;
+        let height = grid * 9;
+        let spacing = grid / 2;
+
+        for (let y = startY + spacing / 2; y < startY + height; y += spacing) {
+            for (let x = startX + spacing / 2; x < startX + width; x += spacing) {
+                ctx.beginPath();
+                ctx.arc(x, y, 1.2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+
+        const boxes = [
+            {
+                x: grid * 2,
+                y: grid * 6,
+                width: grid * 13,
+                height: grid * 2,
+                color: `#121212`,
+                text: `Buy 1 Stock`,
+                text2: `for $${companies[1].stockPrice}`
+            },
+            {
+                x: grid * 2,
+                y: grid * 9,
+                width: grid * 13,
+                height: grid * 2,
+                color: `#121212`,
+                text: `Buy 10 Stocks`,
+                text2: `for $${companies[1].stockPrice * 10}`
+            },
+            {
+                x: grid * 2,
+                y: grid * 12,
+                width: grid * 13,
+                height: grid * 2,
+                color: `#121212`,
+                text: `Buy 50 Stocks`,
+                text2: `for $${companies[1].stockPrice * 50}`
+            },
+            {
+                x: grid * 16,
+                y: grid * 5.5,
+                width: grid * 12.5,
+                height: grid * 8,
+                color: `#121212`
+            }
+
+        ]
+
+        boxes.forEach((box, i) => {
+            ctx.fillStyle = box.color;
+            ctx.fillRect(box.x, box.y, box.width, box.height);
+        
+            if (i === boxes.length - 1) {
+                // Apply neon glow to the last box only
+                ctx.shadowColor = '#00f6ff';
+                ctx.shadowBlur = 10;
+                ctx.strokeStyle = '#00f6ff';
+            } else {
+                // Reset shadow and stroke style for other boxes
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.strokeStyle = '#ffffff'; // Or whatever default
+                ctx.fillStyle = `white`;
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(box.text, box.x + box.width / 2, box.y + grid / 2)
+                ctx.fillText(box.text2, box.x + box.width / 2, box.y + grid)
+            }
+        
+            ctx.strokeRect(box.x, box.y, box.width, box.height);
+        });
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = '#ffffff'; // Or whatever default
+
+        ctx.fillStyle = '#444444';
+        let startX2 = boxes[3].x;
+        let startY2 = boxes[3].y;
+        let width2 = boxes[3].width;
+        let height2 = boxes[3].x - grid * 8;
+        let spacing2 = grid / 2;
+
+        for (let y = 0; y < height2; y += spacing2) {
+            for (let x = 0; x < width2; x += spacing2) {
+                let offset = (y / spacing2) % 2 === 0 ? spacing2 / 2 : 0;
+                ctx.beginPath();
+                ctx.arc(startX2 + x + offset, startY2 + y + spacing2 / 2, 1.2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+
+
+        drawText();  // Draw the box with the updated text
     }
-    if(player.currentseason === seasons[3]){
-        gameitems[1].price += Math.random() * (gameitems[1].price * 0.30);
-        gameitems[4].price += Math.random() * (gameitems[3].price * 0.40);
-        gameitems[7].price -= Math.random() * (gameitems[4].price * 0.30);
-    }
-    else{
-        gameitems[1].price = 0.20;
-        gameitems[4].price = 19.45;
-        gameitems[7].price = 186.5;
-    }
-    if(player.currentseason === seasons[0]){
-        gameitems[6].price += Math.random() * (gameitems[1].price * 0.30);
-        gameitems[2].price += Math.random() * (gameitems[3].price * 0.40);
-        gameitems[8].price -= Math.random() * (gameitems[4].price * 0.30);
-    }
-    else{
-        gameitems[2].price = 1;
-        gameitems[6].price = 8.24;
-        gameitems[8].price = 100;
+    else if(c3page){
+        // Create a gradient
+        let gradient = ctx.createLinearGradient(0, grid, 0, grid - 70); // Adjust the gradient start and end points
+
+        // Add color stops to the gradient
+        gradient.addColorStop(0, '#B9F2FF');  // Bottom color (diamond-like)
+        gradient.addColorStop(1, '#808080');  // Top color (darker gray/silver) for stronger contrast
+
+        // Set the fill style to the gradient
+        ctx.fillStyle = gradient;
+
+        // Draw the text with the gradient
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "70px Arial";
+
+        ctx.fillText(companies[2].name, canvas.width / 2, grid);
+
+        ctx.font = "40px Arial";
+        ctx.fillText(companies[2].category, canvas.width / 2, grid * 2);
+        ctx.fillText(companies[2].owner, canvas.width / 2, grid * 2.7);
+        ctx.font = "20px Arial";
+
+
+
+        ctx.textAlign = "start";
+        ctx.textBaseline = "top";
+        ctx.fillStyle = `white`;
+
+        ctx.fillText(`State:`, grid * 2, grid);
+                ctx.fillStyle = companies[2].state == `dropping`? `red` :  `green`
+        ctx.fillText(companies[2].state, grid * 3.2, grid);
+
+
+        ctx.fillStyle = `white`;
+
+        ctx.fillText(`AnnualProfit: ${companies[2].annualProfit}`, grid, grid * 3);
+        ctx.fillText(`Available Shares: ${companies[2].sharesAvailable}`, grid, grid * 3.5);
+        ctx.fillText(`Stock Value: ${companies[2].stockPrice}`, grid, grid * 4);
+        ctx.fillText(`Your Shares: ${player.stocks[companies[2].name]}`, grid, grid * 4.5);
+
+        ctx.fillStyle = `#1e1e2f`;
+        ctx.fillRect(grid, grid * 5, grid * 28, grid * 10);
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 3;
+      
+  
+        ctx.strokeRect(grid, grid * 5, grid * 28, grid * 10);
+
+        ctx.fillStyle = '#2d2d4a';
+        let startX = grid;
+        let startY = grid * 5;
+        let width = grid * 28;
+        let height = grid * 9;
+        let spacing = grid / 2;
+
+        for (let y = startY + spacing / 2; y < startY + height; y += spacing) {
+            for (let x = startX + spacing / 2; x < startX + width; x += spacing) {
+                ctx.beginPath();
+                ctx.arc(x, y, 1.2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+
+        const boxes = [
+            {
+                x: grid * 2,
+                y: grid * 6,
+                width: grid * 13,
+                height: grid * 2,
+                color: `#121212`,
+                text: `Buy 1 Stock`,
+                text2: `for $${companies[2].stockPrice}`
+            },
+            {
+                x: grid * 2,
+                y: grid * 9,
+                width: grid * 13,
+                height: grid * 2,
+                color: `#121212`,
+                text: `Buy 10 Stocks`,
+                text2: `for $${companies[2].stockPrice * 10}`
+            },
+            {
+                x: grid * 2,
+                y: grid * 12,
+                width: grid * 13,
+                height: grid * 2,
+                color: `#121212`,
+                text: `Buy 50 Stocks`,
+                text2: `for $${companies[2].stockPrice * 50}`
+            },
+            {
+                x: grid * 16,
+                y: grid * 5.5,
+                width: grid * 12.5,
+                height: grid * 8,
+                color: `#121212`
+            }
+
+        ]
+
+        boxes.forEach((box, i) => {
+            ctx.fillStyle = box.color;
+            ctx.fillRect(box.x, box.y, box.width, box.height);
+        
+            if (i === boxes.length - 1) {
+                // Apply neon glow to the last box only
+                ctx.shadowColor = '#00f6ff';
+                ctx.shadowBlur = 10;
+                ctx.strokeStyle = '#00f6ff';
+            } else {
+                // Reset shadow and stroke style for other boxes
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.strokeStyle = '#ffffff'; // Or whatever default
+                ctx.fillStyle = `white`;
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(box.text, box.x + box.width / 2, box.y + grid / 2)
+                ctx.fillText(box.text2, box.x + box.width / 2, box.y + grid)
+            }
+        
+            ctx.strokeRect(box.x, box.y, box.width, box.height);
+        });
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = '#ffffff'; // Or whatever default
+
+        ctx.fillStyle = '#444444';
+        let startX2 = boxes[3].x;
+        let startY2 = boxes[3].y;
+        let width2 = boxes[3].width;
+        let height2 = boxes[3].x - grid * 8;
+        let spacing2 = grid / 2;
+
+        for (let y = 0; y < height2; y += spacing2) {
+            for (let x = 0; x < width2; x += spacing2) {
+                let offset = (y / spacing2) % 2 === 0 ? spacing2 / 2 : 0;
+                ctx.beginPath();
+                ctx.arc(startX2 + x + offset, startY2 + y + spacing2 / 2, 1.2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+
+
+        drawText();  // Draw the box with the updated text
     }
 
 
+
+}
+
+// Array to store the last 20 messages (each with text and error flag)
+let eventLog = [];
+
+// Function to add new messages to the log
+function updateText(message, isError = false) {
+    eventLog.push({ text: message, error: isError }); // Store as object
+    if (eventLog.length > 19) {
+        eventLog.shift(); // Keep only the latest 20
+    }
+}
+
+// Function to draw all messages inside the box
+function drawText() {
+    ctx.font = '16px "Press Start 2P", monospace';
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'bottom';
+
+    const lineHeight = 20;
+    const baseX = grid * 16 + 10;
+    const baseY = grid * 5.5 + grid * 8 - 10;
+
+    for (let i = 0; i < eventLog.length; i++) {
+        const msg = eventLog[i];
+        ctx.fillStyle = msg.error ? 'red' : '#39FF14'; // Color per message
+        const y = baseY - (eventLog.length - 1 - i) * lineHeight;
+        ctx.fillText(msg.text, baseX, y);
+    }
+}
+
+
+
+
+
+function buystocks(company, ammount) {
+    if (company.sharesAvailable <= ammount) {
+        updateText("No shares available.", true);
+        return;
+    }
+    if (player.money < company.stockPrice * ammount) {
+        updateText(`Not enough money, Failed to buy ${ammount} shares of ${company.name}.`, true);
+        return;
+    }
+
+    company.sharesAvailable -= ammount;
+    player.money = subtractMoney(player.money, company.stockPrice * ammount);
+    
+    if (!player.stocks[company.name]) {
+        player.stocks[company.name] = 0;
+    }
+    player.stocks[company.name] += ammount;
+    updateText(`Bought ${ammount} share of ${company.name} for $${company.stockPrice * ammount}`);
+}
+
+function sellstocks(company, ammount) {
+    if (!player.stocks[company.name] || player.stocks[company.name] <= 0) {
+        updateText("You don't own any shares of this company.", true);
+        return;
+    }
+
+    company.sharesAvailable += ammount;
+    player.money = addMoney(player.money, company.stockPrice * ammount);
+    player.stocks[company.name] -= ammount;
+    updateText(`Sold ${ammount} share of ${company.name} for $${company.stockPrice * ammount}`, true);
+}
+
+
+
+
+
+
+
+
+
+function economicsystem() {
+    // Reset all prices to their original values first
+    for (let item of gameitems) {
+        item.price = item.ogprice;
+    }
+
+    // Define seasonal effects by category
+    const seasonalEffects = {
+        Summer: {
+            Toy: +0.30,        // Increase price by 30%
+            School: +0.40,
+            Business: -0.30
+        },
+        Fall: {
+            School: +0.30,
+            Business: +0.80,
+            Companion: -0.20
+        },
+        Winter: {
+            Toy: +0.30,
+            Business: +0.40,
+            Property: -0.30
+        },
+        Spring: {
+            Companion: +0.30,
+            School: +0.40,
+            Toy: -0.30
+        }
+    };
+
+    // Determine the current season
+    const currentSeason = player.currentseason;
+
+    // Apply seasonal changes by category
+    for (let item of gameitems) {
+        const effects = seasonalEffects[currentSeason];
+        if (effects && effects[item.category] !== undefined) {
+            let change = effects[item.category];
+            let factor = 1 + (Math.random() * Math.abs(change));
+            item.price = item.ogprice * (change > 0 ? factor : (1 - Math.random() * Math.abs(change)));
+        }
+    }
+
+    // Sync inventory prices
     for (let i = 0; i < player.inventory.length; i++) {
         for (let j = 0; j < gameitems.length; j++) {
             if (player.inventory[i].name === gameitems[j].name) {
@@ -5237,10 +6354,7 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
             }
         }
     }
-
-
-    
-  }
+}
 
 
 function itemsbn(){
@@ -5280,7 +6394,78 @@ function itemsbn(){
             console.log(item);
             player.experience = addMoney(player.experience, 1);
         }
+
+
     });
+
+	player.inventory.forEach(item => {
+		if(item.name === gameitems[16].name){
+			const hasCommonItems = player.inventory.some(item => item.rarity == `Common`);
+
+			if (hasCommonItems) {
+				console.log("Player has common items!");
+				// Find the common items in the player's inventory
+				const commonItems = player.inventory.filter(item => item.rarity === 'Common');
+
+				// If there are any common items, find the one with the highest price
+				if (commonItems.length > 0) {
+				    const highestPricedCommonItem = commonItems.reduce((maxItem, currentItem) => {
+				    return currentItem.price > maxItem.price ? currentItem : maxItem;
+				    });
+				
+				    console.log("Player's highest priced common item:", highestPricedCommonItem);
+					const index = player.inventory.indexOf(highestPricedCommonItem);
+					if (index !== -1) {
+					  player.inventory.splice(index, 1);
+					  player.money = addMoney(player.money, highestPricedCommonItem.price * 1.10);
+					}
+				}
+				else {
+				    console.log("No common items found.");
+				}
+				
+			}
+			else{
+				console.log(`none`);
+			}
+		}
+
+        if(item.name === gameitems[17].name){
+            const hasUncommonItems = player.inventory.some(item => item.rarity === 'Uncommon');
+            const hasCommonItems = player.inventory.some(item => item.rarity === 'Common');
+            
+            if (hasUncommonItems) {
+                console.log("Player has Uncommon items!");
+                const uncommonItems = player.inventory.filter(item => item.rarity === 'Uncommon');
+            
+                if (uncommonItems.length > 0) {
+                    const highest = uncommonItems.reduce((max, curr) => curr.price > max.price ? curr : max);
+                    console.log("Highest Uncommon:", highest);
+                    const index = player.inventory.indexOf(highest);
+                    if (index !== -1) {
+                        player.inventory.splice(index, 1);
+                        player.money = addMoney(player.money, highest.price * 1.10);
+                    }
+                }
+            } else if (hasCommonItems) {
+                console.log("Player has Common items!");
+                const commonItems = player.inventory.filter(item => item.rarity === 'Common');
+            
+                if (commonItems.length > 0) {
+                    const highest = commonItems.reduce((max, curr) => curr.price > max.price ? curr : max);
+                    console.log("Highest Common:", highest);
+                    const index = player.inventory.indexOf(highest);
+                    if (index !== -1) {
+                        player.inventory.splice(index, 1);
+                        player.money = addMoney(player.money, highest.price * 1.10);
+                    }
+                }
+            } else {
+                console.log("No eligible items found.");
+            }
+            
+		}
+	})
 
 
 }
@@ -5296,6 +6481,34 @@ function levelmech() {
         player.maximum += newMilestones * 8; // +8 for each 5-level milestone
         player.levelMilestone = milestonesReached;
         showNotification(`Player Inventory++!`, 2500);
+    }
+}
+
+let recessiondate = 0;
+
+
+function recessionactivate(){
+    gamestate.recessionActive = true;
+    recessiondate = Math.floor(Math.random() * (7 - 3 + 1)) + 3;
+    updateText("Market crash detected!", true);
+    updateText(`The recession is expected to last for ${recessiondate} weeks`, true);
+}
+
+
+function recession(){
+    if(gamestate.recessionActive){
+
+        if(recessionrecovery > recessiondate)
+        {
+            gamestate.recessionActive = false;
+            recessionrecovery = 0;
+        }
+        else{
+            recessionrecovery++;
+        }
+    }
+    else{
+        recessionrecovery = 0;
     }
 }
 
@@ -5411,7 +6624,8 @@ canvas.addEventListener(`mousedown`, (e) => {
                         player.inventory.push({
                             name: gameitems[0].name,
                             imgSrc: gameitems[0].img.src,  // ✅ this is just a string like "images/sword.png"
-                            price: gameitems[0].price
+                            price: gameitems[0].price,
+							rarity: gameitems[0].rarity
                           });
                         sell;
                     }
@@ -5454,7 +6668,8 @@ canvas.addEventListener(`mousedown`, (e) => {
                       player.inventory.push({
                         name: gameitems[0].name,
                         imgSrc: gameitems[0].img.src,  // ✅ this is just a string like "images/sword.png"
-                        price: gameitems[0].price
+                        price: gameitems[0].price,
+						rarity: gameitems[0].rarity
                       });
                     sell = undefined;
 
@@ -5491,6 +6706,8 @@ canvas.addEventListener(`mousedown`, (e) => {
                     rendered = false;
                     refused = false;
                     localStorage.setItem('playerData', JSON.stringify(player));
+					          localStorage.setItem('MarketData', JSON.stringify(companies));
+                    localStorage.setItem('GraphData', JSON.stringify(stockgraph));
                 }
             }
         }
@@ -5498,6 +6715,8 @@ canvas.addEventListener(`mousedown`, (e) => {
             if(rendered === false){
                 rendered = true;
                 localStorage.setItem('playerData', JSON.stringify(player));
+				        localStorage.setItem('MarketData', JSON.stringify(companies));
+                localStorage.setItem('GraphData', JSON.stringify(stockgraph));
                 secondDialogueTime = Date.now();
 
             }
@@ -5624,16 +6843,35 @@ canvas.addEventListener(`mousedown`, (e) => {
 
 
 
+                        companies.forEach(company => updateStockPrice(company));
+						const averageStockPrice = companies.reduce((acc, company) => acc + company.stockPrice, 0) / companies.length;
+                        // Remove the first element and add the new average at the end
+                        stockgraph.shift(); // Remove the first element
+                        stockgraph.push(averageStockPrice); // Add the average stock price to the end
+                        localStorage.setItem('MarketData', JSON.stringify(companies));
+                        localStorage.setItem('GraphData', JSON.stringify(stockgraph));
+
+                        recession()
+
 
                     }
+
+
 
                     else{
                         rendered = false;
                         refused = false;
                         secondDialogueTime = Date.now();
                         player.week++;
+                        companies.forEach(company => updateStockPrice(company));
+						const averageStockPrice = companies.reduce((acc, company) => acc + company.stockPrice, 0) / companies.length;
+                        // Remove the first element and add the new average at the end
+                        stockgraph.shift(); // Remove the first element
+                        stockgraph.push(averageStockPrice); // Add the average stock price to the end
+                        localStorage.setItem('MarketData', JSON.stringify(companies));
+                        localStorage.setItem('GraphData', JSON.stringify(stockgraph));
                         goToScene8();
-
+                        recession()
                         if(rendered === false){
                             rendered = true;
 
@@ -5677,6 +6915,8 @@ canvas.addEventListener(`mousedown`, (e) => {
                         console.table(times, ["week","reserved","sell"]);
 
                         localStorage.setItem('playerData', JSON.stringify(player));
+						            localStorage.setItem('MarketData', JSON.stringify(companies));
+                        localStorage.setItem('GraphData', JSON.stringify(stockgraph));
                         goToScene8();
                         return;
                     }
@@ -5800,20 +7040,28 @@ canvas.addEventListener(`mousedown`, (e) => {
                             if(customers[currentcustomer].kupal){
                                 if(offerchance > 0.5){
                                     if(offerchance2 > 0.5){
-                                        offer = Math.round((offer + Math.random() * offer * 0.10) * 100) / 100;
+                                      let increase = Math.max(0.01, Math.random() * offer * 0.10);
+                                      offer = Math.round((offer + increase) * 100) / 100;
+                                      
                                     
                                     
                                     }
                                     else{
-                                        offer = Math.round((offer + Math.random() * offer * 0.05) * 100) / 100;
+                                      let increase = Math.max(0.01, Math.random() * offer * 0.05);
+                                      offer = Math.round((offer + increase) * 100) / 100;
+                                      
                                     }
                                 }
                                 else{
                                     if(offerchance2 > 0.5){
-                                        offer = Math.round((offer + Math.random() * offer * 0.03) * 100) / 100;
+                                      let increase = Math.max(0.01, Math.random() * offer * 0.03);
+                                      offer = Math.round((offer + increase) * 100) / 100;
+                                      
                                     }
                                     else{
-                                        offer = Math.round((offer + Math.random() * offer * 0.01) * 100) / 100;
+                                      let increase = Math.max(0.01, Math.random() * offer * 0.01);
+                                      offer = Math.round((offer + increase) * 100) / 100;
+                                      
                                     }
                                 
                                 }
@@ -5822,20 +7070,28 @@ canvas.addEventListener(`mousedown`, (e) => {
                             else{
                                 if(offerchance > 0.5){
                                     if(offerchance2 > 0.5){
-                                        offer = Math.round((offer + Math.random() * offer * 0.30) * 100) / 100;
+                                      let increase = Math.max(0.01, Math.random() * offer * 0.30);
+                                      offer = Math.round((offer + increase) * 100) / 100;
+                                      
                                     
                                     
                                     }
                                     else{
-                                        offer = Math.round((offer + Math.random() * offer * 0.20) * 100) / 100;
+                                      let increase = Math.max(0.01, Math.random() * offer * 0.20);
+                                      offer = Math.round((offer + increase) * 100) / 100;
+                                      
                                     }
                                 }
                                 else{
                                     if(offerchance2 > 0.5){
-                                        offer = Math.round((offer + Math.random() * offer * 0.15) * 100) / 100;
+                                      let increase = Math.max(0.01, Math.random() * offer * 0.15);
+                                      offer = Math.round((offer + increase) * 100) / 100;
+                                      
                                     }
                                     else{
-                                        offer = Math.round((offer + Math.random() * offer * 0.10) * 100) / 100;
+                                      let increase = Math.max(0.01, Math.random() * offer * 0.10);
+                                      offer = Math.round((offer + increase) * 100) / 100;
+                                      
                                     }
                                 
                                 }
@@ -5885,19 +7141,23 @@ canvas.addEventListener(`mousedown`, (e) => {
 
                                 if(offerchance > 0.5){
                                     if(offerchance2 > 0.5){
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.01) * 100) / 100;
+                                      let reduction = Math.max(0.01, Math.random() * sell.price * 0.01);
+                                      customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
                                     }
                                     else{
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.03) * 100) / 100;
+                                      let reduction = Math.max(0.01, Math.random() * sell.price * 0.03);
+                                      customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
                                     }
                                 }
                                 else{
                                     if(offerchance2 > 0.5){
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.05) * 100) / 100;
+                                      let reduction = Math.max(0.01, Math.random() * sell.price * 0.05);
+                                      customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
     
                                     }
                                     else{
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.10) * 100) / 100;
+                                      let reduction = Math.max(0.01, Math.random() * sell.price * 0.10);
+                                      customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
     
                                     }
                                 }
@@ -5908,19 +7168,23 @@ canvas.addEventListener(`mousedown`, (e) => {
                             else{
                                 if(offerchance > 0.5){
                                     if(offerchance2 > 0.5){
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.05) * 100) / 100;
+                                      let reduction = Math.max(0.01, Math.random() * sell.price * 0.05);
+                                      customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
                                     }
                                     else{
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.10) * 100) / 100;
+                                      let reduction = Math.max(0.01, Math.random() * sell.price * 0.10);
+                                      customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
                                     }
                                 }
                                 else{
                                     if(offerchance2 > 0.5){
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.15) * 100) / 100;
+                                      let reduction = Math.max(0.01, Math.random() * sell.price * 0.15);
+                                      customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
     
                                     }
                                     else{
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.20) * 100) / 100;
+                                      let reduction = Math.max(0.01, Math.random() * sell.price * 0.20);
+                                      customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
     
                                     }
                                 }
@@ -5972,49 +7236,66 @@ canvas.addEventListener(`mousedown`, (e) => {
                             atdialogue = 3
                         }
                         else{
-                            if(customers[currentcustomer].kupal){
-                                if(offerchance > 0.5){
-                                    if(offerchance2 > 0.5){
-                                        offer = Math.round((offer + Math.random() * offer * 0.10) * 100) / 100;
-                                    
-                                    
-                                    }
-                                    else{
-                                        offer = Math.round((offer + Math.random() * offer * 0.05) * 100) / 100;
-                                    }
+                          if(customers[currentcustomer].kupal){
+                            if(offerchance > 0.5){
+                                if(offerchance2 > 0.5){
+                                  let increase = Math.max(0.01, Math.random() * offer * 0.10);
+                                  offer = Math.round((offer + increase) * 100) / 100;
+                                  
+                                
+                                
                                 }
                                 else{
-                                    if(offerchance2 > 0.5){
-                                        offer = Math.round((offer + Math.random() * offer * 0.03) * 100) / 100;
-                                    }
-                                    else{
-                                        offer = Math.round((offer + Math.random() * offer * 0.01) * 100) / 100;
-                                    }
-                                
+                                  let increase = Math.max(0.01, Math.random() * offer * 0.05);
+                                  offer = Math.round((offer + increase) * 100) / 100;
+                                  
                                 }
                             }
                             else{
-                                if(offerchance > 0.5){
-                                    if(offerchance2 > 0.5){
-                                        offer = Math.round((offer + Math.random() * offer * 0.30) * 100) / 100;
-                                    
-                                    
-                                    }
-                                    else{
-                                        offer = Math.round((offer + Math.random() * offer * 0.20) * 100) / 100;
-                                    }
+                                if(offerchance2 > 0.5){
+                                  let increase = Math.max(0.01, Math.random() * offer * 0.03);
+                                  offer = Math.round((offer + increase) * 100) / 100;
+                                  
                                 }
                                 else{
-                                    if(offerchance2 > 0.5){
-                                        offer = Math.round((offer + Math.random() * offer * 0.15) * 100) / 100;
-                                    }
-                                    else{
-                                        offer = Math.round((offer + Math.random() * offer * 0.10) * 100) / 100;
-                                    }
-                                
+                                  let increase = Math.max(0.01, Math.random() * offer * 0.01);
+                                  offer = Math.round((offer + increase) * 100) / 100;
+                                  
                                 }
+                            
                             }
                             atdialogue++;
+                        }
+                        else{
+                            if(offerchance > 0.5){
+                                if(offerchance2 > 0.5){
+                                  let increase = Math.max(0.01, Math.random() * offer * 0.30);
+                                  offer = Math.round((offer + increase) * 100) / 100;
+                                  
+                                
+                                
+                                }
+                                else{
+                                  let increase = Math.max(0.01, Math.random() * offer * 0.20);
+                                  offer = Math.round((offer + increase) * 100) / 100;
+                                  
+                                }
+                            }
+                            else{
+                                if(offerchance2 > 0.5){
+                                  let increase = Math.max(0.01, Math.random() * offer * 0.15);
+                                  offer = Math.round((offer + increase) * 100) / 100;
+                                  
+                                }
+                                else{
+                                  let increase = Math.max(0.01, Math.random() * offer * 0.10);
+                                  offer = Math.round((offer + increase) * 100) / 100;
+                                  
+                                }
+                            
+                            }
+                            atdialogue++;
+                        }
 
                         }
                     }
@@ -6051,50 +7332,58 @@ canvas.addEventListener(`mousedown`, (e) => {
                             atdialogue = 3;
                         }
                         else{
-                            if(customers[currentcustomer].kupal){
+                          if(customers[currentcustomer].kupal){
 
-                                if(offerchance > 0.5){
-                                    if(offerchance2 > 0.5){
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.01) * 100) / 100;
-                                    }
-                                    else{
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.03) * 100) / 100;
-                                    }
+                            if(offerchance > 0.5){
+                                if(offerchance2 > 0.5){
+                                  let reduction = Math.max(0.01, Math.random() * sell.price * 0.01);
+                                  customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
                                 }
                                 else{
-                                    if(offerchance2 > 0.5){
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.05) * 100) / 100;
-    
-                                    }
-                                    else{
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.10) * 100) / 100;
-    
-                                    }
+                                  let reduction = Math.max(0.01, Math.random() * sell.price * 0.03);
+                                  customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
                                 }
-    
-    
-    
                             }
                             else{
-                                if(offerchance > 0.5){
-                                    if(offerchance2 > 0.5){
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.05) * 100) / 100;
-                                    }
-                                    else{
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.10) * 100) / 100;
-                                    }
+                                if(offerchance2 > 0.5){
+                                  let reduction = Math.max(0.01, Math.random() * sell.price * 0.05);
+                                  customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
+
                                 }
                                 else{
-                                    if(offerchance2 > 0.5){
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.15) * 100) / 100;
-    
-                                    }
-                                    else{
-                                        customerselloffer = Math.round((customerselloffer - Math.random() * sell.price * 0.20) * 100) / 100;
-    
-                                    }
+                                  let reduction = Math.max(0.01, Math.random() * sell.price * 0.10);
+                                  customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
+
                                 }
                             }
+
+
+
+                        }
+                        else{
+                            if(offerchance > 0.5){
+                                if(offerchance2 > 0.5){
+                                  let reduction = Math.max(0.01, Math.random() * sell.price * 0.05);
+                                  customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
+                                }
+                                else{
+                                  let reduction = Math.max(0.01, Math.random() * sell.price * 0.10);
+                                  customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
+                                }
+                            }
+                            else{
+                                if(offerchance2 > 0.5){
+                                  let reduction = Math.max(0.01, Math.random() * sell.price * 0.15);
+                                  customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
+
+                                }
+                                else{
+                                  let reduction = Math.max(0.01, Math.random() * sell.price * 0.20);
+                                  customerselloffer = Math.round((customerselloffer - reduction) * 100) / 100;
+
+                                }
+                            }
+                        }
                             atdialogue++;
                         }
 
@@ -6213,7 +7502,8 @@ canvas.addEventListener(`mousedown`, (e) => {
                             player.inventory.push({
                                 name: sell.name,
                                 imgSrc: sell.img.src,  // ✅ this is just a string like "images/sword.png"
-                                price: sell.price
+                                price: sell.price,
+								rarity: sell.rarity
                               });
                         }
                         refused = false;
@@ -6334,6 +7624,20 @@ canvas.addEventListener(`mousedown`, (e) => {
                     secondDialogueTime = Date.now();
                 }
             }
+                        if (roundedx >= grid * 24 && roundedx < grid * 28 &&
+                roundedy == grid * 1) {
+                                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                if(player.level < 3){
+                    showNotification("You must gain market wisdom before entering the financial alchemy chamber.", 5000);
+                    
+                }
+                else{
+                    currentscene = 8;
+                }
+
+            }
         
 // click handler:
 for (let i = 0; i < inventorybtn.length; i++) {
@@ -6427,6 +7731,8 @@ if(roundedx >= rslider.x && roundedx < rslider.x + rslider.width && roundedy >= 
                     clicksfx.play();
                     
                 localStorage.removeItem('playerData');
+				localStorage.removeItem('MarketData');
+        localStorage.removeItem('GraphData');
                 location.reload(); // optional: refresh to start fresh
                 alert( `LocalStorage Cleared.`)
             }
@@ -6450,8 +7756,10 @@ if(roundedx >= rslider.x && roundedx < rslider.x + rslider.width && roundedy >= 
                 roundedy >= grid * 6 &&
                 roundedy <= grid * 7
             ){
-                console.log(`42`);
+              if(bgmusic.volume > 0){
                 bgmusic.volume -= 0.25;
+              }
+
             }
             if(
                 roundedx >= grid * 5 &&
@@ -6459,8 +7767,9 @@ if(roundedx >= rslider.x && roundedx < rslider.x + rslider.width && roundedy >= 
                 roundedy >= grid * 6 &&
                 roundedy <= grid * 7
             ){
-                console.log(`42`);
+              if(bgmusic.volume < 1){
                 bgmusic.volume += 0.25;
+              }
             }
 
         }
@@ -6478,10 +7787,152 @@ if(roundedx >= rslider.x && roundedx < rslider.x + rslider.width && roundedy >= 
                 clicksfx.play();
             }
         }
+		if(currentscene === 8){
+			if(
+				roundedx >= grid * 11 &&
+				roundedx <= grid * 18 &&
+				roundedy >= 0 &&
+				roundedy <= grid * 1
+			){
+                clicksfx.pause();
+                clicksfx.currentTime = 0;
+                clicksfx.play();
 
-    }
+        
+                if(!c1page && !c2page && !c3page){
+                    currentscene = 5;
+                }
+                else if(c1page){
+                    c1page = false;
+                }
+                else if(c2page){
+                    c2page = false;
+                }
+                else if(c3page){
+                    c3page = false;
+                }
 
-    
+
+			}
+
+
+
+            if(!c1page && !c2page && !c3page){
+                if(roundedx >= grid * 20 && roundedx <= grid * 21 && roundedy === grid * 3){
+                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                    sellstocks(companies[0], player.stocks[companies[0].name]);
+                }
+                if(roundedx >= grid * 23 && roundedx <= grid * 24 && roundedy === grid * 3){
+                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                    sellstocks(companies[1], player.stocks[companies[1].name]);
+                }
+                if(roundedx >= grid * 26 && roundedx <= grid * 27 && roundedy === grid * 3){
+                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                    sellstocks(companies[2], player.stocks[companies[2].name]);
+                }
+            }
+
+            
+
+
+            if(
+                roundedx >= grid && roundedx <= grid * 10 && roundedy >= grid && roundedy <= grid * 4 && !c2page && !c3page
+            ){
+                clicksfx.pause();
+                clicksfx.currentTime = 0;
+                clicksfx.play();
+                c1page = true;
+            }
+            else if(
+                roundedx >= grid && roundedx <= grid * 10 && roundedy >= grid * 6 && roundedy <= grid * 9 && !c1page && !c3page
+            ){
+                clicksfx.pause();
+                clicksfx.currentTime = 0;
+                clicksfx.play();
+                c2page = true;
+                return;
+            }
+            else if(
+                roundedx >= grid && roundedx <= grid * 10 && roundedy >= grid * 11 && roundedy <= grid * 13 && !c1page && !c2page
+            ){
+                clicksfx.pause();
+                clicksfx.currentTime = 0;
+                clicksfx.play();
+                c3page = true;
+                return;
+            }
+
+            if(c1page){
+                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 6 && roundedy <= grid * 7){
+                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                    buystocks(companies[0], 1);
+                }
+                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 9 && roundedy <= grid * 10){
+                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                    buystocks(companies[0], 10);
+                }
+                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 12 && roundedy <= grid * 13){
+                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                    buystocks(companies[0], 50);
+                }
+            }
+            else if(c2page){
+                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 6 && roundedy <= grid * 7){
+                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                    buystocks(companies[1], 1);
+                }
+                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 9 && roundedy <= grid * 10){
+                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                    buystocks(companies[1], 10);
+                }
+                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 12 && roundedy <= grid * 13){
+                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                    buystocks(companies[1], 50);
+                }
+            }
+            else if(c3page){
+                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 6 && roundedy <= grid * 7){
+                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                    buystocks(companies[2], 1);
+                }
+                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 9 && roundedy <= grid * 10){
+                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                    buystocks(companies[2], 10);
+                }
+                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 12 && roundedy <= grid * 13){
+                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                    buystocks(companies[2], 50);
+                }
+            }
+
+		}
+
+  }
+ 
     
 });
 /**//**/
@@ -6527,9 +7978,15 @@ if(roundedx >= rslider.x && roundedx < rslider.x + rslider.width && roundedy >= 
 /**//**/
 /**//**/// Load
 /**//**/const savedData = localStorage.getItem('playerData');
+/**//**/const savedData2 = localStorage.getItem('MarketData');
+/**//**/const savedData3 = localStorage.getItem('GraphData');
 /**//**/if (savedData) {
 /**//**/  const loaded = JSON.parse(savedData);
+/**//**/  const loaded2 = JSON.parse(savedData2);
+/**//**/  const loaded3 = JSON.parse(savedData3);
 /**//**/  Object.assign(player, loaded);
+/**//**/  Object.assign(companies, loaded2);
+/**//**/  Object.assign(stockgraph, loaded3);
 /**//**/
 /**//**/  for (let item of player.inventory) {
 /**//**/    console.log("Trying to load image from:", item.imgSrc);
