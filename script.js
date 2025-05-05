@@ -109,15 +109,15 @@ EvilJamal.src = 'Evil Jamal.png';
 const clicksfx = new Audio(`button-29.mp3`)
 
 const songs = [
-    `WAVESultimate2.mp3`,
-    `Remote-Control.mp3`,
-    `30 Hours.mp3`,
-    `CITS.mp3`,
-    `Moon.mp3`,
-    `TCIAA.mp3`,
-    `Like Him.mp3`,
-    `530.mp3`
-];
+  "WAVESultimate2.mp3",
+  "Remote-Control.mp3",
+  "30 Hours.mp3",
+  "CITS.mp3",
+  "Moon.mp3",
+  "TCIAA.mp3",
+  "Like Him.mp3",
+  "530.mp3"
+].map(filename => encodeURI(filename)); // this handles spaces like "30 Hours"
 
 
 
@@ -136,12 +136,16 @@ let shuffledSongs = shuffle(songs); // Shuffle at the start
 let mymusicindex = 0;
 let bgmusic = new Audio();
 let isPlaying = false; // Track if music is already playing
-
-bgmusic.volume = 0.5;
-
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const track = audioContext.createMediaElementSource(bgmusic);
+const gainNode = audioContext.createGain();
+gainNode.gain.value = 0.5; // Set volume here
+track.connect(gainNode).connect(audioContext.destination);
 
 function playmusic() {
     if (mymusicindex < shuffledSongs.length) {
+      audioContext.resume();
+      bgmusic.crossOrigin = "anonymous";
         bgmusic.src = shuffledSongs[mymusicindex];
         bgmusic.play();
         isPlaying = true; // Mark as playing
@@ -624,12 +628,12 @@ const gameitems = [
     },
     {
         name: `Key Chain`,
-        price: 2.22,
+        price: 0.55,
         description: "A simple plastic keychain, small and lightweight, perfect for holding your keys or as a souvenir.",
         img: KeyChain,
         rarity: `Common`,
         category: `School`,
-        ogprice: 2.22
+        ogprice: 0.55
     },
     {
         name: `Plastic Medal`,
@@ -4770,7 +4774,7 @@ drawSilhouettes();
 
     ctx.fillStyle = `green`;
     ctx.fillText(
-        `Music: ${bgmusic.volume}`,
+        `Music: ${gainNode.gain.value}`,
         grid * 4.5,
         grid * 7
     );
@@ -5483,6 +5487,9 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
     else if(player.week == 4 && player.month == 2){
         ctx.drawImage(gameitems[8].img, grid * 1.2, grid * 2.5, 1380, 200);
     }
+    else if(player.week == 0 && player.month == 3){
+      ctx.drawImage(gameitems[3].img, grid * 1.2, grid * 2.5, 1380, 200);
+  }
     else if (player.currentseason === seasons[1]) {
       ctx.drawImage(gameitems[3].img, grid * 1.2, grid * 2.5, 1380, 200);
     }
@@ -5795,7 +5802,7 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
 
         ctx.font = "40px Arial";
         ctx.fillText(companies[0].category, canvas.width / 2, grid * 2);
-        ctx.fillText(companies[0].owner.name, canvas.width / 2, grid * 2.7);
+        ctx.fillText(companies[0].owner, canvas.width / 2, grid * 2.7);
         ctx.font = "20px Arial";
 
 
@@ -5945,7 +5952,7 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
 
         ctx.font = "40px Arial";
         ctx.fillText(companies[1].category, canvas.width / 2, grid * 2);
-        ctx.fillText(companies[1].owner.name, canvas.width / 2, grid * 2.7);
+        ctx.fillText(companies[1].owner, canvas.width / 2, grid * 2.7);
         ctx.font = "20px Arial";
 
 
@@ -6095,7 +6102,7 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
 
         ctx.font = "40px Arial";
         ctx.fillText(companies[2].category, canvas.width / 2, grid * 2);
-        ctx.fillText(companies[2].owner.name, canvas.width / 2, grid * 2.7);
+        ctx.fillText(companies[2].owner, canvas.width / 2, grid * 2.7);
         ctx.font = "20px Arial";
 
 
@@ -7756,8 +7763,8 @@ if(roundedx >= rslider.x && roundedx < rslider.x + rslider.width && roundedy >= 
                 roundedy >= grid * 6 &&
                 roundedy <= grid * 7
             ){
-              if(bgmusic.volume > 0){
-                bgmusic.volume -= 0.25;
+              if(gainNode.gain.value > 0){
+                gainNode.gain.value = 0.5;
               }
 
             }
@@ -7767,8 +7774,8 @@ if(roundedx >= rslider.x && roundedx < rslider.x + rslider.width && roundedy >= 
                 roundedy >= grid * 6 &&
                 roundedy <= grid * 7
             ){
-              if(bgmusic.volume < 1){
-                bgmusic.volume += 0.25;
+              if(gainNode.gain.value < 1){
+                gainNode.gain.value += 0.25;
               }
             }
 
