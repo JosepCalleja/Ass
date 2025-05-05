@@ -1827,145 +1827,169 @@ function scene4() {
 
 
     if(scenerandomizer > 0.66){
-    // Kool Kids Klub
-    // Sky
-    ctx.fillStyle = '#87ceeb';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+// Sky
+ctx.fillStyle = '#87ceeb';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Ground
-    ctx.fillStyle = '#9c804b';
-    ctx.fillRect(0, grid * 10, canvas.width, canvas.height - grid * 10);
+// Clouds
+function drawCloud(x, y, scale) {
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+  ctx.beginPath();
+  // Base puff
+  ctx.arc(x, y, 25 * scale, 0, Math.PI * 2);
+  // Side puffs
+  ctx.arc(x + 30 * scale, y + 10 * scale, 20 * scale, 0, Math.PI * 2);
+  ctx.arc(x - 30 * scale, y + 10 * scale, 20 * scale, 0, Math.PI * 2);
+  // Top puff
+  ctx.arc(x, y - 10 * scale, 22 * scale, 0, Math.PI * 2);
+  // Bottom puff
+  ctx.arc(x, y + 15 * scale, 18 * scale, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.fill();
+}
 
-    // Path
-    ctx.fillStyle = '#c2b280';
-    ctx.fillRect(grid * 6, grid * 10, grid * 3, grid * 5);
+// Draw larger, more detailed clouds
+drawCloud(grid * 2, grid * 2, 1.5);
+drawCloud(grid * 7, grid * 1.5, 1.2);
+drawCloud(grid * 12, grid * 2.5, 1.8);
 
-    // Shop Building
-    ctx.fillStyle = '#deb887';
-    ctx.fillRect(grid * 4, grid * 6, grid * 7, grid * 4);
+// Ground
+ctx.fillStyle = '#9c804b';
+ctx.fillRect(0, grid * 10, canvas.width, canvas.height - grid * 10);
 
-    // Roof
-    ctx.fillStyle = '#8b0000';
-    ctx.beginPath();
-    ctx.moveTo(grid * 3.5, grid * 6);
-    ctx.lineTo(grid * 8, grid * 3.5);
-    ctx.lineTo(grid * 12.5, grid * 6);
-    ctx.closePath();
-    ctx.fill();
+// Path
+ctx.fillStyle = '#c2b280';
+ctx.fillRect(grid * 6, grid * 10, grid * 3, grid * 5);
 
-    // Door
-    ctx.fillStyle = '#5c4033';
-    ctx.fillRect(grid * 7, grid * 8, grid * 1.5, grid * 2);
+// Shop Building
+ctx.fillStyle = '#deb887';
+ctx.fillRect(grid * 4, grid * 6, grid * 7, grid * 4);
 
-    // Door knob
-    ctx.fillStyle = '#daa520';
-    ctx.beginPath();
-    ctx.arc(grid * 8.3, grid * 9, 5, 0, Math.PI * 2);
-    ctx.fill();
+// Roof (centered)
+ctx.fillStyle = '#8b0000';
+ctx.beginPath();
+const shopCenterX = grid * (4 + 7 / 2);
+const roofPeakY = grid * 3.5;
+ctx.moveTo(shopCenterX - (7 / 2 + 0.5) * grid, grid * 6);
+ctx.lineTo(shopCenterX, roofPeakY);
+ctx.lineTo(shopCenterX + (7 / 2 + 0.5) * grid, grid * 6);
+ctx.closePath();
+ctx.fill();
 
-    // Windows
-    ctx.fillStyle = '#add8e6';
-    ctx.fillRect(grid * 5, grid * 7, grid, grid);
-    ctx.fillRect(grid * 9, grid * 7, grid, grid);
-    ctx.strokeStyle = '#666';
-    ctx.beginPath();
-    // Window 1 cross
-    ctx.moveTo(grid * 5.5, grid * 7);
-    ctx.lineTo(grid * 5.5, grid * 8);
-    ctx.moveTo(grid * 5, grid * 7.5);
-    ctx.lineTo(grid * 6, grid * 7.5);
-    // Window 2 cross
-    ctx.moveTo(grid * 9.5, grid * 7);
-    ctx.lineTo(grid * 9.5, grid * 8);
-    ctx.moveTo(grid * 9, grid * 7.5);
-    ctx.lineTo(grid * 10, grid * 7.5);
-    ctx.stroke();
+// Door
+ctx.fillStyle = '#5c4033';
+ctx.fillRect(grid * 6.7, grid * 8, grid * 1.5, grid * 2);
 
-    // Sign
-    ctx.fillStyle = '#a0522d';
-    ctx.fillRect(grid * 6, grid * 5.2, grid * 4, grid * 0.8);
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 16px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('Kool Kids Klub', grid * 8, grid * 5.8);
+// Door knob
+ctx.fillStyle = '#daa520';
+ctx.beginPath();
+ctx.arc(grid * 8, grid * 9, 5, 0, Math.PI * 2);
+ctx.fill();
+
+// Windows
+ctx.fillStyle = '#add8e6';
+ctx.fillRect(grid * 5, grid * 7, grid, grid);
+ctx.fillRect(grid * 9, grid * 7, grid, grid);
+ctx.strokeStyle = '#666';
+ctx.beginPath();
+// Window 1 cross
+ctx.moveTo(grid * 5.5, grid * 7);
+ctx.lineTo(grid * 5.5, grid * 8);
+ctx.moveTo(grid * 5, grid * 7.5);
+ctx.lineTo(grid * 6, grid * 7.5);
+// Window 2 cross
+ctx.moveTo(grid * 9.5, grid * 7);
+ctx.lineTo(grid * 9.5, grid * 8);
+ctx.moveTo(grid * 9, grid * 7.5);
+ctx.lineTo(grid * 10, grid * 7.5);
+ctx.stroke();
+
+// Sign
+ctx.fillStyle = '#a0522d';
+ctx.fillRect(grid * 5.5, grid * 5.2, grid * 4, grid * 0.8);
+ctx.fillStyle = '#fff';
+ctx.font = 'bold 16px Arial';
+ctx.textAlign = 'center';
+ctx.fillText('Kool Kids Klub', grid * 7.5, grid * 5.8);
     }
     else if(scenerandomizer > 0.33){
-            // WALL BACKGROUND
-    const wallHeight = grid * 8;
-    const wallGrad = ctx.createLinearGradient(0, 0, 0, wallHeight);
-    wallGrad.addColorStop(0, '#A0522D');
-    wallGrad.addColorStop(1, '#7B3F1D');
-    ctx.fillStyle = wallGrad;
-    ctx.fillRect(0, 0, canvas.width, wallHeight);
+// WALL BACKGROUND
+const wallHeight = grid * 8;
+const wallGrad = ctx.createLinearGradient(0, 0, 0, wallHeight);
+wallGrad.addColorStop(0, '#A0522D');
+wallGrad.addColorStop(1, '#7B3F1D');
+ctx.fillStyle = wallGrad;
+ctx.fillRect(0, 0, canvas.width, wallHeight);
 
-    // FLOOR BACKGROUND
-    const floorGrad = ctx.createLinearGradient(0, wallHeight, 0, canvas.height);
-    floorGrad.addColorStop(0, '#DEB887');
-    floorGrad.addColorStop(1, '#B8860B');
-    ctx.fillStyle = floorGrad;
-    ctx.fillRect(0, wallHeight, canvas.width, canvas.height - wallHeight);
+// FLOOR BACKGROUND
+const floorGrad = ctx.createLinearGradient(0, wallHeight, 0, canvas.height);
+floorGrad.addColorStop(0, '#DEB887');
+floorGrad.addColorStop(1, '#B8860B');
+ctx.fillStyle = floorGrad;
+ctx.fillRect(0, wallHeight, canvas.width, canvas.height - wallHeight);
 
-    // WINDOW (centered)
-    const winW = grid * 4, winH = grid * 2;
-    const winX = canvas.width / 2 - winW / 2, winY = grid * 2;
-    ctx.fillStyle = '#87CEEB';
-    ctx.fillRect(winX, winY, winW, winH);
+// WINDOW (centered)
+const winW = grid * 4, winH = grid * 2;
+const winX = canvas.width / 2 - winW / 2, winY = grid * 2;
+ctx.fillStyle = '#87CEEB';
+ctx.fillRect(winX, winY, winW, winH);
 
-    // Window frame
-    ctx.strokeStyle = '#4B2E1A';
-    ctx.lineWidth = 5;
-    ctx.strokeRect(winX, winY, winW, winH);
+// Window frame
+ctx.strokeStyle = '#4B2E1A';
+ctx.lineWidth = 5;
+ctx.strokeRect(winX, winY, winW, winH);
 
-    // Mullions
-    ctx.strokeStyle = '#FFF';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(winX + winW / 2, winY);
-    ctx.lineTo(winX + winW / 2, winY + winH);
-    ctx.moveTo(winX, winY + winH / 2);
-    ctx.lineTo(winX + winW, winY + winH / 2);
-    ctx.stroke();
+// Mullions
+ctx.strokeStyle = '#FFF';
+ctx.lineWidth = 2;
+ctx.beginPath();
+ctx.moveTo(winX + winW / 2, winY);
+ctx.lineTo(winX + winW / 2, winY + winH);
+ctx.moveTo(winX, winY + winH / 2);
+ctx.lineTo(winX + winW, winY + winH / 2);
+ctx.stroke();
 
-    // Sill
-    ctx.fillStyle = '#5C4033';
-    ctx.fillRect(winX - 10, winY + winH, winW + 20, 12);
+// Sill
+ctx.fillStyle = '#5C4033';
+ctx.fillRect(winX - 10, winY + winH, winW + 20, 12);
 
-    // DOOR (right side)
-    const doorW = 40, doorH = 80;
-    const doorX = canvas.width - grid * 2, doorY = wallHeight - doorH + 20;
-    ctx.fillStyle = '#5B3316';
-    ctx.fillRect(doorX, doorY, doorW, doorH);
+// DOOR (right side, enlarged to match window)
+const doorW = winW * 0.75, doorH = winH * 2;
+const doorX = canvas.width - grid * 1.5 - doorW, doorY = wallHeight - doorH;
+ctx.fillStyle = '#5B3316';
+ctx.fillRect(doorX, doorY, doorW, doorH);
 
-    // Door panels
-    ctx.strokeStyle = '#3B2312';
-    ctx.lineWidth = 3;
-    ctx.strokeRect(doorX + 5, doorY + 5, 30, 25);
-    ctx.strokeRect(doorX + 5, doorY + 45, 30, 25);
+// Door panels
+ctx.strokeStyle = '#3B2312';
+ctx.lineWidth = 3;
+ctx.strokeRect(doorX + doorW * 0.1, doorY + doorH * 0.1, doorW * 0.8, doorH * 0.3);
+ctx.strokeRect(doorX + doorW * 0.1, doorY + doorH * 0.6, doorW * 0.8, doorH * 0.3);
 
-    // Knob
-    ctx.fillStyle = 'gold';
-    ctx.beginPath();
-    ctx.arc(doorX + 32, doorY + 40, 5, 0, Math.PI * 2);
-    ctx.fill();
+// Knob
+ctx.fillStyle = 'gold';
+ctx.beginPath();
+ctx.arc(doorX + doorW * 0.85, doorY + doorH * 0.5, 5, 0, Math.PI * 2);
+ctx.fill();
 
-    // TABLE (centered lower room)
-    const tblW = 120, tblH = 60;
-    const tblX = canvas.width / 2 - tblW / 2, tblY = wallHeight + 80;
-    ctx.fillStyle = '#A0522D';
-    ctx.fillRect(tblX, tblY, tblW, tblH);
+// TABLE (centered lower room, enlarged to match window width)
+const tblW = winW, tblH = winH * 0.75;
+const tblX = canvas.width / 2 - tblW / 2, tblY = wallHeight + grid * 2;
+ctx.fillStyle = '#A0522D';
+ctx.fillRect(tblX, tblY, tblW, tblH);
 
-    // Bevel highlight
-    ctx.strokeStyle = '#D2A56C';
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.moveTo(tblX, tblY);
-    ctx.lineTo(tblX + tblW, tblY);
-    ctx.stroke();
+// Bevel highlight
+ctx.strokeStyle = '#D2A56C';
+ctx.lineWidth = 4;
+ctx.beginPath();
+ctx.moveTo(tblX, tblY);
+ctx.lineTo(tblX + tblW, tblY);
+ctx.stroke();
 
-    // Legs
-    ctx.fillStyle = '#8B4513';
-    ctx.fillRect(tblX + 15, tblY + tblH, 10, 40);
-    ctx.fillRect(tblX + tblW - 25, tblY + tblH, 10, 40);
+// Legs (scaled)
+ctx.fillStyle = '#8B4513';
+ctx.fillRect(tblX + tblW * 0.1, tblY + tblH, grid * 0.5, grid * 1.5);
+ctx.fillRect(tblX + tblW * 0.9 - grid * 0.5, tblY + tblH, grid * 0.5, grid * 1.5);
+
     }
     else{
 // CEILING
@@ -2025,23 +2049,36 @@ ctx.beginPath();
 ctx.arc(doorX + doorW - grid * 0.5, doorY + doorH / 2, grid * 0.125, 0, Math.PI * 2);
 ctx.fill();
 
-  // CLOCK (repositioned left by 4 grid units)
-  const clockR = grid * 1.5;
-  // original: canvas.width - clockR - grid
-  const clockX = canvas.width - clockR - grid * 5;
-  const clockY = grid * 2 + clockR;
-  ctx.save();
-  ctx.translate(clockX, clockY);
-  ctx.fillStyle = '#FFF';
-  ctx.beginPath(); ctx.arc(0, 0, clockR, 0, Math.PI * 2); ctx.fill();
-  ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.stroke();
-  // Hands at 10:10
-  ctx.beginPath(); ctx.moveTo(0, 0);
-  ctx.lineTo(0, -clockR + grid * 0.5);
-  ctx.moveTo(0, 0);
-  ctx.lineTo(clockR - grid * 0.75, 0);
-  ctx.stroke();
-  ctx.restore();
+// CLOCK (repositioned left by 4 grid units, pointing at 5:30)
+const clockR = grid * 1.5;
+const clockX = canvas.width - clockR - grid * 5;
+const clockY = grid * 2 + clockR;
+ctx.save();
+ctx.translate(clockX, clockY);
+
+// Clock face
+ctx.fillStyle = '#FFF';
+ctx.beginPath(); ctx.arc(0, 0, clockR, 0, Math.PI * 2); ctx.fill();
+ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.stroke();
+
+// Hands for 5:30
+const hourAngle = (5.5 / 12) * Math.PI * 2;  // 5:30
+const minuteAngle = (30 / 60) * Math.PI * 2;   
+
+ctx.beginPath(); ctx.moveTo(0, 0);
+ctx.lineTo(
+  Math.cos(hourAngle - Math.PI/2) * clockR * 0.6,
+  Math.sin(hourAngle - Math.PI/2) * clockR * 0.6
+);
+ctx.moveTo(0, 0);
+ctx.lineTo(
+  Math.cos(minuteAngle - Math.PI/2) * clockR * 0.9,
+  Math.sin(minuteAngle - Math.PI/2) * clockR * 0.9
+);
+ctx.stroke();
+
+ctx.restore();
+
 
 // BULLETIN BOARD
 const bW = grid * 3, bH = grid * 2;
