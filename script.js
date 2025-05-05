@@ -5795,7 +5795,7 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
 
         ctx.font = "40px Arial";
         ctx.fillText(companies[0].category, canvas.width / 2, grid * 2);
-        ctx.fillText(companies[0].owner, canvas.width / 2, grid * 2.7);
+        ctx.fillText(companies[0].owner.name, canvas.width / 2, grid * 2.7);
         ctx.font = "20px Arial";
 
 
@@ -5945,7 +5945,7 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
 
         ctx.font = "40px Arial";
         ctx.fillText(companies[1].category, canvas.width / 2, grid * 2);
-        ctx.fillText(companies[1].owner, canvas.width / 2, grid * 2.7);
+        ctx.fillText(companies[1].owner.name, canvas.width / 2, grid * 2.7);
         ctx.font = "20px Arial";
 
 
@@ -6095,7 +6095,7 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
 
         ctx.font = "40px Arial";
         ctx.fillText(companies[2].category, canvas.width / 2, grid * 2);
-        ctx.fillText(companies[2].owner, canvas.width / 2, grid * 2.7);
+        ctx.fillText(companies[2].owner.name, canvas.width / 2, grid * 2.7);
         ctx.font = "20px Arial";
 
 
