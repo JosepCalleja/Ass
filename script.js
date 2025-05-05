@@ -865,48 +865,56 @@ function seasonMech() {
 seasonMech();
 
 let gamestate = {
-    recessionActive: false
+    recessionActive: false,
+    boom: false
 }
-
+let boomrecovery = 0;
 let recessionrecovery = 0;
 
 function updateStockPrice(company) {
-	let fluctuation;
-    let random = Math.random();
+  let fluctuation;
+  let random = Math.random();
 
-    if(random < 0.003){
-        recessionactivate();
-    }
-  
-	// 60% chance to rise: +0.5% to +0.7%
-	if (Math.random() < 0.5) {
-	  fluctuation = Math.random() * 0.004 + 0.005; // 0.005 to 0.007
-	} else {
-	  // 40% chance to drop: -0.7% to -0.5%
-	  fluctuation = -(Math.random() * 0.003 + 0.005); // -0.007 to -0.005
-	}
-
-    if (gamestate.recessionActive) {
-        fluctuation = -((Math.random() * 0.01) + 0.01); // -0.01 to -0.02
-      }
-  
-	let oldPrice = company.stockPrice;
-  
-	// Apply fluctuation
-	company.stockPrice = Math.round((company.stockPrice * (1 + fluctuation)) * 100) / 100;
-  
-	// Set state
-	if (company.stockPrice > oldPrice) {
-	  company.state = "rising";
-      updateText(`${company.name} is currently rising`)
-	} else if (company.stockPrice < oldPrice) {
-	  company.state = "dropping";
-      updateText(`${company.name} lost ${fluctuation}% in value!`, true);
-	} else {
-	  company.state = "stable";
-      updateText(`Stock prices of ${company.name} is frozen due to system error.`, true);
-	}
+  // Check for special events
+  if (random < 0.0015) {
+      recessionactivate();
+  } else if (random < 0.003) {
+      boomactivate();
   }
+
+  // Default fluctuation
+  if (Math.random() < 0.5) {
+      fluctuation = Math.random() * 0.0025 + 0.005; // +0.5% to +0.9%
+  } else {
+      fluctuation = -(Math.random() * 0.002 + 0.005); // -0.5% to -0.7%
+  }
+
+  // Adjust for economic events
+  if (gamestate.recessionActive) {
+      fluctuation = -((Math.random() * 0.01) + 0.025); // -1.1% to -2.1%
+  }
+  if (gamestate.boomActive) {
+      fluctuation = (Math.random() * 0.01) + 0.023; // +1.0% to +2.0%
+  }
+
+  let oldPrice = company.stockPrice;
+
+  // Apply fluctuation
+  company.stockPrice = Math.round((company.stockPrice * (1 + fluctuation)) * 100) / 100;
+
+  // Set state and notify
+  if (company.stockPrice > oldPrice) {
+      company.state = "rising";
+      updateText(`${company.name} is currently rising`);
+  } else if (company.stockPrice < oldPrice) {
+      company.state = "dropping";
+      updateText(`${company.name} lost ${Math.abs(fluctuation * 100).toFixed(2)}% in value!`, true);
+  } else {
+      company.state = "stable";
+      updateText(`Stock prices of ${company.name} is frozen due to system error.`, true);
+  }
+}
+
   
   let reactedToArticle = null;
 
@@ -6529,32 +6537,49 @@ function levelmech() {
 }
 
 let recessiondate = 0;
+let boomdate = 0;
 
 
-function recessionactivate(){
+function recessionactivate() {
     gamestate.recessionActive = true;
     recessiondate = Math.floor(Math.random() * (7 - 3 + 1)) + 3;
     updateText("Market crash detected!", true);
     updateText(`The recession is expected to last for ${recessiondate} weeks`, true);
 }
 
+function boomactivate() {
+    gamestate.boomActive = true; // Use consistent naming
+    boomdate = Math.floor(Math.random() * (7 - 3 + 1)) + 3;
+    updateText("Market surge detected!", false);
+    updateText(`The boom is expected to last for ${boomdate} weeks`, false);
+}
 
-function recession(){
-    if(gamestate.recessionActive){
-
-        if(recessionrecovery > recessiondate)
-        {
+// Call this every in-game week
+function recession() {
+    if (gamestate.recessionActive) {
+        if (recessionrecovery >= recessiondate) {
             gamestate.recessionActive = false;
             recessionrecovery = 0;
-        }
-        else{
+            updateText("The recession has ended.", false);
+        } else {
             recessionrecovery++;
         }
     }
-    else{
-        recessionrecovery = 0;
+}
+
+// Call this every in-game week
+function boom() {
+    if (gamestate.boomActive) {
+        if (boomrecovery >= boomdate) {
+            gamestate.boomActive = false;
+            boomrecovery = 0;
+            updateText("The market boom has cooled down.", true);
+        } else {
+            boomrecovery++;
+        }
     }
 }
+
 
 
 
