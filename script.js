@@ -6292,7 +6292,7 @@ function sellstocks(company, ammount) {
     company.sharesAvailable += ammount;
     player.money = addMoney(player.money, company.stockPrice * ammount);
     player.stocks[company.name] -= ammount;
-    updateText(`Sold ${ammount} share of ${company.name} for $${company.stockPrice * ammount}`, true);
+    updateText(`Sold ${ammount} share of ${company.name} for $${company.stockPrice * ammount}`, false);
 }
 
 
@@ -7787,149 +7787,125 @@ if(roundedx >= rslider.x && roundedx < rslider.x + rslider.width && roundedy >= 
                 clicksfx.play();
             }
         }
-		if(currentscene === 8){
-			if(
-				roundedx >= grid * 11 &&
-				roundedx <= grid * 18 &&
-				roundedy >= 0 &&
-				roundedy <= grid * 1
-			){
+        if (currentscene === 8) {
+            function resetPages() {
+                c1page = false;
+                c2page = false;
+                c3page = false;
+            }
+        
+            // Top-left corner to return to previous scene or close stock menu
+            if (
+                roundedx >= grid * 11 &&
+                roundedx <= grid * 18 &&
+                roundedy >= 0 &&
+                roundedy <= grid * 1
+            ) {
                 clicksfx.pause();
                 clicksfx.currentTime = 0;
                 clicksfx.play();
-
         
-                if(!c1page && !c2page && !c3page){
+                if (!c1page && !c2page && !c3page) {
                     currentscene = 5;
+                } else {
+                    resetPages();
                 }
-                else if(c1page){
-                    c1page = false;
-                }
-                else if(c2page){
-                    c2page = false;
-                }
-                else if(c3page){
-                    c3page = false;
-                }
-
-
-			}
-
-
-
-            if(!c1page && !c2page && !c3page){
-                if(roundedx >= grid * 20 && roundedx <= grid * 21 && roundedy === grid * 3){
+            }
+        
+            // SELL BUTTONS (only visible when on main stock page)
+            if (!c1page && !c2page && !c3page) {
+                if (roundedx >= grid * 20 && roundedx <= grid * 21 && roundedy === grid * 3) {
                     clicksfx.pause();
                     clicksfx.currentTime = 0;
                     clicksfx.play();
                     sellstocks(companies[0], player.stocks[companies[0].name]);
                 }
-                if(roundedx >= grid * 23 && roundedx <= grid * 24 && roundedy === grid * 3){
+                if (roundedx >= grid * 23 && roundedx <= grid * 24 && roundedy === grid * 3) {
                     clicksfx.pause();
                     clicksfx.currentTime = 0;
                     clicksfx.play();
                     sellstocks(companies[1], player.stocks[companies[1].name]);
                 }
-                if(roundedx >= grid * 26 && roundedx <= grid * 27 && roundedy === grid * 3){
+                if (roundedx >= grid * 26 && roundedx <= grid * 27 && roundedy === grid * 3) {
                     clicksfx.pause();
                     clicksfx.currentTime = 0;
                     clicksfx.play();
                     sellstocks(companies[2], player.stocks[companies[2].name]);
                 }
             }
+        
 
+            if (c1page) {
+                handleBuyButtons(0);
+            } else if (c2page) {
+                handleBuyButtons(1);
+            } else if (c3page) {
+                handleBuyButtons(2);
+            }
+
+
+            // PAGE NAVIGATION (only if NOT on a company page)
+            if (!c1page && !c2page && !c3page) {
+                if (
+                    roundedx >= grid && roundedx <= grid * 10 &&
+                    roundedy >= grid && roundedy <= grid * 4
+                ) {
+                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                    resetPages();
+                    c1page = true;
+                    return;
+                } else if (
+                    roundedx >= grid && roundedx <= grid * 10 &&
+                    roundedy >= grid * 6 && roundedy <= grid * 9
+                ) {
+                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                    resetPages();
+                    c2page = true;
+                    return;
+                } else if (
+                    roundedx >= grid && roundedx <= grid * 10 &&
+                    roundedy >= grid * 11 && roundedy <= grid * 13
+                ) {
+                    clicksfx.pause();
+                    clicksfx.currentTime = 0;
+                    clicksfx.play();
+                    resetPages();
+                    c3page = true;
+                    return;
+                }
             
+            
+            }
 
+    function handleBuyButtons(companyIndex) {
+        const company = companies[companyIndex];
 
-            if(
-                roundedx >= grid && roundedx <= grid * 10 && roundedy >= grid && roundedy <= grid * 4 && !c2page && !c3page
-            ){
+        if (roundedx > grid && roundedx <= grid * 14) {
+            if (roundedy >= grid * 6 && roundedy <= grid * 7) {
                 clicksfx.pause();
                 clicksfx.currentTime = 0;
                 clicksfx.play();
-                c1page = true;
-            }
-            else if(
-                roundedx >= grid && roundedx <= grid * 10 && roundedy >= grid * 6 && roundedy <= grid * 9 && !c1page && !c3page
-            ){
+                buystocks(company, 1);
+            } else if (roundedy >= grid * 9 && roundedy <= grid * 10) {
                 clicksfx.pause();
                 clicksfx.currentTime = 0;
                 clicksfx.play();
-                c2page = true;
-                return;
-            }
-            else if(
-                roundedx >= grid && roundedx <= grid * 10 && roundedy >= grid * 11 && roundedy <= grid * 13 && !c1page && !c2page
-            ){
+                buystocks(company, 10);
+            } else if (roundedy >= grid * 12 && roundedy <= grid * 13) {
                 clicksfx.pause();
                 clicksfx.currentTime = 0;
                 clicksfx.play();
-                c3page = true;
-                return;
+                buystocks(company, 50);
             }
-
-            if(c1page){
-                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 6 && roundedy <= grid * 7){
-                    clicksfx.pause();
-                    clicksfx.currentTime = 0;
-                    clicksfx.play();
-                    buystocks(companies[0], 1);
-                }
-                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 9 && roundedy <= grid * 10){
-                    clicksfx.pause();
-                    clicksfx.currentTime = 0;
-                    clicksfx.play();
-                    buystocks(companies[0], 10);
-                }
-                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 12 && roundedy <= grid * 13){
-                    clicksfx.pause();
-                    clicksfx.currentTime = 0;
-                    clicksfx.play();
-                    buystocks(companies[0], 50);
-                }
-            }
-            else if(c2page){
-                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 6 && roundedy <= grid * 7){
-                    clicksfx.pause();
-                    clicksfx.currentTime = 0;
-                    clicksfx.play();
-                    buystocks(companies[1], 1);
-                }
-                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 9 && roundedy <= grid * 10){
-                    clicksfx.pause();
-                    clicksfx.currentTime = 0;
-                    clicksfx.play();
-                    buystocks(companies[1], 10);
-                }
-                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 12 && roundedy <= grid * 13){
-                    clicksfx.pause();
-                    clicksfx.currentTime = 0;
-                    clicksfx.play();
-                    buystocks(companies[1], 50);
-                }
-            }
-            else if(c3page){
-                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 6 && roundedy <= grid * 7){
-                    clicksfx.pause();
-                    clicksfx.currentTime = 0;
-                    clicksfx.play();
-                    buystocks(companies[2], 1);
-                }
-                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 9 && roundedy <= grid * 10){
-                    clicksfx.pause();
-                    clicksfx.currentTime = 0;
-                    clicksfx.play();
-                    buystocks(companies[2], 10);
-                }
-                if(roundedx > grid && roundedx <= grid * 14 && roundedy >= grid * 12 && roundedy <= grid * 13){
-                    clicksfx.pause();
-                    clicksfx.currentTime = 0;
-                    clicksfx.play();
-                    buystocks(companies[2], 50);
-                }
-            }
-
-		}
+        }
+    }
+    
+        }
+        
 
   }
  
