@@ -7764,7 +7764,7 @@ if(roundedx >= rslider.x && roundedx < rslider.x + rslider.width && roundedy >= 
                 roundedy <= grid * 7
             ){
               if(gainNode.gain.value > 0){
-                gainNode.gain.value = 0.5;
+                gainNode.gain.value -= 0.1;
               }
 
             }
@@ -7775,7 +7775,7 @@ if(roundedx >= rslider.x && roundedx < rslider.x + rslider.width && roundedy >= 
                 roundedy <= grid * 7
             ){
               if(gainNode.gain.value < 1){
-                gainNode.gain.value += 0.25;
+                gainNode.gain.value += 0.1;
               }
             }
 
