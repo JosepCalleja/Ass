@@ -903,18 +903,24 @@ function updateStockPrice(company) {
   // Apply fluctuation
   company.stockPrice = Math.round((company.stockPrice * (1 + fluctuation)) * 100) / 100;
 
+  // Prevent stock price from going below $0
+  if (company.stockPrice < 0) {
+      company.stockPrice = 2;
+  }
+
   // Set state and notify
   if (company.stockPrice > oldPrice) {
       company.state = "rising";
       updateText(`${company.name} is currently rising`);
   } else if (company.stockPrice < oldPrice) {
       company.state = "dropping";
-      updateText(`${company.name} lost ${Math.abs(fluctuation * 100).toFixed(2)}% in value!`, true);
+      updateText(`${company.name} lost ${Math.abs(fluctuation * 100).toFixed(4)}% in value!`, true);
   } else {
       company.state = "stable";
       updateText(`Stock prices of ${company.name} is frozen due to system error.`, true);
   }
 }
+
 
   
   let reactedToArticle = null;
@@ -4399,9 +4405,9 @@ drawRSlider(rslider);
 
 
 
+ctx.textAlign = "start";
+ctx.textBaseline = "top";
 
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
   ctx.font = "50px Arial";
   if(player.money >= 0){
       ctx.fillStyle = money.color;
@@ -4414,10 +4420,11 @@ drawRSlider(rslider);
 
   ctx.fillText(
   `$${player.money}`,
-  money.x - grid * 24,
+  money.x - grid * 26,
   money.y
   );
-
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
 
 
   }
@@ -4634,11 +4641,28 @@ for (let i = 0; i < inventorybtn.length; i++) {
     }
   
   
-    ctx.fillText(
-    `$${player.money}`,
-    money.x - grid * 24,
-    money.y
-    );
+    ctx.textAlign = "start";
+    ctx.textBaseline = "top";
+    
+      ctx.font = "50px Arial";
+      if(player.money >= 0){
+          ctx.fillStyle = money.color;
+    
+      }
+      else{
+          ctx.fillStyle = `red`;
+      }
+    
+    
+      ctx.fillText(
+      `$${player.money}`,
+      money.x - grid * 26,
+      money.y
+      );
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+    
+
 
         ctx.font = "30px Arial";
         ctx.fillStyle = `#800080`;
@@ -5412,7 +5436,7 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
         let random = Math.random();
         companies[1].stockPrice -= random;
         updateText("Cold snap shrinks harvest yields —", true);
-        updateText(`${companies[1].name} drops ${random.toFixed(2)}%.`, true);
+        updateText(`${companies[1].name} drops ${random.toFixed(4)}%.`, true);
         reactedToArticle = lastArticle;
       }
       
@@ -5421,7 +5445,7 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
         let random = Math.random();
         companies[0].stockPrice -= random;
         updateText("Storm disrupts delivery networks —", true);
-        updateText(`${companies[0].name} drops ${random.toFixed(2)}%.`, true);
+        updateText(`${companies[0].name} drops ${random.toFixed(4)}%.`, true);
         reactedToArticle = lastArticle;
       }
       
@@ -5431,9 +5455,9 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
         companies[0].stockPrice += random;
         companies[2].stockPrice += random;
         updateText("The sunny weather is ideal for networing —", false);
-        updateText(`${companies[0].name} rises ${random.toFixed(2)}%.`, false);
+        updateText(`${companies[0].name} rises ${random.toFixed(4)}%.`, false);
         updateText("Sunshine boosts snack & leisure sales —", false);
-        updateText(`${companies[2].name} rises ${random.toFixed(2)}%.`, false);
+        updateText(`${companies[2].name} rises ${random.toFixed(4)}%.`, false);
         reactedToArticle = lastArticle;
       }
       
@@ -5442,7 +5466,7 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
         let random = Math.random();
         companies[1].stockPrice += random;
         updateText("Rain restores reservoir levels —", false);
-        updateText(`${companies[1].name} rises ${random.toFixed(2)}%.`, false);
+        updateText(`${companies[1].name} rises ${random.toFixed(4)}%.`, false);
         reactedToArticle = lastArticle;
       }
       
@@ -5451,7 +5475,7 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
         let random = Math.random();
         companies[0].stockPrice -= random;
         updateText("Fog delays morning shipments —", true);
-        updateText(`${companies[0].name} drops ${random.toFixed(2)}%.`, true);
+        updateText(`${companies[0].name} drops ${random.toFixed(4)}%.`, true);
         reactedToArticle = lastArticle;
       }
       
@@ -5461,7 +5485,7 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
         companies[0].stockPrice -= random;
         companies[2].stockPrice -= random;
         updateText("High winds damage urban property —", true);
-        updateText(`${companies[0].name} drops ${random.toFixed(2)}%.`, true);
+        updateText(`${companies[0].name} drops ${random.toFixed(4)}%.`, true);
         reactedToArticle = lastArticle;
       }
       
@@ -5470,7 +5494,7 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
         let random = Math.random();
         companies[2].stockPrice += random;
         updateText("Unseasonal warmth lifts cafe sales —", false);
-        updateText(`${companies[2].name} rises ${random.toFixed(2)}%.`, false);
+        updateText(`${companies[2].name} rises ${random.toFixed(4)}%.`, false);
         reactedToArticle = lastArticle;
       }
       
@@ -5479,7 +5503,7 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
         let random = Math.random();
         companies[1].stockPrice -= random;
         updateText("Frost damages produce farms —", true);
-        updateText(`${companies[1].name} drops ${random.toFixed(2)}%.`, true);
+        updateText(`${companies[1].name} drops ${random.toFixed(4)}%.`, true);
         reactedToArticle = lastArticle;
       }
       
@@ -5488,7 +5512,7 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
         let random = Math.random();
         companies[2].stockPrice += random;
         updateText("Heatwave boosts cold snack sales —", false);
-        updateText(`${companies[2].name} rises ${random.toFixed(2)}%.`, false);
+        updateText(`${companies[2].name} rises ${random.toFixed(4)}%.`, false);
         reactedToArticle = lastArticle;
       }
       
@@ -5498,9 +5522,9 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
         companies[0].stockPrice -= random;
         companies[2].stockPrice -= random;
         updateText("Lightning damages city blocks —", true);
-        updateText(`${companies[0].name} drops ${random.toFixed(2)}%.`, true);
+        updateText(`${companies[0].name} drops ${random.toFixed(4)}%.`, true);
         updateText("Power outage hits digital orders —", true);
-        updateText(`${companies[0].name} drops ${random.toFixed(2)}%.`, true);
+        updateText(`${companies[0].name} drops ${random.toFixed(4)}%.`, true);
         reactedToArticle = lastArticle;
       }
       
@@ -5511,9 +5535,9 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
         companies[2].stockPrice += random;
 
         updateText("The Calm day improves shipping efficiency —", false);
-        updateText(`${companies[0].name} rises ${random.toFixed(2)}%.`, false);
+        updateText(`${companies[0].name} rises ${random.toFixed(4)}%.`, false);
         updateText("Perfect weather boosts mall foot traffic —", false);
-        updateText(`${companies[2].name} rises ${random.toFixed(2)}%.`, false);
+        updateText(`${companies[2].name} rises ${random.toFixed(4)}%.`, false);
 
         reactedToArticle = lastArticle;
       }
@@ -6332,7 +6356,7 @@ function drawText() {
 
 
 function buystocks(company, ammount) {
-    if (company.sharesAvailable <= ammount) {
+    if (company.sharesAvailable < ammount) {
         updateText("No shares available.", true);
         return;
     }
@@ -6540,6 +6564,8 @@ function boom() {
         }
     }
 }
+
+
 
 
 
@@ -6882,7 +6908,7 @@ canvas.addEventListener(`mousedown`, (e) => {
                         localStorage.setItem('GraphData', JSON.stringify(stockgraph));
 
                         recession()
-
+						boom()
 
                     }
 
@@ -6902,6 +6928,7 @@ canvas.addEventListener(`mousedown`, (e) => {
                         localStorage.setItem('GraphData', JSON.stringify(stockgraph));
                         goToScene8();
                         recession()
+						boom()
                         if(rendered === false){
                             rendered = true;
 
