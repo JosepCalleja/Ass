@@ -116,7 +116,8 @@ const songs = [
   "Moon.mp3",
   "TCIAA.mp3",
   "Like Him.mp3",
-  "530.mp3"
+  "530.mp3",
+  "ILLERASEAWAY.mp3"
 ].map(filename => encodeURI(filename)); // this handles spaces like "30 Hours"
 
 
@@ -866,7 +867,7 @@ seasonMech();
 
 let gamestate = {
     recessionActive: false,
-    boom: false
+    boomActive: false
 }
 let boomrecovery = 0;
 let recessionrecovery = 0;
@@ -5022,9 +5023,21 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
       
         "Weather report: Today will be mostly sunny with gentle breezes around 5 mph out of the southwest. Expect afternoon temperatures near 68 °F—perfect for a lunchtime stroll—while farmers can schedule irrigation for late afternoon when evapotranspiration rates peak."
     ];
+    let weatherText
       
-      
-    const weatherText = column3Articles[Math.floor(Math.random() * column3Articles.length)];
+    if(gamestate.recessionActive && recessionrecovery < 1){
+      weatherText = `WARNING! STOCK MARKET CRASH DETECTED!
+Markets nosedive as panic selling sweeps across the board. CALLEJA CA$H freezes credit lines, Soupreme Co. halts shipments, and whispers of bankruptcy circle Virtual Bytes. Officials urge calm, but pfennig values are falling fast. Traders are calling it “The Black Noon of Alchemy Street.”`;
+    }
+    else if(gamestate.boomActive && boomrecovery < 1
+    ){
+      weatherText = `MARKET SURGE: STOCKS SKYROCKET ON RECORD PROFITS!
+Investor confidence roars back as quarterly earnings smash expectations. CALLEJA CA$H reports record loan returns, Soupreme Co. expands to new regions, and Virtual Bytes surges on a spike in digital snack subscriptions. Brokers are calling it “The Golden Climb,” with pfennig values up across all sectors.`
+    }
+    else{
+      weatherText = column3Articles[Math.floor(Math.random() * column3Articles.length)];
+    }
+
   
     scene8CachedArticles = [economicText, localText, weatherText];
   }
@@ -6409,118 +6422,63 @@ function economicsystem() {
 }
 
 
-function itemsbn(){
-    player.inventory.forEach(item => {
-        if (item.name === gameitems[4].name) {
-            console.log(item);
-            player.money = addMoney(player.money, 0.01);
-        }
-    });
-    player.inventory.forEach(item => {
-        if (item.name === gameitems[7].name) {
-            console.log(item);
-            player.experience = addMoney(player.experience, 0.23);
-        }
-    });
-    player.inventory.forEach(item => {
-        if (item.name === gameitems[8].name) {
-            console.log(item);
-            player.experience = addMoney(player.experience, 0.21);
-        }
-    });
-    player.inventory.forEach(item => {
-        if (item.name === gameitems[9].name) {
-            console.log(item);
-            player.money = addMoney(player.money, 0.02);
-            player.experience = addMoney(player.experience, 0.51);
-        }
-    });
-    player.inventory.forEach(item => {
-        if (item.name === gameitems[10].name) {
-            console.log(item);
-            player.experience = addMoney(player.experience, 0.89);
-        }
-    });
-    player.inventory.forEach(item => {
-        if (item.name === gameitems[11].name) {
-            console.log(item);
-            player.experience = addMoney(player.experience, 1);
-        }
+function itemsbn() {
+  // Handle passive effects (no item removal)
+  player.inventory.forEach(item => {
+    switch (item.name) {
+      case gameitems[4].name:
+        player.money = addMoney(player.money, 0.01);
+        break;
+      case gameitems[7].name:
+        player.experience = addMoney(player.experience, 0.23);
+        break;
+      case gameitems[8].name:
+        player.experience = addMoney(player.experience, 0.21);
+        break;
+      case gameitems[9].name:
+        player.money = addMoney(player.money, 0.02);
+        player.experience = addMoney(player.experience, 0.51);
+        break;
+      case gameitems[10].name:
+        player.experience = addMoney(player.experience, 0.89);
+        break;
+      case gameitems[11].name:
+        player.experience = addMoney(player.experience, 1);
+        break;
+    }
+  });
 
+  // Handle vending machines (gameitems[16])
+  const vendingMachines = player.inventory.filter(i => i.name === gameitems[16].name);
+  for (let i = 0; i < vendingMachines.length; i++) {
+    const commons = player.inventory.filter(it => it.rarity === 'Common' && it.name !== gameitems[16].name);
+    if (commons.length === 0) break;
+    const highest = commons.reduce((a, b) => (a.price > b.price ? a : b));
+    const index = player.inventory.indexOf(highest);
+    if (index !== -1) {
+      player.inventory.splice(index, 1);
+      player.money = addMoney(player.money, highest.price * 1.10);
+    }
+  }
 
-    });
-
-	player.inventory.forEach(item => {
-		if(item.name === gameitems[16].name){
-			const hasCommonItems = player.inventory.some(item => item.rarity == `Common`);
-
-			if (hasCommonItems) {
-				console.log("Player has common items!");
-				// Find the common items in the player's inventory
-				const commonItems = player.inventory.filter(item => item.rarity === 'Common');
-
-				// If there are any common items, find the one with the highest price
-				if (commonItems.length > 0) {
-				    const highestPricedCommonItem = commonItems.reduce((maxItem, currentItem) => {
-				    return currentItem.price > maxItem.price ? currentItem : maxItem;
-				    });
-				
-				    console.log("Player's highest priced common item:", highestPricedCommonItem);
-					const index = player.inventory.indexOf(highestPricedCommonItem);
-					if (index !== -1) {
-					  player.inventory.splice(index, 1);
-					  player.money = addMoney(player.money, highestPricedCommonItem.price * 1.10);
-					}
-				}
-				else {
-				    console.log("No common items found.");
-				}
-				
-			}
-			else{
-				console.log(`none`);
-			}
-		}
-
-        if(item.name === gameitems[17].name){
-            const hasUncommonItems = player.inventory.some(item => item.rarity === 'Uncommon');
-            const hasCommonItems = player.inventory.some(item => item.rarity === 'Common');
-            
-            if (hasUncommonItems) {
-                console.log("Player has Uncommon items!");
-                const uncommonItems = player.inventory.filter(item => item.rarity === 'Uncommon');
-            
-                if (uncommonItems.length > 0) {
-                    const highest = uncommonItems.reduce((max, curr) => curr.price > max.price ? curr : max);
-                    console.log("Highest Uncommon:", highest);
-                    const index = player.inventory.indexOf(highest);
-                    if (index !== -1) {
-                        player.inventory.splice(index, 1);
-                        player.money = addMoney(player.money, highest.price * 1.10);
-                    }
-                }
-            } else if (hasCommonItems) {
-                console.log("Player has Common items!");
-                const commonItems = player.inventory.filter(item => item.rarity === 'Common');
-            
-                if (commonItems.length > 0) {
-                    const highest = commonItems.reduce((max, curr) => curr.price > max.price ? curr : max);
-                    console.log("Highest Common:", highest);
-                    const index = player.inventory.indexOf(highest);
-                    if (index !== -1) {
-                        player.inventory.splice(index, 1);
-                        player.money = addMoney(player.money, highest.price * 1.10);
-                    }
-                }
-            } else {
-                console.log("No eligible items found.");
-            }
-            
-		}
-	})
-
-
+  // Handle vending machine pro variant (gameitems[17])
+  const vendingPro = player.inventory.filter(i => i.name === gameitems[17].name);
+  for (let i = 0; i < vendingPro.length; i++) {
+    const candidates = player.inventory.filter(it =>
+      (it.rarity === 'Uncommon' || it.rarity === 'Common') &&
+      it.name !== gameitems[17].name
+    );
+    if (candidates.length === 0) break;
+    const best = candidates.reduce((a, b) => (a.price > b.price ? a : b));
+    const index = player.inventory.indexOf(best);
+    if (index !== -1) {
+      player.inventory.splice(index, 1);
+      player.money = addMoney(player.money, best.price * 1.10);
+    }
+  }
 }
+
+
 
 // Initialize once, if not already
 player.levelMilestone = player.levelMilestone || 0;
