@@ -877,25 +877,25 @@ function updateStockPrice(company) {
   let random = Math.random();
 
   // Check for special events
-  if (random < 0.0015) {
+  if (random < 0.002) {
       recessionactivate();
-  } else if (random < 0.003) {
+  } else if (random < 0.004) {
       boomactivate();
   }
 
   // Default fluctuation
   if (Math.random() < 0.5) {
-      fluctuation = Math.random() * 0.0025 + 0.005; // +0.5% to +0.9%
+      fluctuation = Math.random() * 0.003 + 0.005; // +0.5% to +0.9%
   } else {
-      fluctuation = -(Math.random() * 0.002 + 0.005); // -0.5% to -0.7%
+      fluctuation = -(Math.random() * 0.0025 + 0.005); // -0.5% to -0.7%
   }
 
   // Adjust for economic events
   if (gamestate.recessionActive) {
-      fluctuation = -((Math.random() * 0.01) + 0.025); // -1.1% to -2.1%
+      fluctuation = -((Math.random() * 0.01) + 0.027); // -1.1% to -2.1%
   }
   if (gamestate.boomActive) {
-      fluctuation = (Math.random() * 0.01) + 0.023; // +1.0% to +2.0%
+      fluctuation = (Math.random() * 0.01) + 0.025; // +1.0% to +2.0%
   }
 
   let oldPrice = company.stockPrice;
