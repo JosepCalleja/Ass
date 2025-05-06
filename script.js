@@ -5549,7 +5549,7 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
         ctx.drawImage(gameitems[8].img, grid * 1.2, grid * 2.5, 1380, 200);
     }
     else if(player.week == 0 && player.month == 3){
-      ctx.drawImage(gameitems[3].img, grid * 1.2, grid * 2.5, 1380, 200);
+      ctx.drawImage(gameitems[6].img, grid * 1.2, grid * 2.5, 1380, 200);
   }
     else if (player.currentseason === seasons[1]) {
       ctx.drawImage(gameitems[3].img, grid * 1.2, grid * 2.5, 1380, 200);
