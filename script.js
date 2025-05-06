@@ -5920,7 +5920,7 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
         let startX = grid;
         let startY = grid * 5;
         let width = grid * 28;
-        let height = grid * 9;
+        let height = grid * 10;
         let spacing = grid / 2;
 
         for (let y = startY + spacing / 2; y < startY + height; y += spacing) {
@@ -6070,7 +6070,7 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
         let startX = grid;
         let startY = grid * 5;
         let width = grid * 28;
-        let height = grid * 9;
+        let height = grid * 10;
         let spacing = grid / 2;
 
         for (let y = startY + spacing / 2; y < startY + height; y += spacing) {
@@ -6220,7 +6220,7 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
         let startX = grid;
         let startY = grid * 5;
         let width = grid * 28;
-        let height = grid * 9;
+        let height = grid * 10;
         let spacing = grid / 2;
 
         for (let y = startY + spacing / 2; y < startY + height; y += spacing) {
@@ -6457,20 +6457,20 @@ function itemsbn() {
         player.money = addMoney(player.money, 0.01);
         break;
       case gameitems[7].name:
-        player.experience = addMoney(player.experience, 0.23);
+        player.experience = addMoney(player.experience, 0.7);
         break;
       case gameitems[8].name:
-        player.experience = addMoney(player.experience, 0.21);
+        player.experience = addMoney(player.experience, 0.42);
         break;
       case gameitems[9].name:
         player.money = addMoney(player.money, 0.02);
-        player.experience = addMoney(player.experience, 0.51);
+        player.experience = addMoney(player.experience, 1);
         break;
       case gameitems[10].name:
-        player.experience = addMoney(player.experience, 0.89);
+        player.experience = addMoney(player.experience, 1.67);
         break;
       case gameitems[11].name:
-        player.experience = addMoney(player.experience, 1);
+        player.experience = addMoney(player.experience, 2);
         break;
     }
   });
