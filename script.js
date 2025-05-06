@@ -5530,7 +5530,10 @@ Investor confidence roars back as quarterly earnings smash expectations. CALLEJA
     ctx.fillText(`News from week ${player.week}, ${monthName}, ${player.year}.`, canvas.width / 2, grid * 1.7);
   
     // Optional image
-    if(player.week == 1 && player.month == 6){
+    if(player.week == 4 && player.month == 5){
+      ctx.drawImage(Backpack, grid * 1.2, grid * 2.5, 1380, 200);
+    }
+    else if(player.week == 1 && player.month == 6){
         ctx.drawImage(ATM1, grid * 1.2, grid * 2.5, 1380, 200);
     }
     else if(player.week == 1 && player.month == 9){
