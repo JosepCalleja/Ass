@@ -91,6 +91,12 @@ const VendingMachine = new Image();
 VendingMachine.src = 'VendingMachine.jpg';
 const Mercatrix5000 = new Image();
 Mercatrix5000.src = 'Mercatrix5000.jpg';
+const BambooRod = new Image();
+BambooRod.src = 'BRod.png';
+const OldTV = new Image();
+OldTV.src = 'OldTV.png';
+const VintageRadio = new Image();
+VintageRadio.src = 'VintageRadio.png';
 
 
 
@@ -646,6 +652,33 @@ const gameitems = [
         ogprice: 5.40
     },
     {
+      name: `Bamboo Rod`,
+      price: 55,
+      description: `Good for catching small fish, not strong enough for bigger ones..`,
+      img: BambooRod,
+      rarity: `Uncommon`,
+      category: `Toy`,
+      ogprice: 55
+    },
+    {
+      name: `Old TV Set`,
+      price: 510,
+      description: `Old But Gold, the world was still black and white during this period`,
+      img: OldTV,
+      rarity: `Rare`,
+      category: `Business`,
+      ogprice: 510
+    },
+    {
+      name: `Vintage Radio`,
+      price: 325,
+      description: `Doesn't work, bt sometimes, you still hear the voices...`,
+      img: VintageRadio,
+      rarity: `Rare`,
+      category: `Business`,
+      ogprice: 325
+    },
+    {
         name: `Vending Machine`,
         price: 1700,
         description: `Automatically sells one Common item from your inventory every month(~10% profit from original price).`,
@@ -663,6 +696,7 @@ const gameitems = [
         category: `Business`,
         ogprice: 5800
     }
+
 ];
 
 const companies = [
@@ -6472,13 +6506,23 @@ function itemsbn() {
       case gameitems[11].name:
         player.experience = addMoney(player.experience, 2);
         break;
+        case gameitems[16].name:
+          player.experience = addMoney(player.experience, 0.1);
+          break;
+        case gameitems[17].name:
+          player.experience = addMoney(player.experience, 0.77);
+          break;
+        case gameitems[18].name:
+          player.experience = addMoney(player.experience, 0.65);
+          break;
     }
+    
   });
 
   // Handle vending machines (gameitems[16])
-  const vendingMachines = player.inventory.filter(i => i.name === gameitems[16].name);
+  const vendingMachines = player.inventory.filter(i => i.name === gameitems[19].name);
   for (let i = 0; i < vendingMachines.length; i++) {
-    const commons = player.inventory.filter(it => it.rarity === 'Common' && it.name !== gameitems[16].name);
+    const commons = player.inventory.filter(it => it.rarity === 'Common' && it.name !== gameitems[19].name);
     if (commons.length === 0) break;
     const highest = commons.reduce((a, b) => (a.price > b.price ? a : b));
     const index = player.inventory.indexOf(highest);
@@ -6489,11 +6533,11 @@ function itemsbn() {
   }
 
   // Handle vending machine pro variant (gameitems[17])
-  const vendingPro = player.inventory.filter(i => i.name === gameitems[17].name);
+  const vendingPro = player.inventory.filter(i => i.name === gameitems[20].name);
   for (let i = 0; i < vendingPro.length; i++) {
     const candidates = player.inventory.filter(it =>
       (it.rarity === 'Uncommon' || it.rarity === 'Common') &&
-      it.name !== gameitems[17].name
+      it.name !== gameitems[20].name
     );
     if (candidates.length === 0) break;
     const best = candidates.reduce((a, b) => (a.price > b.price ? a : b));
@@ -6503,6 +6547,7 @@ function itemsbn() {
       player.money = addMoney(player.money, best.price * 1.10);
     }
   }
+  
 }
 
 
