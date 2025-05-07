@@ -97,6 +97,8 @@ const OldTV = new Image();
 OldTV.src = 'OldTV.png';
 const VintageRadio = new Image();
 VintageRadio.src = 'VintageRadio.png';
+const Nothing = new Image();
+Nothing.src = 'Untitled.png';
 
 
 
@@ -684,7 +686,7 @@ const gameitems = [
         description: `Automatically sells one Common item from your inventory every month(~10% profit from original price).`,
         img: VendingMachine,
         rarity: `Ultra Rare`,
-        category: `Business`,
+        category: `Utility`,
         ogprice: 1700
     },
     {
@@ -693,9 +695,19 @@ const gameitems = [
         description: `Automatically sells one Common or Uncommon item from your inventory every month.`,
         img: Mercatrix5000,
         rarity: `Legendary`,
-        category: `Business`,
+        category: `Utility`,
         ogprice: 5800
-    }
+    },
+    {
+    name: "Auto-bot 3000",
+    price: 7500,
+    description: "Automatically restocks one Common item monthly for 90% of the price.",
+    img: Nothing,
+    rarity: "Legendary",
+    category: "Utility",
+    ogprice: 7500
+
+  }
 
 ];
 
@@ -6440,17 +6452,20 @@ function economicsystem() {
         Summer: {
             Toy: +0.30,        // Increase price by 30%
             School: +0.40,
-            Business: -0.30
+            Business: -0.30,
+            Utility: +0.30
         },
         Fall: {
             School: +0.30,
             Business: +0.80,
-            Companion: -0.20
+            Companion: -0.20,
+            Utility: +0.10
         },
         Winter: {
             Toy: +0.30,
             Business: +0.40,
-            Property: -0.30
+            Property: -0.30,
+            Utility: -0.10
         },
         Spring: {
             Companion: +0.30,
@@ -6545,6 +6560,35 @@ function itemsbn() {
     if (index !== -1) {
       player.inventory.splice(index, 1);
       player.money = addMoney(player.money, best.price * 1.10);
+    }
+  }
+  
+  const autoBots = player.inventory.filter(i => i.name === gameitems[21].name); // Auto-bot 3000
+
+  for (let i = 0; i < autoBots.length; i++) {
+    // Get all Common items from the game catalog (not inventory)
+    const commonItems = gameitems.filter(it => it.rarity === 'Common');
+  
+    if (commonItems.length === 0) break;
+  
+    // Pick a random Common item
+    const randomIndex = Math.floor(Math.random() * commonItems.length);
+    const randomItem = { ...commonItems[randomIndex] }; // Clone it
+  
+    const discountedPrice = Math.floor(randomItem.price * 0.9);
+  
+    if (player.money >= discountedPrice && player.inventory.length < player.maximum) {
+      player.money = subtractMoney(player.money, discountedPrice); // Subtract cost
+      player.inventory.push({
+        name: randomItem.name,
+        imgSrc: randomItem.img.src, // Store image path string, not the Image object
+        price: randomItem.price,
+        rarity: randomItem.rarity
+      });
+      
+      console.log(`Auto-bot 3000 restocked you with a ${randomItem.name} for $${discountedPrice}.`);
+    } else {
+      console.log(`Auto-bot 3000 tried to restock you, but you couldn't afford ${randomItem.name}, or you don't have enough inventory space.`);
     }
   }
   
