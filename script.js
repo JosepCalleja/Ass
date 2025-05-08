@@ -7,9 +7,9 @@
 
 
 
-/**/let currentpage = 0; // move it OUTSIDE the function
+/**/let currentpage = 0;
 const itemsPerPage = 8;
-let totalPages = 1; // (you can update this later)
+let totalPages = 1;
 
 
 
@@ -6465,7 +6465,7 @@ function economicsystem() {
             Toy: +0.30,
             Business: +0.40,
             Property: -0.30,
-            Companion: -0.20
+            Companion: -0.10
         },
         Spring: {
             Companion: +0.30,
@@ -6663,31 +6663,46 @@ function boom() {
 
 let maxpage;
 
-window.addEventListener('keydown', function (e) {
-  // Ctrl + (mousewheel or + or -)
-  if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) {
-    e.preventDefault();
-  }
-});
-
-window.addEventListener('wheel', function (e) {
-  if (e.ctrlKey) {
+// Preventing pinch-to-zoom on mobile
+document.addEventListener('touchstart', function(e) {
+  if (e.touches.length > 1) {
     e.preventDefault();
   }
 }, { passive: false });
 
-document.addEventListener('contextmenu', function (e) {
+document.addEventListener('gesturestart', function(e) {
   e.preventDefault();
-});
+}, { passive: false });
 
+// Preventing double-tap zoom (which is effectively a 'touchend' event in quick succession)
 let lastTouchEnd = 0;
-document.addEventListener('touchend', function (e) {
+document.addEventListener('touchend', function(e) {
   const now = new Date().getTime();
   if (now - lastTouchEnd <= 300) {
     e.preventDefault();
   }
   lastTouchEnd = now;
 }, false);
+
+// Preventing right-click (context menu) on mobile
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+});
+
+// Preventing zooming with Ctrl (or Command) + Mouse Wheel / Keyboard Shortcuts
+window.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) {
+    e.preventDefault();
+  }
+});
+
+// Preventing zooming with mouse wheel (on non-mobile devices)
+window.addEventListener('wheel', function(e) {
+  if (e.ctrlKey) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
 
 
 canvas.addEventListener("contextmenu", e => e.preventDefault());
