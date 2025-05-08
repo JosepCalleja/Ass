@@ -6663,18 +6663,27 @@ function boom() {
 
 let maxpage;
 
-// Preventing pinch-to-zoom on mobile
+// Prevent zooming with touch events
 document.addEventListener('touchstart', function(e) {
+  // If more than one touch point is detected (pinch gesture), prevent default
+  if (e.touches.length > 1) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+document.addEventListener('touchmove', function(e) {
+  // Prevent pinch zooming during touchmove events
   if (e.touches.length > 1) {
     e.preventDefault();
   }
 }, { passive: false });
 
 document.addEventListener('gesturestart', function(e) {
+  // Prevent gesture-based zoom on iOS (pinch-to-zoom)
   e.preventDefault();
 }, { passive: false });
 
-// Preventing double-tap zoom (which is effectively a 'touchend' event in quick succession)
+// Prevent double-tap zoom on touchend (specific to iOS)
 let lastTouchEnd = 0;
 document.addEventListener('touchend', function(e) {
   const now = new Date().getTime();
@@ -6684,24 +6693,25 @@ document.addEventListener('touchend', function(e) {
   lastTouchEnd = now;
 }, false);
 
-// Preventing right-click (context menu) on mobile
+// Prevent right-click context menu (for mobile and desktop)
 document.addEventListener('contextmenu', function(e) {
   e.preventDefault();
 });
 
-// Preventing zooming with Ctrl (or Command) + Mouse Wheel / Keyboard Shortcuts
+// Prevent zoom via keyboard shortcuts (Ctrl + '+' or '-' or '=')
 window.addEventListener('keydown', function(e) {
   if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) {
     e.preventDefault();
   }
 });
 
-// Preventing zooming with mouse wheel (on non-mobile devices)
+// Prevent zoom with mouse wheel (non-mobile)
 window.addEventListener('wheel', function(e) {
   if (e.ctrlKey) {
     e.preventDefault();
   }
 }, { passive: false });
+
 
 
 
