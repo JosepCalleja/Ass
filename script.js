@@ -699,7 +699,7 @@ const gameitems = [
         ogprice: 5800
     },
     {
-    name: "Auto-bot 3000",
+    name: "Mercatrix Unit R-5",
     price: 7500,
     description: "Automatically restocks one Common item monthly for 90% of the price.",
     img: Nothing,
@@ -6586,9 +6586,9 @@ function itemsbn() {
         rarity: randomItem.rarity
       });
       
-      console.log(`Auto-bot 3000 restocked you with a ${randomItem.name} for $${discountedPrice}.`);
+      console.log(`Mercatrix Unit R-5 restocked you with a ${randomItem.name} for $${discountedPrice}.`);
     } else {
-      console.log(`Auto-bot 3000 tried to restock you, but you couldn't afford ${randomItem.name}, or you don't have enough inventory space.`);
+      console.log(`Mercatrix Unit R-5 tried to restock you, but you couldn't afford ${randomItem.name}, or you don't have enough inventory space.`);
     }
   }
   
@@ -6660,6 +6660,33 @@ function boom() {
 
 
 let maxpage;
+
+window.addEventListener('keydown', function (e) {
+  // Ctrl + (mousewheel or + or -)
+  if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) {
+    e.preventDefault();
+  }
+});
+
+window.addEventListener('wheel', function (e) {
+  if (e.ctrlKey) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+document.addEventListener('contextmenu', function (e) {
+  e.preventDefault();
+});
+
+let lastTouchEnd = 0;
+document.addEventListener('touchend', function (e) {
+  const now = new Date().getTime();
+  if (now - lastTouchEnd <= 300) {
+    e.preventDefault();
+  }
+  lastTouchEnd = now;
+}, false);
+
 
 canvas.addEventListener("contextmenu", e => e.preventDefault());
 
