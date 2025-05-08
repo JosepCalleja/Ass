@@ -7,9 +7,9 @@
 
 
 
-/**/let currentpage = 0;
+/**/let currentpage = 0; // move it OUTSIDE the function
 const itemsPerPage = 8;
-let totalPages = 1;
+let totalPages = 1; // (you can update this later)
 
 
 
@@ -6456,7 +6456,7 @@ function economicsystem() {
             Utility: +0.30
         },
         Fall: {
-            School: +0.30,
+            School: +0.20,
             Business: +0.80,
             Companion: -0.20,
             Utility: +0.10
@@ -6465,12 +6465,14 @@ function economicsystem() {
             Toy: +0.30,
             Business: +0.40,
             Property: -0.30,
-            Utility: -0.10
+            Companion: -0.20
         },
         Spring: {
             Companion: +0.30,
             School: +0.40,
-            Toy: -0.30
+            Toy: -0.30,
+            Utility: -0.10
+
         }
     };
 
