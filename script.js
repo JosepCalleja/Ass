@@ -6941,6 +6941,7 @@ canvas.addEventListener(`mousedown`, (e) => {
                         player.selling = player.selling;
                         let offerchance = Math.random();
                         let offerchance2 = Math.random();
+                        levelmech();
                     
                     
                         if(times[player.week].sell){
@@ -7107,7 +7108,7 @@ canvas.addEventListener(`mousedown`, (e) => {
                         itemsbn();
 
 
-                        levelmech()
+                        levelmech();
                         economicsystem();
                                                         
 
@@ -7885,9 +7886,11 @@ for (let i = 0; i < inventorybtn.length; i++) {
         sell = gameitems[itemIndex];
       }
   
-      player.selling = {};
+
       currentscene = 2;
       rendered = true;
+      times[player.week].sell = false;
+      player.selling = {};
       secondDialogueTime = Date.now();
       break;
     }
