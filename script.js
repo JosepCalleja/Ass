@@ -7,9 +7,9 @@
 
 
 
-/**/let currentpage = 0; // move it OUTSIDE the function
+/**/let currentpage = 0;
 const itemsPerPage = 8;
-let totalPages = 1; // (you can update this later)
+let totalPages = 1;
 
 
 
