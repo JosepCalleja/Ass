@@ -99,6 +99,8 @@ const VintageRadio = new Image();
 VintageRadio.src = 'VintageRadio.png';
 const Nothing = new Image();
 Nothing.src = 'Untitled.png';
+const Claymore = new Image();
+Claymore.src = 'claymore1.png';
 
 
 
@@ -699,15 +701,25 @@ const gameitems = [
         ogprice: 5800
     },
     {
-    name: "Mercatrix Unit R-5",
-    price: 7500,
-    description: "Automatically restocks one Common item monthly for 90% of the price.",
-    img: Nothing,
-    rarity: "Legendary",
-    category: "Utility",
-    ogprice: 7500
+      name: "Mercatrix Unit R-5",
+      price: 7500,
+      description: "Automatically restocks one Common item monthly for 90% of the price.",
+      img: Nothing,
+      rarity: "Legendary",
+      category: "Utility",
+      ogprice: 7500
 
-  }
+    },
+    {
+      name: "Claymore",
+      price: 77,
+      description: "Upgrade your wooden sword into a real one!.",
+      img: Claymore,
+      rarity: "Uncommon",
+      category: "toy",
+      ogprice: 77
+
+    }
 
 ];
 
@@ -6532,6 +6544,9 @@ function itemsbn() {
         case gameitems[18].name:
           player.experience = addMoney(player.experience, 0.65);
           break;
+        case gameitems[22].name:
+          player.experience = addMoney(player.experience, 0.15);
+        break;
     }
     
   });
