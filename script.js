@@ -100,7 +100,7 @@ VintageRadio.src = 'VintageRadio.png';
 const Nothing = new Image();
 Nothing.src = 'Untitled.png';
 const Claymore = new Image();
-Claymore.src = 'claymore1.png';
+Claymore.src = 'Claymore1.png';
 
 
 
