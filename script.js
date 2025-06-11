@@ -6678,13 +6678,7 @@ function boom() {
 
 let maxpage;
 
-// Prevent zooming with touch events
-document.addEventListener('touchstart', function(e) {
-  // If more than one touch point is detected (pinch gesture), prevent default
-  if (e.touches.length > 1) {
-    e.preventDefault();
-  }
-}, { passive: false });
+/*
 
 document.addEventListener('touchmove', function(e) {
   // Prevent pinch zooming during touchmove events
@@ -6692,6 +6686,8 @@ document.addEventListener('touchmove', function(e) {
     e.preventDefault();
   }
 }, { passive: false });
+
+*/
 
 document.addEventListener('gesturestart', function(e) {
   // Prevent gesture-based zoom on iOS (pinch-to-zoom)
