@@ -6731,8 +6731,9 @@ canvas.addEventListener("contextmenu", e => e.preventDefault());
 
 totalPages = Math.ceil(gameitems.length / itemsPerPage);
 
+const eventType = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'touchstart' : 'keydown';
 
-document.addEventListener('keydown', (e) => {
+document.addEventListener(eventType, (e) => {
     if (e.key === 'ArrowRight') {
         if(currentscene === 4){
 
@@ -8232,3 +8233,4 @@ if(roundedx >= rslider.x && roundedx < rslider.x + rslider.width && roundedy >= 
 /**//**/animate();
 /**//**/
 /**//**/
+
