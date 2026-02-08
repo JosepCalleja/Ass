@@ -3,14 +3,21 @@ body{
     background-color: black;
     margin: 0px;
     padding: 0px;
-      touch-action: manipulation; /* Prevent pinch zooming on some browsers */
-  -webkit-user-select: none; /* Disables text selection, sometimes needed to stop zooming */
-  user-select: none;
+    touch-action: manipulation; /* Prevent pinch zooming on some browsers */
+    -webkit-user-select: none; /* Disables text selection, sometimes needed to stop zooming */
+    user-select: none;
+    scrollbar-width: none;       /* Firefox */
+    -ms-overflow-style: none;    /* IE 10+ */
+    overflow: hidden;   /* disables scrollbars */
+}
+
+body::-webkit-scrollbar {
+    display: none;               /* Chrome, Safari, Opera */
 }
 
 #canvas{
     background-color: aliceblue;
-
+    height: 100dvh;
 }
 
 #notification-container {
